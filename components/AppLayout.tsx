@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 
 type AppLayoutProps = {
@@ -6,6 +6,7 @@ type AppLayoutProps = {
 };
 
 function AppLayout({ children }: AppLayoutProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div>
       <Header />

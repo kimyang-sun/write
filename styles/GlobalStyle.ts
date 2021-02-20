@@ -54,6 +54,12 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+
+  input {
+    background-color: #fff;
+    border: none;
+    outline: none;
+  }
   
 `;
 

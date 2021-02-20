@@ -1,51 +1,63 @@
 import Link from 'next/link';
 import React from 'react';
 import styled, { DefaultTheme, css } from 'styled-components';
+import Input from './Input';
 
+// Props Type
 type StyledHeaderProps = {
   theme: DefaultTheme;
 };
 
+// Header
 const StyledHeader = styled.header<StyledHeaderProps>`
   display: flex;
   align-items: center;
-  ${props => {
-    const color = props.theme.color.black;
-    return css`
-      color: ${color};
-    `;
-  }}
+  color: ${props => props.theme.color.black};
+  padding: 15px 0;
 `;
 
-const Logo = styled.div`
-  display: flex;
-  margin-right: 20px;
+// Logo
+const Logo = styled.h1`
+  a {
+    display: block;
+    padding: 5px;
+  }
 
   img {
-    width: 36px;
-    height: 36px;
-  }
-
-  h1 {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
+    display: blcok;
+    width: 30px;
+    height: 30px;
   }
 `;
 
-const Nav = styled.nav``;
+// Nav
+const Nav = styled.nav`
+  margin-left: auto;
+  padding-right: 30px;
+
+  a {
+    padding: 5px;
+    margin: 0 6px;
+    transition: opacity 0.3s;
+  }
+
+  a:hover {
+    opacity: 0.7;
+  }
+`;
 
 function Header() {
   return (
     <StyledHeader>
       <Logo>
-        <img src="/images/logo.png" alt="로고" />
-        <h1>쓰다</h1>
-      </Logo>
-      <Nav>
         <Link href="/">
-          <a>홈</a>
+          <a>
+            <img src="/images/logo.png" alt="로고" />
+          </a>
         </Link>
+      </Logo>
+      <Input kind="search" />
+      <Nav>
         <Link href="/profile">
           <a>프로필</a>
         </Link>
