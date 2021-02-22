@@ -4,6 +4,7 @@ import Head from 'next/head';
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from 'styles/DefaultTheme';
 import GlobalStyle from 'styles/GlobalStyle';
+import 'antd/dist/antd.css';
 
 type AppProps = {
   Component: React.ElementType;

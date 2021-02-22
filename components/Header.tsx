@@ -1,22 +1,23 @@
+import { Input } from 'antd';
 import Link from 'next/link';
 import React from 'react';
-import styled, { DefaultTheme, css } from 'styled-components';
-import Input from './Input';
+import styled, { DefaultTheme } from 'styled-components';
 
-// Props Type
+const { Search } = Input;
+
+// Props 타입
 type StyledHeaderProps = {
   theme: DefaultTheme;
 };
 
-// Header
+// styled compoents
 const StyledHeader = styled.header<StyledHeaderProps>`
   display: flex;
   align-items: center;
   color: ${props => props.theme.color.black};
-  padding: 15px 0;
+  padding: 25px 0 15px;
 `;
 
-// Logo
 const Logo = styled.h1`
   a {
     display: block;
@@ -24,28 +25,48 @@ const Logo = styled.h1`
   }
 
   img {
-    display: blcok;
-    width: 30px;
-    height: 30px;
+    display: block;
+    width: 32px;
+    height: 32px;
   }
 `;
 
-// Nav
-const Nav = styled.nav`
+const Nav = styled.nav<StyledHeaderProps>`
   margin-left: auto;
   padding-right: 30px;
 
   a {
     padding: 5px;
     margin: 0 6px;
-    transition: opacity 0.3s;
+    transition: color 0.3s;
   }
 
   a:hover {
-    opacity: 0.7;
+    color: ${props => props.theme.color.main};
   }
 `;
 
+// Search Input
+const StyledSearch = styled(Search)`
+  width: auto;
+  margin-left: 30px;
+  .ant-input,
+  .ant-btn {
+    height: 38px;
+    line-height: 1;
+  }
+
+  .ant-btn {
+    padding: 4px 12px;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+// export
 function Header() {
   return (
     <StyledHeader>
@@ -56,7 +77,7 @@ function Header() {
           </a>
         </Link>
       </Logo>
-      <Input kind="search" />
+      <StyledSearch placeholder="검색" enterButton></StyledSearch>
       <Nav>
         <Link href="/profile">
           <a>프로필</a>
