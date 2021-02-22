@@ -7,7 +7,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // Props 타입
-type LoginFormType = {
+type LoginFormProps = {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+type LoginInputType = {
   userId: string;
   password: string;
 };
@@ -51,12 +55,16 @@ const validationSchema = yup.object({
     .max(15, '비밀번호는 15자리 이하여야 합니다.')
     .min(4, '비밀번호는 4자리 이상이어야 합니다.'),
 });
+
 // 리턴 컴포넌트
-function LoginForm() {
-  const { handleSubmit, errors, control } = useForm<LoginFormType>({
+function LoginForm({ setIsLoggedIn }: LoginFormProps) {
+  const { handleSubmit, errors, control } = useForm<LoginInputType>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data: LoginFormType) => console.log(data));
+  const onSubmit = handleSubmit((data: LoginInputType) => {
+    console.log(data);
+    setIsLoggedIn(true);
+  });
 
   return (
     <StyledLoginForm onFinish={onSubmit} size="large">

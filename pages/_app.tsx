@@ -23,7 +23,7 @@ function App({ Component }: AppProps) {
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="마음을 적는 공간" />
-        <title>쓰다 - 마음을 적는 공간</title>
+        <title>&quot;쓰다&quot; - 마음을 적는 공간</title>
         <link
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@200;300;400;700&display=swap"
           rel="stylesheet"
