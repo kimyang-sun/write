@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-// Props 타입
+// Types
 type LoginFormProps = {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -5,7 +5,7 @@ import Header from './Header';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
 
-// Props 타입
+// Types
 type AppLayoutProps = {
   children: React.ReactNode;
 };

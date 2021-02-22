@@ -5,7 +5,7 @@ import styled, { DefaultTheme } from 'styled-components';
 
 const { Search } = Input;
 
-// Props 타입
+// Types
 type StyledHeaderProps = {
   theme: DefaultTheme;
 };

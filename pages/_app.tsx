@@ -6,13 +6,16 @@ import { theme } from 'styles/DefaultTheme';
 import GlobalStyle from 'styles/GlobalStyle';
 import 'antd/dist/antd.css';
 
+// Types
 type AppProps = {
   Component: React.ElementType;
 };
 
+// styled components
 const Wrap = styled.div`
   max-width: 1400px;
   margin: 0 auto;
+  color: ${props => props.theme.color.black};
 `;
 
 function App({ Component }: AppProps) {

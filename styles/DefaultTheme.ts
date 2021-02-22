@@ -4,7 +4,7 @@ export const theme: DefaultTheme = {
   color: {
     main: '#ff3636',
     sub: '#f0f2f5',
-    black: '#323232',
+    black: 'rgba(0, 0, 0, 0.85)',
     gray: '#999',
   },
 };
