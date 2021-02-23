@@ -69,7 +69,7 @@ function LoginForm({ setIsLoggedIn }: LoginFormProps) {
   return (
     <StyledLoginForm onFinish={onSubmit} size="large">
       <div>
-        <label htmlFor="user_id">아이디</label>
+        <label htmlFor="userId">아이디</label>
         <Controller
           as={<Input />}
           type="text"

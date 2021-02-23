@@ -15,7 +15,11 @@ function UserProfile({ setIsLoggedIn }: UserProfileProps) {
         <div key="followers">팔로잉 0</div>,
       ]}
     >
-      <Card.Meta avatar={<Avatar>선양</Avatar>} title="kimsun-Yang" />
+      <Card.Meta
+        avatar={<Avatar>선양</Avatar>}
+        title="kimsun-Yang"
+        description="배움을 즐기는 개발자입니다."
+      />
       <Button onClick={() => setIsLoggedIn(false)}>로그아웃</Button>
     </Card>
   );

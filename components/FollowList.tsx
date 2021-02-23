@@ -1,4 +1,4 @@
-import { Button, Card, List } from 'antd';
+import { Button, Card, List, Avatar } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import { DisconnectOutlined } from '@ant-design/icons';
@@ -23,9 +23,9 @@ function FollowList({ header, data }: FollowListProps) {
       header={<ListHeader>{header}</ListHeader>}
       grid={{
         gutter: 16,
+        column: 4,
         xs: 2,
-        sm: 3,
-        md: 4,
+        md: 3,
       }}
       loadMore={
         <LoadMore>
@@ -37,7 +37,7 @@ function FollowList({ header, data }: FollowListProps) {
       renderItem={item => (
         <ListItem>
           <Card actions={[<DisconnectOutlined key="stop" />]}>
-            <Card.Meta description={item.name} />
+            <Card.Meta avatar={<Avatar>선양</Avatar>} title={item.name} />
           </Card>
         </ListItem>
       )}
