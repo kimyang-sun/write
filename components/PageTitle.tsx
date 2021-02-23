@@ -8,6 +8,10 @@ type PageTitleProps = {
 
 const StyledPageTitle = styled.h2`
   font-size: 1.25rem;
+  display: inline-block;
+  padding-bottom: 5px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid ${props => props.theme.color.main};
 `;
 
 // export

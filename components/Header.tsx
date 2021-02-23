@@ -57,7 +57,8 @@ const StyledSearch = styled(Search)`
   }
 
   .ant-btn {
-    padding: 4px 12px;
+    width: auto;
+    padding: 4px 10px;
   }
 
   svg {
@@ -77,7 +78,7 @@ function Header() {
           </a>
         </Link>
       </Logo>
-      <StyledSearch placeholder="검색" enterButton></StyledSearch>
+      <StyledSearch placeholder='"쓰다" 검색'></StyledSearch>
       <Nav>
         <Link href="/profile">
           <a>프로필</a>

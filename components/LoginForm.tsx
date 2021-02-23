@@ -4,7 +4,8 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { loginValidation } from 'src/yup';
+import FormErrorMessage from './FormErrorMessage';
 
 // Types
 type LoginFormProps = {
@@ -19,6 +20,7 @@ type LoginInputType = {
 // styled components
 const StyledLoginForm = styled(Form)`
   > div:not(:last-child) {
+    // 버튼박스만 제외하고
     margin-top: 30px;
     position: relative;
   }
@@ -32,34 +34,15 @@ const StyledLoginForm = styled(Form)`
     margin-bottom: 8px;
   }
 
-  .signup__btnBox {
+  .login__btnBox {
     margin-top: 40px;
   }
 `;
 
-const SignupErrorMessage = styled.div`
-  position: absolute;
-  color: ${props => props.theme.color.main};
-`;
-
-// Yup으로 유효성 검사
-const validationSchema = yup.object({
-  userId: yup
-    .string()
-    .required('아이디를 입력해주세요.')
-    .max(12, '아이디는 12자리 이하여야 합니다.')
-    .min(4, '아이디는 4자리 이상이어야 합니다.'),
-  password: yup
-    .string()
-    .required('비밀번호를 입력해주세요.')
-    .max(15, '비밀번호는 15자리 이하여야 합니다.')
-    .min(4, '비밀번호는 4자리 이상이어야 합니다.'),
-});
-
-// 리턴 컴포넌트
+// export
 function LoginForm({ setIsLoggedIn }: LoginFormProps) {
   const { handleSubmit, errors, control } = useForm<LoginInputType>({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(loginValidation),
   });
   const onSubmit = handleSubmit((data: LoginInputType) => {
     console.log(data);
@@ -79,7 +62,9 @@ function LoginForm({ setIsLoggedIn }: LoginFormProps) {
           defaultValue=""
         />
         {errors.userId && (
-          <SignupErrorMessage>{errors.userId.message}</SignupErrorMessage>
+          <FormErrorMessage
+            errorMessage={errors.userId.message}
+          ></FormErrorMessage>
         )}
       </div>
       <div>
@@ -93,10 +78,12 @@ function LoginForm({ setIsLoggedIn }: LoginFormProps) {
           defaultValue=""
         />
         {errors.password && (
-          <SignupErrorMessage>{errors.password.message}</SignupErrorMessage>
+          <FormErrorMessage
+            errorMessage={errors.password.message}
+          ></FormErrorMessage>
         )}
       </div>
-      <div className="signup__btnBox">
+      <div className="login__btnBox">
         <Button type="primary" htmlType="submit" block>
           로그인
         </Button>
