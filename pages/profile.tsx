@@ -2,6 +2,7 @@ import ProfileEditForm from 'components/ProfileEditForm';
 import FollowList from 'components/FollowList';
 import Head from 'next/head';
 import React from 'react';
+import PageTitle from 'components/PageTitle';
 
 function Profile() {
   const followerList = [
@@ -23,6 +24,7 @@ function Profile() {
       <Head>
         <title>프로필 | &quot;쓰다&quot;</title>
       </Head>
+      <PageTitle title="프로필" />
       <ProfileEditForm />
       <FollowList header="팔로워 목록" data={followerList} />
       <FollowList header="팔로잉 목록" data={followingList} />
