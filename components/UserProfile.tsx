@@ -2,11 +2,11 @@ import { Avatar, Button, Card } from 'antd';
 import React from 'react';
 
 // Types
-type UserProfileProps = {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-};
+// type UserProfileProps = {
+//   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+// };
 
-function UserProfile({ setIsLoggedIn }: UserProfileProps) {
+function UserProfile() {
   return (
     <Card
       actions={[
@@ -20,7 +20,7 @@ function UserProfile({ setIsLoggedIn }: UserProfileProps) {
         title="kimsun-Yang"
         description="배움을 즐기는 개발자입니다."
       />
-      <Button onClick={() => setIsLoggedIn(false)}>로그아웃</Button>
+      <Button>로그아웃</Button>
     </Card>
   );
 }

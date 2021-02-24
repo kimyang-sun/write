@@ -1,9 +1,10 @@
 import { Col, Row } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import useUser from 'store/modules/userHooks';
 
 // Types
 type AppLayoutProps = {
@@ -17,17 +18,14 @@ const StyledRow = styled(Row)`
 
 // export
 function AppLayout({ children }: AppLayoutProps) {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const { isLoggedIn, login } = useUser();
+  console.log(isLoggedIn);
   return (
     <div>
       <Header />
       <StyledRow gutter={30}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? (
-            <UserProfile setIsLoggedIn={setIsLoggedIn} />
-          ) : (
-            <LoginForm setIsLoggedIn={setIsLoggedIn} />
-          )}
+          {isLoggedIn ? <UserProfile /> : <LoginForm login={login} />}
         </Col>
         <Col xs={24} md={12}>
           {children}

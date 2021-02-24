@@ -14,7 +14,7 @@ export const loginValidation = yup.object({
     .min(4, '비밀번호는 4자리 이상이어야 합니다.'),
 });
 
-export const signupValidation = yup.object({
+export const signUpValidation = yup.object({
   userId: yup
     .string()
     .required('아이디를 입력해주세요.')

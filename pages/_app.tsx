@@ -5,6 +5,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { theme } from 'styles/DefaultTheme';
 import GlobalStyle from 'styles/GlobalStyle';
 import 'antd/dist/antd.css';
+import wrapper from 'store/configureStore';
 
 // Types
 type AppProps = {
@@ -41,4 +42,4 @@ function App({ Component }: AppProps) {
   );
 }
 
-export default App;
+export default wrapper.withRedux(App);

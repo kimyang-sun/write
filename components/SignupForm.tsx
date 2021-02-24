@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signupValidation } from 'src/yup';
+import { signUpValidation } from 'src/yup';
 import FormErrorMessage from 'components/FormErrorMessage';
 
 // Types
-type SignupInputType = {
+type SignUpInputType = {
   userId: string;
   nickname: string;
   password: string;
@@ -16,7 +16,7 @@ type SignupInputType = {
 };
 
 // styled components
-const StyledSignupForm = styled(Form)`
+const StyledSignUpForm = styled(Form)`
   > div:not(:first-child) {
     margin-top: 30px; // ID 인풋박스만 제외하고
   }
@@ -32,18 +32,18 @@ const StyledSignupForm = styled(Form)`
 `;
 
 // export
-function SignupForm() {
-  const { handleSubmit, errors, control } = useForm<SignupInputType>({
-    resolver: yupResolver(signupValidation),
+function SignUpForm() {
+  const { handleSubmit, errors, control } = useForm<SignUpInputType>({
+    resolver: yupResolver(signUpValidation),
     mode: 'onBlur',
   });
 
-  const onSubmit = handleSubmit((data: SignupInputType) => {
+  const onSubmit = handleSubmit((data: SignUpInputType) => {
     console.log(data);
   });
 
   return (
-    <StyledSignupForm onFinish={onSubmit} size="large">
+    <StyledSignUpForm onFinish={onSubmit} size="large">
       <div>
         <label htmlFor="userId">아이디</label>
         <Controller
@@ -121,8 +121,8 @@ function SignupForm() {
           가입하기
         </Button>
       </div>
-    </StyledSignupForm>
+    </StyledSignUpForm>
   );
 }
 
-export default SignupForm;
+export default SignUpForm;

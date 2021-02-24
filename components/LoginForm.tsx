@@ -9,7 +9,7 @@ import FormErrorMessage from './FormErrorMessage';
 
 // Types
 type LoginFormProps = {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  login: () => void;
 };
 
 type LoginInputType = {
@@ -40,13 +40,13 @@ const StyledLoginForm = styled(Form)`
 `;
 
 // export
-function LoginForm({ setIsLoggedIn }: LoginFormProps) {
+function LoginForm({ login }: LoginFormProps) {
   const { handleSubmit, errors, control } = useForm<LoginInputType>({
     resolver: yupResolver(loginValidation),
   });
   const onSubmit = handleSubmit((data: LoginInputType) => {
     console.log(data);
-    setIsLoggedIn(true);
+    login();
   });
 
   return (
