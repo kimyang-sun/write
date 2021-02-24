@@ -8,7 +8,8 @@ const store = () => {
 };
 
 const wrapper = createWrapper(store, {
-  debug: process.env.NODE_ENV === 'development', // 이 부분이 true면 디버그때 자세한 설명이 나옵니다. (개발할때는 true로)
+  // 이 부분이 true면 디버그때 자세한 설명이 나옵니다. (개발할때는 true로)
+  debug: process.env.NODE_ENV === 'development',
 });
 
 export default wrapper;

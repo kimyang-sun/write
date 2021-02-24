@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Header from './Header';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
-import useUser from 'store/modules/userHooks';
+import useUser from 'store/modules/userHook';
 
 // Types
 type AppLayoutProps = {
