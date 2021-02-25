@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginValidation } from 'src/yup';
 import FormErrorMessage from './FormErrorMessage';
+import { loginActionType } from 'store/modules/user';
 
 // Types
 type LoginFormProps = {
-  login: () => void;
+  login: (data: loginActionType) => void;
 };
 
 type LoginInputType = {
@@ -45,8 +46,7 @@ function LoginForm({ login }: LoginFormProps) {
     resolver: yupResolver(loginValidation),
   });
   const onSubmit = handleSubmit((data: LoginInputType) => {
-    console.log(data);
-    login();
+    login(data);
   });
 
   return (

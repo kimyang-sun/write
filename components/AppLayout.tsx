@@ -18,14 +18,17 @@ const StyledRow = styled(Row)`
 
 // export
 function AppLayout({ children }: AppLayoutProps) {
-  const { isLoggedIn, login } = useUser();
-  console.log(isLoggedIn);
+  const { isLoggedIn, login, logout } = useUser();
   return (
     <div>
       <Header />
       <StyledRow gutter={30}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm login={login} />}
+          {isLoggedIn ? (
+            <UserProfile logout={logout} />
+          ) : (
+            <LoginForm login={login} />
+          )}
         </Col>
         <Col xs={24} md={12}>
           {children}
