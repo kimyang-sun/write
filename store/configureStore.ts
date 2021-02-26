@@ -1,9 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import rootReducer from 'store/modules';
 
 const store = () => {
-  const store = configureStore({ reducer: rootReducer });
+  const devMode = process.env.NODE_ENV === 'development'; // 개발모드
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: [...getDefaultMiddleware()],
+    devTools: devMode,
+  });
   return store;
 };
 

@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 초기 상태 타입
-type userState = {
+export type UserState = {
   isLoggedIn: boolean;
   userData: any;
   signUpData: any;
   loginData: any;
 };
 
-// 로그인 액션 타입
-export type loginActionType = {
+// 액션 타입
+export type LoginActionType = {
   userId: string;
   password: string;
 };
 
 // 초기 상태
-const initialState: userState = {
+const initialState: UserState = {
   isLoggedIn: false,
   userData: null,
   signUpData: {},
@@ -27,11 +27,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginAction(state: userState, action: PayloadAction<loginActionType>) {
+    loginAction(state: UserState, action: PayloadAction<LoginActionType>) {
       state.isLoggedIn = true;
       state.userData = action.payload;
     },
-    logoutAction(state: userState) {
+    logoutAction(state: UserState) {
       state.isLoggedIn = false;
       state.userData = null;
     },
