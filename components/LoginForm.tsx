@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginValidation } from 'src/yup';
 import FormErrorMessage from './FormErrorMessage';
-import { LoginActionType } from 'store/modules/user';
+import { LoginPayload } from 'store/modules/user';
 
 // Types
 type LoginFormProps = {
-  login: (data: LoginActionType) => void;
+  login: (data: LoginPayload) => void;
 };
 
 type LoginInputType = {
