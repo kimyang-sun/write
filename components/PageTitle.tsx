@@ -11,7 +11,7 @@ const StyledPageTitle = styled.h2`
   display: inline-block;
   padding-bottom: 5px;
   margin-bottom: 30px;
-  border-bottom: 2px solid ${props => props.theme.color.main};
+  border-bottom: 1px solid ${props => props.theme.color.main};
 `;
 
 // export

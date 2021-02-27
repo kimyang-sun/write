@@ -4,7 +4,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { loginValidation } from 'src/yup';
+import { loginValidation } from 'service/yup';
 import FormErrorMessage from './FormErrorMessage';
 import { LoginPayload } from 'store/modules/user';
 
@@ -13,7 +13,7 @@ type LoginFormProps = {
   login: (data: LoginPayload) => void;
 };
 
-type LoginInputType = {
+type LoginFormType = {
   userId: string;
   password: string;
 };
@@ -42,10 +42,11 @@ const StyledLoginForm = styled(Form)`
 
 // export
 function LoginForm({ login }: LoginFormProps) {
-  const { handleSubmit, errors, control } = useForm<LoginInputType>({
+  const { handleSubmit, errors, control } = useForm<LoginFormType>({
     resolver: yupResolver(loginValidation),
+    mode: 'onBlur',
   });
-  const onSubmit = handleSubmit((data: LoginInputType) => {
+  const onSubmit = handleSubmit((data: LoginFormType) => {
     login(data);
   });
 

@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding: 0;
     margin: 0;
-    font-family: 'Noto Sans KR', sans-serif, -apple-system, BlinkMacSystemFont,
+    font-family:  'Noto Serif KR', 'Noto Sans KR', -apple-system, BlinkMacSystemFont,
       Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
       Helvetica Neue, sans-serif;
   }
@@ -29,7 +29,8 @@ const GlobalStyle = createGlobalStyle`
   h6,
   ul,
   ol,
-  li {
+  li,
+  p {
     margin: 0;
     padding: 0;
   }

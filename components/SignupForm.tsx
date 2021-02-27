@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signUpValidation } from 'src/yup';
+import { signUpValidation } from 'service/yup';
 import FormErrorMessage from 'components/FormErrorMessage';
 
 // Types
