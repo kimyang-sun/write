@@ -11,6 +11,7 @@ export const theme: DefaultTheme = {
   mediaSize: {
     small: '460px',
     medium: '768px',
-    large: '991px',
+    large: '992px',
+    xlarge: '1200px',
   },
 };

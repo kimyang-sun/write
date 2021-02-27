@@ -17,6 +17,10 @@ const Wrap = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   color: ${props => props.theme.color.black};
+
+  @media (max-width: ${props => props.theme.mediaSize.xlarge}) {
+    padding: 0 15px;
+  }
 `;
 
 function App({ Component }: AppProps) {

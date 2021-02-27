@@ -22,7 +22,7 @@ function AppLayout({ children }: AppLayoutProps) {
   return (
     <div>
       <Header />
-      <StyledRow gutter={30}>
+      <StyledRow gutter={{ xs: 0, sm: 20, lg: 30, xl: 40 }}>
         <Col xs={24} md={6}>
           {isLoggedIn ? (
             <UserProfile logout={logout} />

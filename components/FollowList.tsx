@@ -12,7 +12,7 @@ type FollowListProps = {
 // styled components
 const StyledList = styled(List)`
   flex: 1 1 50%;
-  padding: 0 10px;
+  padding: 20px 10px 0;
 
   @media (max-width: ${props => props.theme.mediaSize.small}) {
     flex: 1 1 100%;
@@ -21,6 +21,7 @@ const StyledList = styled(List)`
 
 const LoadMore = styled.div`
   text-align: center;
+  padding-top: 10px;
 `;
 
 const ListItem = styled(List.Item)`
