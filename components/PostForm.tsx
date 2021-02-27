@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import ImagePaths from './ImagePaths';
 import CloseButton from './CloseButton';
+import Dialog from './Dialog';
 
 // Types
 type PostFormProps = {
@@ -16,26 +17,7 @@ type PostFormType = {
 };
 
 // styled components
-const PostFormContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 const StyledPostForm = styled(Form)`
-  font-size: 1rem;
-  width: 460px;
-  background-color: #fff;
-  background: #ffffff;
-  box-shadow: 0 10px 30px #eeeeee;
-  padding: 20px;
   textarea,
   .ant-btn-block {
     font-size: 1rem;
@@ -43,9 +25,6 @@ const StyledPostForm = styled(Form)`
   textarea {
     resize: none;
     min-height: 200px;
-  }
-  @media (max-width: 460px) {
-    width: 100%;
   }
 `;
 
@@ -73,7 +52,7 @@ function PostForm({ setPostCreating }: PostFormProps) {
   }, []);
 
   return (
-    <PostFormContainer onClick={onClose}>
+    <Dialog onClose={onClose}>
       <StyledPostForm
         encType="multipart/form-data"
         onFinish={onSubmit}
@@ -97,7 +76,7 @@ function PostForm({ setPostCreating }: PostFormProps) {
           게시하기
         </Button>
       </StyledPostForm>
-    </PostFormContainer>
+    </Dialog>
   );
 }
 
