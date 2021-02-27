@@ -10,35 +10,47 @@ type FollowListProps = {
 };
 
 // styled components
-const ListHeader = styled.h3``;
+const StyledList = styled(List)`
+  flex: 1 1 50%;
+  padding: 0 10px;
+`;
 
-const LoadMore = styled.div``;
+const LoadMore = styled.div`
+  text-align: center;
+`;
 
-const ListItem = styled(List.Item)``;
+const ListItem = styled(List.Item)`
+  .ant-list-item-meta {
+    align-items: center;
+  }
+
+  .anticon-disconnect {
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s;
+    font-size: 1.25rem;
+  }
+
+  .anticon-disconnect:hover {
+    color: ${props => props.theme.color.main};
+  }
+`;
 
 // export
 function FollowList({ header, data }: FollowListProps) {
   return (
-    <List
-      header={<ListHeader>{header}</ListHeader>}
-      grid={{
-        gutter: 16,
-        column: 4,
-        xs: 2,
-        md: 3,
-      }}
+    <StyledList
+      header={<h3>{header}</h3>}
       loadMore={
         <LoadMore>
           <Button>더 보기</Button>
         </LoadMore>
       }
-      bordered
+      itemLayout="horizontal"
       dataSource={data}
       renderItem={item => (
-        <ListItem>
-          <Card actions={[<DisconnectOutlined key="stop" />]}>
-            <Card.Meta avatar={<Avatar>선양</Avatar>} title={item.name} />
-          </Card>
+        <ListItem actions={[<DisconnectOutlined key="stop" />]}>
+          <ListItem.Meta avatar={<Avatar>선양</Avatar>} title={item.name} />
         </ListItem>
       )}
     />
