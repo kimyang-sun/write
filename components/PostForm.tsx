@@ -24,6 +24,7 @@ const StyledPostForm = styled(Form)`
   }
   textarea {
     resize: none;
+    padding: 8px 12px;
     min-height: 200px;
   }
 `;
@@ -72,7 +73,7 @@ function PostForm({ setPostCreating }: PostFormProps) {
         />
         <input type="file" multiple hidden />
         <ImagePaths />
-        <Button htmlType="submit" block>
+        <Button htmlType="submit" size="large" block>
           게시하기
         </Button>
       </StyledPostForm>

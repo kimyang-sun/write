@@ -7,4 +7,10 @@ export const theme: DefaultTheme = {
     black: 'rgba(0, 0, 0, 0.85)',
     gray: '#999',
   },
+
+  mediaSize: {
+    small: '460px',
+    medium: '768px',
+    large: '991px',
+  },
 };

@@ -13,6 +13,10 @@ type FollowListProps = {
 const StyledList = styled(List)`
   flex: 1 1 50%;
   padding: 0 10px;
+
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    flex: 1 1 100%;
+  }
 `;
 
 const LoadMore = styled.div`

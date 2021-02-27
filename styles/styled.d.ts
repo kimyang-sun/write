@@ -8,5 +8,11 @@ declare module 'styled-components' {
       black: string;
       gray: string;
     };
+
+    mediaSize: {
+      small: string;
+      medium: string;
+      large: string;
+    };
   }
 }

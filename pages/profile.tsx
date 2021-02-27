@@ -23,6 +23,7 @@ function Profile() {
 
   const FollowListContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
   `;
 
   return (

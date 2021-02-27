@@ -28,7 +28,7 @@ const DialogContainer = styled.div`
     box-shadow: 0 10px 30px #eeeeee;
     padding: 20px;
 
-    @media (max-width: 460px) {
+    @media (max-width: ${props => props.theme.mediaSize.small}) {
       width: 100%;
     }
   }
