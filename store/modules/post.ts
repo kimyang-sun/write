@@ -18,7 +18,7 @@ export type Post = {
     nickname: string;
   };
   content: string;
-  Images: any;
+  Images: string[];
   Comments: Comment[];
 };
 

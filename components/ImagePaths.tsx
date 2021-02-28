@@ -2,6 +2,7 @@ import React from 'react';
 import usePost from 'store/modules/postHook';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 // styled components
 const StyledImagePaths = styled.div`
@@ -18,10 +19,10 @@ function ImagePaths() {
   const { imagePaths } = usePost();
   return (
     <StyledImagePaths>
-      <Button>사진 업로드</Button>
       {imagePaths.map((path: string) => (
         <PreviewImage key={path}>
           <img src={path} alt="미리보기 사진" />
+          <Button icon={<DeleteOutlined />} />
         </PreviewImage>
       ))}
     </StyledImagePaths>

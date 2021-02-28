@@ -5,7 +5,9 @@ import { loginAction, LoginPayload, logoutAction } from './user';
 
 // 커스텀 훅
 export default function useUser() {
-  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { isLoggedIn, userData } = useSelector(
+    (state: RootState) => state.user
+  );
   const dispatch = useDispatch();
   const login = useCallback((data: LoginPayload) => {
     dispatch(loginAction(data));
@@ -14,5 +16,5 @@ export default function useUser() {
     dispatch(logoutAction());
   }, []);
 
-  return { isLoggedIn, login, logout };
+  return { isLoggedIn, userData, login, logout };
 }

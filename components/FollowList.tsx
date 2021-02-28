@@ -54,7 +54,7 @@ function FollowList({ header, data }: FollowListProps) {
       itemLayout="horizontal"
       dataSource={data}
       renderItem={item => (
-        <ListItem actions={[<DisconnectOutlined key="stop" />]}>
+        <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
           <ListItem.Meta avatar={<Avatar>선양</Avatar>} title={item.name} />
         </ListItem>
       )}
