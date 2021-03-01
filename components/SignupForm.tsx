@@ -7,7 +7,7 @@ import { signUpValidation } from 'service/yup';
 import FormErrorMessage from 'components/FormErrorMessage';
 
 // Types
-type SignUpInputType = {
+type SignUpFormType = {
   userId: string;
   nickname: string;
   password: string;
@@ -33,12 +33,12 @@ const StyledSignUpForm = styled(Form)`
 
 // export
 function SignUpForm() {
-  const { handleSubmit, errors, control } = useForm<SignUpInputType>({
+  const { handleSubmit, errors, control } = useForm<SignUpFormType>({
     resolver: yupResolver(signUpValidation),
     mode: 'onBlur',
   });
 
-  const onSubmit = handleSubmit((data: SignUpInputType) => {
+  const onSubmit = handleSubmit((data: SignUpFormType) => {
     console.log(data);
   });
 

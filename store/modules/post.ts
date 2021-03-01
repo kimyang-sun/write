@@ -18,12 +18,12 @@ export type Post = {
     nickname: string;
   };
   content: string;
-  Images: string[];
-  Comments: Comment[];
+  Images: { src: string }[];
+  Comments: CommentType[];
 };
 
 // 댓글 타입
-type Comment = {
+export type CommentType = {
   User: { nickname: string };
   content: string;
 };

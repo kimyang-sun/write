@@ -5,9 +5,9 @@ import {
   EllipsisOutlined,
   HeartTwoTone,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, Popover } from 'antd';
+import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
 import React, { useState } from 'react';
-import { Post } from 'store/modules/post';
+import { CommentType, Post } from 'store/modules/post';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import CommentForm from './CommentForm';
@@ -20,7 +20,9 @@ type PostCardProps = {
 };
 
 // styled components
-const StyledPostCard = styled.div``;
+const StyledPostCard = styled.div`
+  margin-top: 20px;
+`;
 
 function PostCard({ post }: PostCardProps) {
   const { userData } = useUser();
@@ -35,9 +37,9 @@ function PostCard({ post }: PostCardProps) {
   };
 
   return (
-    <div>
+    <StyledPostCard>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        cover={post.Images && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="share" />,
           liked ? (
@@ -77,10 +79,27 @@ function PostCard({ post }: PostCardProps) {
         />
         <Button></Button>
       </Card>
-      {commentOpened && <CommentForm />}
-
-      <Comments />
-    </div>
+      {commentOpened && (
+        <div>
+          <List
+            header={`${post.Comments.length}개의 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item: CommentType) => (
+              <List.Item>
+                <Comment
+                  author={item.User.nickname}
+                  avatar={<Avatar>선양</Avatar>}
+                  content={item.content}
+                />
+              </List.Item>
+            )}
+          />
+          <CommentForm postId={post.id} />
+          <Comments />
+        </div>
+      )}
+    </StyledPostCard>
   );
 }
 
