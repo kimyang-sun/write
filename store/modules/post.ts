@@ -42,9 +42,9 @@ const initialState: PostState = {
       content:
         '늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다.',
       Images: [
-        { src: 'https://picsum.photos/200/300' },
-        { src: 'https://picsum.photos/200/300' },
-        { src: 'https://picsum.photos/200/300' },
+        { src: 'https://picsum.photos/500/500' },
+        { src: 'https://picsum.photos/500/500' },
+        { src: 'https://picsum.photos/500/300' },
       ],
       Comments: [
         {

@@ -11,7 +11,6 @@ import { CommentType, Post } from 'store/modules/post';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import CommentForm from './CommentForm';
-import Comments from './Comments';
 import PostImages from './PostImages';
 
 // Types
@@ -33,13 +32,17 @@ function PostCard({ post }: PostCardProps) {
     setLiked(!liked);
   };
   const onToggleComment = () => {
-    setCommentOpened(!commentOpened);
+    setCommentOpened(commentOpened => !commentOpened);
   };
 
   return (
     <StyledPostCard>
       <Card
-        cover={post.Images && <PostImages images={post.Images} />}
+        cover={
+          post.Images && (
+            <PostImages images={post.Images} content={post.content} />
+          )
+        }
         actions={[
           <RetweetOutlined key="share" />,
           liked ? (
@@ -72,12 +75,7 @@ function PostCard({ post }: PostCardProps) {
           </Popover>,
         ]}
       >
-        <Card.Meta
-          avatar={<Avatar>선양</Avatar>}
-          title={post.User.nickname}
-          description={post.content}
-        />
-        <Button></Button>
+        <Card.Meta avatar={<Avatar>선양</Avatar>} title={post.User.nickname} />
       </Card>
       {commentOpened && (
         <div>
@@ -96,7 +94,6 @@ function PostCard({ post }: PostCardProps) {
             )}
           />
           <CommentForm postId={post.id} />
-          <Comments />
         </div>
       )}
     </StyledPostCard>

@@ -10,10 +10,13 @@ type CommentFormProps = {
   postId: number;
 };
 
-type CommentFormType = {};
+type CommentFormType = {
+  commentText: string;
+};
 
 // styled components
 const StyledCommentForm = styled(Form)`
+  text-align: right;
   textarea {
     resize: none;
     padding: 8px 12px;
