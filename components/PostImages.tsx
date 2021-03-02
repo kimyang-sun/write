@@ -32,7 +32,7 @@ const ViewMoreArea = styled.div`
   color: #f8f8f8;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 15px 20px;
+  padding: 12px 20px;
   transition: color 0.3s;
   :hover {
     color: #ccc;

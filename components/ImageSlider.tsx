@@ -59,12 +59,13 @@ const PageIndicator = styled.div`
 // export
 function ImageSlider({ images, onClose }: ImageSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  console.log(currentSlide);
 
   return (
     <ImageSliderContainer>
       <div>
         <CloseButton onClose={onClose} />
-        <Slider afterChange={slide => setCurrentSlide(slide)}>
+        <Slider beforeChange={(prev, next) => setCurrentSlide(next)}>
           {images.map((img: { src: string }) => (
             <div key={img.src}>
               <PostImage imageUrl={img.src} />
