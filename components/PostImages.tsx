@@ -2,16 +2,14 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import ImageSlider from './ImageSlider';
 import PostContent from './PostContent';
+import PostImage from './PostImage';
 
 // Types
 type PostImagesProps = {
   images: { src: string }[];
   content: string;
-};
-
-type PostBackgroundProps = {
-  imageUrl: string;
 };
 
 // styled components
@@ -23,19 +21,6 @@ const StyledPostImages = styled.div`
     right: 10px;
     cursor: pointer;
     z-index: 100;
-  }
-`;
-
-const PostBackground = styled.div<PostBackgroundProps>`
-  background-image: url('${props => props.imageUrl}');
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  position: relative;
-  &:after {
-    content: '';
-    display: block;
-    padding-top: 100%;
   }
 `;
 
@@ -52,16 +37,25 @@ const ViewMoreArea = styled.div`
   :hover {
     color: #ccc;
   }
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    padding: 10px 15px;
+  }
 `;
 
 // export
 function PostImages({ images, content }: PostImagesProps) {
-  const [showImageZoom, setShowImageZoom] = useState(false);
+  const [showImageMore, setShowImageMore] = useState(false);
   const [contentOpened, setContentOpened] = useState(true);
-  const onZoom = useCallback(() => {
-    setShowImageZoom(true);
+
+  const onMore = useCallback(() => {
+    setShowImageMore(true);
   }, []);
-  const onContentOpen = useCallback(() => {
+  const onClose = useCallback(() => {
+    setShowImageMore(false);
+  }, []);
+
+  // 글 내용 열고닫
+  const onContentToggle = useCallback(() => {
     setContentOpened(contentOpened => !contentOpened);
   }, []);
 
@@ -71,36 +65,42 @@ function PostImages({ images, content }: PostImagesProps) {
         <Button
           shape="circle"
           icon={contentOpened ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-          onClick={onContentOpen}
-        ></Button>
+          onClick={onContentToggle}
+        />
         {contentOpened && <PostContent content={content} />}
-        <PostBackground
-          imageUrl={images[0].src}
-          role="presentation"
-          onClick={onZoom}
-        ></PostBackground>
+        <PostImage imageUrl={images[0].src} />
       </StyledPostImages>
     );
   }
 
   if (images.length > 1) {
     return (
-      <StyledPostImages>
-        <Button
-          shape="circle"
-          icon={contentOpened ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-          onClick={onContentOpen}
-        ></Button>
-        {contentOpened && <PostContent content={content} />}
-        <PostBackground
-          imageUrl={images[0].src}
-          role="presentation"
-          onClick={onZoom}
-        ></PostBackground>
-        <ViewMoreArea>{images.length - 1} 개의 사진 더보기</ViewMoreArea>
-      </StyledPostImages>
+      <>
+        <StyledPostImages>
+          <Button
+            shape="circle"
+            icon={contentOpened ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+            onClick={onContentToggle}
+          />
+          {contentOpened && <PostContent content={content} />}
+          <PostImage imageUrl={images[0].src} />
+          <ViewMoreArea onClick={onMore}>
+            {images.length - 1} 개의 사진 더보기
+          </ViewMoreArea>
+        </StyledPostImages>
+        {showImageMore && (
+          <ImageSlider
+            images={images}
+            content={content}
+            contentOpened={contentOpened}
+            onContentToggle={onContentToggle}
+            onClose={onClose}
+          />
+        )}
+      </>
     );
   }
+
   return;
 }
 

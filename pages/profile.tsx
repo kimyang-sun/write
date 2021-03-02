@@ -4,7 +4,6 @@ import Head from 'next/head';
 import React from 'react';
 import PageTitle from 'components/PageTitle';
 import styled from 'styled-components';
-import Dialog from 'components/Dialog';
 
 function Profile() {
   const followerList = [

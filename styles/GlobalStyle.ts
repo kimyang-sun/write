@@ -13,10 +13,8 @@ const GlobalStyle = createGlobalStyle`
       Helvetica Neue, sans-serif;
   }
 
-  html {
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    user-select: none;
+  ::selection {
+    background: #ff3636;
   }
 
   html,
@@ -54,6 +52,52 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
+  }
+
+  // slick 공통 css
+  .slick-list {
+    overflow: hidden;
+  }
+
+  .slick-slide {
+    display: inline-block;
+  }
+  /* ← */
+  .slick-arrow {
+    font-size: 0;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 101;
+    width: 38px;
+    height:38px;
+  }
+
+  .slick-arrow:before {
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .slick-prev {
+    left: -80px;
+  }
+
+  .slick-next {
+    right: -80px;
+  }
+
+  .slick-prev:before {
+    content: "◀";
+  }
+
+  .slick-next:before {
+    content: "▶";
   }
   
 `;

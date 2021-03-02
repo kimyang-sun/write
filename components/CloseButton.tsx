@@ -1,5 +1,5 @@
 import React from 'react';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { CloseCircleFilled, CloseCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 // Types
@@ -8,7 +8,7 @@ type CloseButtonProps = {
 };
 
 // styled components
-const StyledCloseButton = styled(CloseCircleOutlined)`
+const StyledCloseButton = styled(CloseCircleFilled)`
   font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.3s;

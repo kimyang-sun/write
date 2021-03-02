@@ -23,17 +23,17 @@ function AppLayout({ children }: AppLayoutProps) {
     <div>
       <Header />
       <StyledRow gutter={{ xs: 0, sm: 20, lg: 30, xl: 40 }}>
-        <Col xs={24} md={6}>
+        <Col xs={24} xl={6}>
           {isLoggedIn ? (
             <UserProfile logout={logout} />
           ) : (
             <LoginForm login={login} />
           )}
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} xl={12}>
           {children}
         </Col>
-        <Col xs={24} md={6}>
+        <Col xs={24} xl={6}>
           오른쪽
         </Col>
       </StyledRow>

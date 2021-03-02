@@ -19,7 +19,7 @@ const SubTitle = styled.div`
 function Home() {
   const { isLoggedIn } = useUser();
   const { mainPosts } = usePost();
-  const [postCreating, setPostCreating] = useState(true);
+  const [postCreating, setPostCreating] = useState(false);
 
   return (
     <>

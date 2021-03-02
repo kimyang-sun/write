@@ -36,9 +36,8 @@ const PostFormTitle = styled.div`
   padding: 10px 0;
   .anticon-close-circle {
     position: absolute;
-    top: 50%;
+    top: 0;
     right: 0;
-    transform: translateY(-50%);
   }
 `;
 

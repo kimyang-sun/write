@@ -18,12 +18,27 @@ const StyledPostContent = styled.div`
   height: 100%;
   z-index: 90;
   background-color: rgba(0, 0, 0, 0.3);
-  color: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;
   p {
-    padding: 0 30px;
+    text-align: center;
+    padding: 0 50px;
+    color: #f8f8f8;
+  }
+  @media (max-width: ${props => props.theme.mediaSize.medium}) {
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    position: static;
+    transform: translate(0, 0);
+    background-color: #fff;
+    padding: 50px 0 30px;
+    p {
+      padding: 0 20px;
+      color: ${props => props.theme.color.black};
+    }
   }
 `;
 
