@@ -11,6 +11,7 @@ import { CommentType, Post } from 'store/modules/post';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import CommentForm from './CommentForm';
+import PostHashtag from './PostHashtag';
 import PostImages from './PostImages';
 
 // Types
@@ -75,7 +76,11 @@ function PostCard({ post }: PostCardProps) {
           </Popover>,
         ]}
       >
-        <Card.Meta avatar={<Avatar>선양</Avatar>} title={post.User.nickname} />
+        <Card.Meta
+          avatar={<Avatar>선양</Avatar>}
+          title={post.User.nickname}
+          description={<PostHashtag hashtag={post.hashtag} />}
+        />
       </Card>
       {commentOpened && (
         <div>

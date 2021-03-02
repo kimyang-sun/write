@@ -58,8 +58,8 @@ const PageIndicator = styled.div`
 
 // export
 function ImageSlider({ images, onClose }: ImageSliderProps) {
+  // 페이지 표시
   const [currentSlide, setCurrentSlide] = useState(0);
-  console.log(currentSlide);
 
   return (
     <ImageSliderContainer>

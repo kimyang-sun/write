@@ -28,6 +28,10 @@ const StyledPostForm = styled(Form)`
     margin-bottom: 10px;
     min-height: 200px;
   }
+
+  button[type='submit'] {
+    margin-top: 15px;
+  }
 `;
 
 const PostFormTitle = styled.div`
@@ -93,6 +97,14 @@ function PostForm({ setPostCreating }: PostFormProps) {
         />
         <Button onClick={onClickImageUpload}>사진 업로드</Button>
         <ImagePaths />
+        <Controller
+          as={<Input />}
+          type="text"
+          name="tag"
+          control={control}
+          placeholder="해시태그 추가 ex) #쓰다 #마음"
+          defaultValue=""
+        />
         <Button htmlType="submit" size="large" block>
           게시하기
         </Button>

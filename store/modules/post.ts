@@ -18,6 +18,7 @@ export type Post = {
     nickname: string;
   };
   content: string;
+  hashtag: string;
   Images: { src: string }[];
   Comments: CommentType[];
 };
@@ -41,6 +42,7 @@ const initialState: PostState = {
       },
       content:
         '늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다. 늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다. 늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다. 늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다.',
+      hashtag: '#쓰다 #마음',
       Images: [
         { src: 'https://picsum.photos/600/600' },
         { src: 'https://picsum.photos/400/400' },
@@ -73,6 +75,7 @@ const dummyPost = {
     nickname: '선양',
   },
   content: '첫 번째 게시글 #해시태그 #익스프레스',
+  hashtag: '#쓰다 #마음',
   Images: [
     { src: 'https://picsum.photos/200/300' },
     { src: 'https://picsum.photos/200/300' },
