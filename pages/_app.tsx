@@ -6,6 +6,7 @@ import { theme } from 'styles/DefaultTheme';
 import GlobalStyle from 'styles/GlobalStyle';
 import 'antd/dist/antd.css';
 import wrapper from 'store/configureStore';
+import withReduxSaga from 'next-redux-saga';
 
 // Types
 type AppProps = {
@@ -46,4 +47,4 @@ function App({ Component }: AppProps) {
   );
 }
 
-export default wrapper.withRedux(App);
+export default wrapper.withRedux(withReduxSaga(App));

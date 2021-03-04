@@ -1,20 +1,21 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '.';
-import { loginAction, LoginPayload, logoutAction } from './user';
+import { loginRequest, LoginRequestPayload, logoutRequest } from './user';
 
 // 커스텀 훅
 export default function useUser() {
-  const { isLoggedIn, userData } = useSelector(
+  const { isLoggedIn, userData, userLoading } = useSelector(
     (state: RootState) => state.user
   );
   const dispatch = useDispatch();
-  const login = useCallback((data: LoginPayload) => {
-    dispatch(loginAction(data));
+
+  const login = useCallback((data: LoginRequestPayload) => {
+    dispatch(loginRequest(data));
   }, []);
   const logout = useCallback(() => {
-    dispatch(logoutAction());
+    dispatch(logoutRequest());
   }, []);
 
-  return { isLoggedIn, userData, login, logout };
+  return { isLoggedIn, userLoading, userData, login, logout };
 }

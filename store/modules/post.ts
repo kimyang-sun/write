@@ -5,6 +5,8 @@ export type PostState = {
   mainPosts: Post[];
   imagePaths: string[];
   postAdded: boolean;
+  postLoading: boolean;
+  error: any;
 };
 
 // Post 타입
@@ -20,16 +22,15 @@ export type Post = {
   content: string;
   hashtag: string;
   Images: { src: string }[];
-  Comments: CommentType[];
+  Comments: PostComment[];
 };
 
 // 댓글 타입
-export type CommentType = {
+export type PostComment = {
+  commentId: number;
   User: { nickname: string };
   content: string;
 };
-
-// 액션 타입
 
 // 초기 상태
 const initialState: PostState = {
@@ -50,12 +51,14 @@ const initialState: PostState = {
       ],
       Comments: [
         {
+          commentId: 1,
           User: {
             nickname: '태연',
           },
           content: '첫번째 댓글 테스트입니다.',
         },
         {
+          commentId: 2,
           User: {
             nickname: '병관',
           },
@@ -66,6 +69,8 @@ const initialState: PostState = {
   ],
   imagePaths: [],
   postAdded: false,
+  postLoading: false,
+  error: null,
 };
 
 const dummyPost = {
@@ -102,13 +107,48 @@ const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    addPostAction(state: PostState, action: PayloadAction<Post>) {
+    // Add Post
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    addPostRequest(state: PostState, action: PayloadAction<Post>) {
+      state.postLoading = true;
+      state.error = null;
+    },
+
+    addPostSuccess(state: PostState, action: PayloadAction<Post>) {
+      state.postLoading = false;
       state.mainPosts.unshift(action.payload);
+    },
+
+    addPostFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+      state.postLoading = false;
+      state.error = action.payload;
+    },
+
+    // Add Comment
+    addCommentRequest(state: PostState, action: PayloadAction<PostComment>) {
+      state.postLoading = true;
+      state.error = null;
+    },
+
+    addCommentSuccess(state: PostState, action: PayloadAction<PostComment>) {
+      state.postLoading = false;
+    },
+
+    addCommentFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+      state.postLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
 // 리듀서 & 액션 리턴
 const { reducer, actions } = postSlice;
-export const { addPostAction } = actions;
+export const {
+  addPostRequest,
+  addPostSuccess,
+  addPostFailure,
+  addCommentRequest,
+  addCommentSuccess,
+  addCommentFailure,
+} = actions;
 export default reducer;

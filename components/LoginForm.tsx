@@ -6,11 +6,12 @@ import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginValidation } from 'service/yup';
 import FormErrorMessage from './FormErrorMessage';
-import { LoginPayload } from 'store/modules/user';
+import { LoginRequestPayload } from 'store/modules/user';
 
 // Types
 type LoginFormProps = {
-  login: (data: LoginPayload) => void;
+  loading: boolean;
+  login: (data: LoginRequestPayload) => void;
 };
 
 type LoginFormType = {
@@ -41,7 +42,7 @@ const StyledLoginForm = styled(Form)`
 `;
 
 // export
-function LoginForm({ login }: LoginFormProps) {
+function LoginForm({ loading, login }: LoginFormProps) {
   const { handleSubmit, errors, control } = useForm<LoginFormType>({
     resolver: yupResolver(loginValidation),
     mode: 'onBlur',
@@ -85,7 +86,7 @@ function LoginForm({ login }: LoginFormProps) {
         )}
       </div>
       <div className="login__btnBox">
-        <Button type="primary" htmlType="submit" block>
+        <Button type="primary" htmlType="submit" loading={loading} block>
           로그인
         </Button>
         <Button block>

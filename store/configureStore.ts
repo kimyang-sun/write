@@ -1,14 +1,26 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import rootReducer from 'store/modules';
+import createSagaMiddleware, { Task } from 'redux-saga';
+import { Store } from 'redux';
+import rootSaga from 'sagas';
+
+// Next Redux Toolkit Saga를 사용하기 위해
+//confugureStore에서 강제로 sagaTask를 만들어주기 위함
+interface SagaStore extends Store {
+  sagaTask?: Task;
+}
 
 const store = () => {
   const devMode = process.env.NODE_ENV === 'development'; // 개발모드
+  const sagaMiddleware = createSagaMiddleware();
   const store = configureStore({
     reducer: rootReducer,
-    middleware: [...getDefaultMiddleware()],
+    middleware: [sagaMiddleware],
     devTools: devMode,
   });
+  // Next Redux Toolkit 에서 saga를 사용해야할 때
+  (store as SagaStore).sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };
 

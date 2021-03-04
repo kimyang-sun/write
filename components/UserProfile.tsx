@@ -1,13 +1,16 @@
 import { Avatar, Button, Card } from 'antd';
 import React from 'react';
+import { UserDataPayload } from 'store/modules/user';
 
 // Types
 type UserProfileProps = {
+  loading: boolean;
+  user: UserDataPayload;
   logout: () => void;
 };
 
 // export
-function UserProfile({ logout }: UserProfileProps) {
+function UserProfile({ loading, user, logout }: UserProfileProps) {
   return (
     <Card
       actions={[
@@ -17,11 +20,13 @@ function UserProfile({ logout }: UserProfileProps) {
       ]}
     >
       <Card.Meta
-        avatar={<Avatar>선양</Avatar>}
-        title="kimsun-Yang"
-        description="배움을 즐기는 개발자입니다."
+        avatar={<Avatar>{user.nickname}</Avatar>}
+        title={user.nickname}
+        description={user.description}
       />
-      <Button onClick={logout}>로그아웃</Button>
+      <Button onClick={logout} loading={loading}>
+        로그아웃
+      </Button>
     </Card>
   );
 }

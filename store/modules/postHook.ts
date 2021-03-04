@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '.';
-import { addPostAction, Post } from './post';
+import { addPostRequest, Post } from './post';
 
 export default function usePost() {
   const { mainPosts, imagePaths } = useSelector(
@@ -9,7 +9,7 @@ export default function usePost() {
   );
   const dispatch = useDispatch();
   const addPost = useCallback((post: Post) => {
-    dispatch(addPostAction(post));
+    dispatch(addPostRequest(post));
   }, []);
 
   return { mainPosts, imagePaths, addPost };
