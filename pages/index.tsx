@@ -34,7 +34,7 @@ function Home() {
         <SubTitle>로그인을 하시면 글을 작성하실 수 있습니다.</SubTitle>
       )}
       {mainPosts.map((post: Post) => (
-        <PostCard key={post.id} post={post} />
+        <PostCard key={post.postId} post={post} />
       ))}
       {postCreating && <PostForm setPostCreating={setPostCreating} />}
     </>

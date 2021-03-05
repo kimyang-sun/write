@@ -4,7 +4,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type PostState = {
   mainPosts: Post[];
   imagePaths: string[];
-  postAdded: boolean;
+  addPostDone: boolean;
+  addCommentDone: boolean;
   postLoading: boolean;
   error: any;
 };
@@ -14,7 +15,7 @@ export type PostState = {
 // User, Images, Comments 이런건 다른 정보들과 합쳐서 주기 때문에 대문자입니다.
 // 이 경우에는 서버 개발자와 사전에 협의를 봐서 대문자로 구분할건지 전부 소문자로 할건지 정해야 합니다.
 export type Post = {
-  id: number;
+  postId: number;
   User: {
     id: number;
     nickname: string;
@@ -28,7 +29,7 @@ export type Post = {
 // 댓글 타입
 export type PostComment = {
   commentId: number;
-  User: { nickname: string };
+  User: { id: number; nickname: string };
   content: string;
 };
 
@@ -36,7 +37,7 @@ export type PostComment = {
 const initialState: PostState = {
   mainPosts: [
     {
-      id: 1,
+      postId: 1,
       User: {
         id: 1,
         nickname: '선양',
@@ -53,6 +54,7 @@ const initialState: PostState = {
         {
           commentId: 1,
           User: {
+            id: 2,
             nickname: '태연',
           },
           content: '첫번째 댓글 테스트입니다.',
@@ -60,6 +62,7 @@ const initialState: PostState = {
         {
           commentId: 2,
           User: {
+            id: 3,
             nickname: '병관',
           },
           content: '두번째 댓글 테스트입니다.',
@@ -68,13 +71,14 @@ const initialState: PostState = {
     },
   ],
   imagePaths: [],
-  postAdded: false,
+  addPostDone: false,
+  addCommentDone: false,
   postLoading: false,
   error: null,
 };
 
 const dummyPost = {
-  id: 2,
+  postId: 2,
   User: {
     id: 1,
     nickname: '선양',
@@ -89,12 +93,14 @@ const dummyPost = {
   Comments: [
     {
       User: {
+        id: 2,
         nickname: '태연',
       },
       content: '첫번째 댓글 테스트입니다.',
     },
     {
       User: {
+        id: 3,
         nickname: '병관',
       },
       content: '두번째 댓글 테스트입니다.',

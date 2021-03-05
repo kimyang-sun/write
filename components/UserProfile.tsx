@@ -14,9 +14,9 @@ function UserProfile({ loading, user, logout }: UserProfileProps) {
   return (
     <Card
       actions={[
-        <div key="write">글 수 0</div>,
-        <div key="following">팔로워 0</div>,
-        <div key="followers">팔로잉 0</div>,
+        <div key="write">글 {user.Posts.length}</div>,
+        <div key="following">팔로워 {user.Followers.length}</div>,
+        <div key="followers">팔로잉 {user.Followings.length}</div>,
       ]}
     >
       <Card.Meta

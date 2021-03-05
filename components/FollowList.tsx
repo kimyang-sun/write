@@ -1,12 +1,13 @@
-import { Button, Card, List, Avatar } from 'antd';
+import { Button, List, Avatar } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import { DisconnectOutlined } from '@ant-design/icons';
+import { Follow } from 'store/modules/user';
 
 // Types
 type FollowListProps = {
   header: string;
-  data: any[];
+  data: Follow[];
 };
 
 // styled components
@@ -43,6 +44,7 @@ const ListItem = styled(List.Item)`
 
 // export
 function FollowList({ header, data }: FollowListProps) {
+  console.log(data);
   return (
     <StyledList
       header={<h3>{header}</h3>}
@@ -53,7 +55,7 @@ function FollowList({ header, data }: FollowListProps) {
       }
       itemLayout="horizontal"
       dataSource={data}
-      renderItem={item => (
+      renderItem={(item: Follow) => (
         <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
           <ListItem.Meta avatar={<Avatar>선양</Avatar>} title={item.name} />
         </ListItem>

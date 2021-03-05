@@ -2,11 +2,10 @@ import * as yup from 'yup';
 
 // Yup으로 유효성 검사
 export const loginValidation = yup.object({
-  userId: yup
+  userEmail: yup
     .string()
-    .required('아이디를 입력해주세요.')
-    .max(12, '아이디는 12자리 이하여야 합니다.')
-    .min(4, '아이디는 4자리 이상이어야 합니다.'),
+    .email('이메일 형식이 아닙니다.')
+    .required('이메일을 입력해주세요.'),
   password: yup
     .string()
     .required('비밀번호를 입력해주세요.')
@@ -15,11 +14,10 @@ export const loginValidation = yup.object({
 });
 
 export const signUpValidation = yup.object({
-  userId: yup
+  userEmail: yup
     .string()
-    .required('아이디를 입력해주세요.')
-    .max(12, '아이디는 12자리 이하여야 합니다.')
-    .min(4, '아이디는 4자리 이상이어야 합니다.'),
+    .email('이메일 형식이 아닙니다.')
+    .required('이메일을 입력해주세요.'),
   nickname: yup
     .string()
     .required('닉네임을 입력해주세요.')

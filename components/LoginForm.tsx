@@ -15,7 +15,7 @@ type LoginFormProps = {
 };
 
 type LoginFormType = {
-  userId: string;
+  userEmail: string;
   password: string;
 };
 
@@ -54,18 +54,18 @@ function LoginForm({ loading, login }: LoginFormProps) {
   return (
     <StyledLoginForm onFinish={onSubmit} size="large">
       <div>
-        <label htmlFor="userId">아이디</label>
+        <label htmlFor="userEmail">이메일</label>
         <Controller
           as={<Input />}
           type="text"
-          name="userId"
+          name="userEmail"
           control={control}
-          placeholder="아이디를 입력해주세요."
+          placeholder="이메일을 입력해주세요."
           defaultValue=""
         />
-        {errors.userId && (
+        {errors.userEmail && (
           <FormErrorMessage
-            errorMessage={errors.userId.message}
+            errorMessage={errors.userEmail.message}
           ></FormErrorMessage>
         )}
       </div>

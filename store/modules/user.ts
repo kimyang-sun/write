@@ -10,20 +10,29 @@ export type UserState = {
   error: any;
 };
 
+// Follow 타입
+export type Follow = {
+  name: string;
+};
+
 // 액션 Payload 타입
 export type LoginRequestPayload = {
-  userId: string;
+  userEmail: string;
   password: string;
 };
 
 export type UserDataPayload = {
-  userId: string;
+  id: number;
+  userEmail: string;
   nickname: string;
   description: string;
+  Posts: any[];
+  Followers: Follow[];
+  Followings: Follow[];
 };
 
 export type SignUpRequestPayload = {
-  userId: string;
+  userEmail: string;
   nickname: string;
   password: string;
 };
@@ -37,7 +46,9 @@ const initialState: UserState = {
   userLoading: false,
   isLoggedIn: false,
   userData: null,
-  signUpData: {},
+  signUpData: {
+    signUpLoading: false,
+  },
   loginData: {},
   error: null,
 };

@@ -8,7 +8,7 @@ import FormErrorMessage from 'components/FormErrorMessage';
 
 // Types
 type SignUpFormType = {
-  userId: string;
+  userEmail: string;
   nickname: string;
   password: string;
   password2: string;
@@ -33,29 +33,36 @@ const StyledSignUpForm = styled(Form)`
 
 // export
 function SignUpForm() {
-  const { handleSubmit, errors, control } = useForm<SignUpFormType>({
+  const { handleSubmit, errors, control, reset } = useForm<SignUpFormType>({
     resolver: yupResolver(signUpValidation),
     mode: 'onBlur',
   });
 
   const onSubmit = handleSubmit((data: SignUpFormType) => {
     console.log(data);
+    reset({
+      userEmail: '',
+      nickname: '',
+      password: '',
+      password2: '',
+      term: false,
+    });
   });
 
   return (
     <StyledSignUpForm onFinish={onSubmit} size="large">
       <div>
-        <label htmlFor="userId">아이디</label>
+        <label htmlFor="userEmail">이메일</label>
         <Controller
           as={<Input />}
           type="text"
-          name="userId"
+          name="userEmail"
           control={control}
-          placeholder="아이디를 입력해주세요."
+          placeholder="이메일을 입력해주세요."
           defaultValue=""
         />
-        {errors.userId && (
-          <FormErrorMessage errorMessage={errors.userId.message} />
+        {errors.userEmail && (
+          <FormErrorMessage errorMessage={errors.userEmail.message} />
         )}
       </div>
       <div>

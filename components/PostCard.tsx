@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
 import React, { useState } from 'react';
-import { CommentType, Post } from 'store/modules/post';
+import { PostComment, Post } from 'store/modules/post';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import CommentForm from './CommentForm';
@@ -26,7 +26,7 @@ const StyledPostCard = styled.div`
 
 function PostCard({ post }: PostCardProps) {
   const { userData } = useUser();
-  const userId = userData && userData.id;
+  const userEmail = userData && userData.id;
   const [liked, setLiked] = useState(false);
   const [commentOpened, setCommentOpened] = useState(false);
   const onToggleLike = () => {
@@ -61,7 +61,7 @@ function PostCard({ post }: PostCardProps) {
             trigger="click"
             content={
               <Button.Group>
-                {userId && userId === post.User.id ? (
+                {userEmail && userEmail === post.User.id ? (
                   <>
                     <Button>수정</Button>
                     <Button danger>삭제</Button>
@@ -88,7 +88,7 @@ function PostCard({ post }: PostCardProps) {
             header={`${post.Comments.length}개의 댓글`}
             itemLayout="horizontal"
             dataSource={post.Comments}
-            renderItem={(item: CommentType) => (
+            renderItem={(item: PostComment) => (
               <List.Item>
                 <Comment
                   author={item.User.nickname}
@@ -98,7 +98,7 @@ function PostCard({ post }: PostCardProps) {
               </List.Item>
             )}
           />
-          <CommentForm postId={post.id} />
+          <CommentForm post={post} />
         </div>
       )}
     </StyledPostCard>

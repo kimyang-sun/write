@@ -21,21 +21,31 @@ import {
 function loginAPI(data: LoginRequestPayload) {
   // return axios.post('api/login', data);
   const userData: UserDataPayload = {
-    userId: data.userId,
+    id: 1,
+    userEmail: data.userEmail,
     nickname: '선양',
     description: '배움을 즐기는 개발자입니다.',
+    Posts: [],
+    Followers: [
+      { name: '류태연' },
+      { name: '민병관' },
+      { name: '박희진' },
+      { name: '임서윤 & 임이슬' },
+    ],
+    Followings: [
+      { name: '류태연' },
+      { name: '민병관' },
+      { name: '박희진' },
+      { name: '임서윤 & 임이슬' },
+    ],
   };
   return userData;
 }
 
 function logoutAPI(data: LoginRequestPayload) {
   // return axios.post('api/login', data);
-  const userData: UserDataPayload = {
-    userId: data.userId,
-    nickname: '선양',
-    description: '배움을 즐기는 개발자입니다.',
-  };
-  return userData;
+
+  return data;
 }
 
 function signUpAPI(data: SignUpRequestPayload) {

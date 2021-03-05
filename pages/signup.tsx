@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import PageTitle from 'components/PageTitle';
-import SignUpForm from 'components/SignupForm';
+import SignUpForm from 'components/SignUpForm';
 
 // export
 function SignUp() {

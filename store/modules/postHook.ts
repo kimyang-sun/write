@@ -4,13 +4,16 @@ import { RootState } from '.';
 import { addPostRequest, Post } from './post';
 
 export default function usePost() {
-  const { mainPosts, imagePaths } = useSelector(
+  const { mainPosts, imagePaths, addPostDone, addCommentDone } = useSelector(
     (state: RootState) => state.post
   );
   const dispatch = useDispatch();
-  const addPost = useCallback((post: Post) => {
-    dispatch(addPostRequest(post));
-  }, []);
+  const addPost = useCallback(
+    (post: Post) => {
+      dispatch(addPostRequest(post));
+    },
+    [dispatch]
+  );
 
-  return { mainPosts, imagePaths, addPost };
+  return { mainPosts, imagePaths, addPost, addPostDone, addCommentDone };
 }

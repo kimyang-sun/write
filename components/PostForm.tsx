@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Button, Form, Input } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -14,6 +14,8 @@ type PostFormProps = {
 
 type PostFormType = {
   text: string;
+  image: any;
+  tag: string;
 };
 
 // styled components
@@ -47,23 +49,35 @@ const PostFormTitle = styled.div`
 
 // export
 function PostForm({ setPostCreating }: PostFormProps) {
-  const { addPost } = usePost();
+  const { addPost, addPostDone } = usePost();
   const imageInputRef = useRef<HTMLInputElement>(null);
   // React Hook Form 연동
-  const { handleSubmit, control, register } = useForm<PostFormType>();
+  const { handleSubmit, control, register, reset } = useForm<PostFormType>();
   const onSubmit = handleSubmit((data: PostFormType) => {
     console.log(data);
     addPost(data);
-    setPostCreating(false);
   });
+
+  // addPostDone 게시글 작성이 완료되면 초기화 해줍니다.
+  // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 초기화될수가 있습니다.
+  useEffect(() => {
+    if (addPostDone) {
+      reset({
+        text: '',
+        image: null,
+        tag: '',
+      });
+      setPostCreating(false);
+    }
+  }, [addPostDone, reset, setPostCreating]);
 
   const onClose = useCallback(() => {
     setPostCreating(false);
-  }, []);
+  }, [setPostCreating]);
 
   const onClickImageUpload = useCallback(() => {
     imageInputRef.current && imageInputRef.current.click();
-  }, [imageInputRef.current]);
+  }, []);
 
   return (
     <Dialog onClose={onClose}>
