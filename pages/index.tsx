@@ -18,14 +18,14 @@ const SubTitle = styled.div`
 `;
 
 function Home() {
-  const { isLoggedIn } = useUser();
+  const { userData } = useUser();
   const { mainPosts } = usePost();
   const [postCreating, setPostCreating] = useState(false);
 
   return (
     <>
       <PageTitle title="최신 글" />
-      {isLoggedIn ? (
+      {userData ? (
         <SubTitle>
           <p>지금 바로 마음을 적어보세요.</p>{' '}
           <Button onClick={() => setPostCreating(true)}>글 작성하기</Button>
@@ -36,7 +36,9 @@ function Home() {
       {mainPosts.map((post: Post) => (
         <PostCard key={post.postId} post={post} />
       ))}
-      {postCreating && <PostForm setPostCreating={setPostCreating} />}
+      {postCreating && (
+        <PostForm user={userData} setPostCreating={setPostCreating} />
+      )}
     </>
   );
 }

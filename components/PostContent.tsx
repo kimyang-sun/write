@@ -33,8 +33,8 @@ const StyledPostContent = styled.div`
   @media (max-width: ${props => props.theme.mediaSize.small}) {
     position: static;
     transform: translate(0, 0);
-    background-color: #fff;
-    padding: 50px 0 30px;
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 45px 0 20px;
     p {
       padding: 0 20px;
       color: ${props => props.theme.color.black};

@@ -22,11 +22,17 @@ function Profile() {
         <title>프로필 | &quot;쓰다&quot;</title>
       </Head>
       <PageTitle title="프로필" />
-      <ProfileEditForm />
-      <FollowListContainer>
-        <FollowList header="팔로워 목록" data={userData.Followers} />
-        <FollowList header="팔로잉 목록" data={userData.Followings} />
-      </FollowListContainer>
+      {userData ? (
+        <>
+          <ProfileEditForm />
+          <FollowListContainer>
+            <FollowList header="팔로워 목록" data={userData.Followers} />
+            <FollowList header="팔로잉 목록" data={userData.Followings} />
+          </FollowListContainer>
+        </>
+      ) : (
+        <p>로그인이 필요합니다. 😥</p>
+      )}
     </>
   );
 }

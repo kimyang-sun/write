@@ -44,7 +44,6 @@ const ListItem = styled(List.Item)`
 
 // export
 function FollowList({ header, data }: FollowListProps) {
-  console.log(data);
   return (
     <StyledList
       header={<h3>{header}</h3>}

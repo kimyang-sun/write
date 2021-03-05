@@ -4,9 +4,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type PostState = {
   mainPosts: Post[];
   imagePaths: string[];
+  addPostLoading: boolean;
   addPostDone: boolean;
+  addCommentLoading: boolean;
   addCommentDone: boolean;
-  postLoading: boolean;
   error: any;
 };
 
@@ -23,6 +24,7 @@ export type Post = {
   content: string;
   hashtag: string;
   Images: { src: string }[];
+  date: string;
   Comments: PostComment[];
 };
 
@@ -50,6 +52,7 @@ const initialState: PostState = {
         { src: 'https://picsum.photos/400/400' },
         { src: 'https://picsum.photos/500/500' },
       ],
+      date: '2021년 03월 06일 토요일',
       Comments: [
         {
           commentId: 1,
@@ -71,9 +74,10 @@ const initialState: PostState = {
     },
   ],
   imagePaths: [],
+  addPostLoading: false,
   addPostDone: false,
+  addCommentLoading: false,
   addCommentDone: false,
-  postLoading: false,
   error: null,
 };
 
@@ -116,33 +120,37 @@ const postSlice = createSlice({
     // Add Post
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     addPostRequest(state: PostState, action: PayloadAction<Post>) {
-      state.postLoading = true;
+      state.addPostLoading = true;
       state.error = null;
     },
 
     addPostSuccess(state: PostState, action: PayloadAction<Post>) {
-      state.postLoading = false;
+      state.addPostLoading = false;
       state.mainPosts.unshift(action.payload);
+      state.addPostDone = true;
     },
 
     addPostFailure(state: PostState, action: PayloadAction<{ error: any }>) {
-      state.postLoading = false;
+      state.addPostLoading = false;
       state.error = action.payload;
     },
 
     // Add Comment
     addCommentRequest(state: PostState, action: PayloadAction<PostComment>) {
-      state.postLoading = true;
+      state.addCommentLoading = true;
       state.error = null;
+      state.addCommentDone = false;
     },
 
     addCommentSuccess(state: PostState, action: PayloadAction<PostComment>) {
-      state.postLoading = false;
+      state.addCommentLoading = false;
+      state.addCommentDone = true;
     },
 
     addCommentFailure(state: PostState, action: PayloadAction<{ error: any }>) {
-      state.postLoading = false;
+      state.addCommentLoading = false;
       state.error = action.payload;
+      state.addCommentDone = false;
     },
   },
 });

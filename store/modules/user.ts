@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 초기 상태 타입
 export type UserState = {
   userLoading: boolean;
-  isLoggedIn: boolean;
   userData: UserDataPayload;
   signUpData: SignUpDataPayload;
   loginData: any;
@@ -44,7 +43,6 @@ export type SignUpDataPayload = {
 // 초기 상태
 const initialState: UserState = {
   userLoading: false,
-  isLoggedIn: false,
   userData: null,
   signUpData: {
     signUpLoading: false,
@@ -67,7 +65,6 @@ const userSlice = createSlice({
 
     loginSuccess(state: UserState, action: PayloadAction<UserDataPayload>) {
       state.userLoading = false;
-      state.isLoggedIn = true;
       state.userData = action.payload;
     },
 
@@ -84,13 +81,11 @@ const userSlice = createSlice({
 
     logoutSuccess(state: UserState) {
       state.userLoading = false;
-      state.isLoggedIn = false;
       state.userData = null;
     },
 
     logoutFailure(state: UserState, action: PayloadAction<{ error: any }>) {
       state.userLoading = false;
-      state.isLoggedIn = false;
       state.error = action.payload;
     },
 
@@ -113,6 +108,8 @@ const userSlice = createSlice({
       state.signUpData.signUpLoading = false;
       state.error = action.payload;
     },
+
+    // Change Profile
   },
 });
 

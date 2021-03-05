@@ -21,7 +21,16 @@ type PostCardProps = {
 
 // styled components
 const StyledPostCard = styled.div`
-  margin-top: 20px;
+  margin-top: 24px;
+  .ant-card-body {
+    position: relative;
+  }
+  .post-date {
+    font-size: 0.813rem;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
 `;
 
 function PostCard({ post }: PostCardProps) {
@@ -79,8 +88,13 @@ function PostCard({ post }: PostCardProps) {
         <Card.Meta
           avatar={<Avatar>선양</Avatar>}
           title={post.User.nickname}
-          description={<PostHashtag hashtag={post.hashtag} />}
-        />
+          description={
+            <>
+              <PostHashtag hashtag={post.hashtag} />
+              <span className="post-date">{post.date}</span>
+            </>
+          }
+        ></Card.Meta>
       </Card>
       {commentOpened && (
         <div>

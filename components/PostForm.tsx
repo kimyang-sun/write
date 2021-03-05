@@ -6,16 +6,19 @@ import ImagePaths from './ImagePaths';
 import CloseButton from './CloseButton';
 import Dialog from './Dialog';
 import usePost from 'store/modules/postHook';
+import { UserDataPayload } from 'store/modules/user';
+import createDate from 'service/date';
 
 // Types
 type PostFormProps = {
   setPostCreating: React.Dispatch<React.SetStateAction<boolean>>;
+  user: UserDataPayload;
 };
 
 type PostFormType = {
   text: string;
   image: any;
-  tag: string;
+  hashtag: string;
 };
 
 // styled components
@@ -48,28 +51,49 @@ const PostFormTitle = styled.div`
 `;
 
 // export
-function PostForm({ setPostCreating }: PostFormProps) {
+function PostForm({ setPostCreating, user }: PostFormProps) {
   const { addPost, addPostDone } = usePost();
   const imageInputRef = useRef<HTMLInputElement>(null);
   // React Hook Form 연동
   const { handleSubmit, control, register, reset } = useForm<PostFormType>();
   const onSubmit = handleSubmit((data: PostFormType) => {
+    // 이미지가 없으면 랜덤이미지를 넣습니다.
+    let images: any[] = [];
+    if (data.image.length === 0) {
+      images = [{ src: 'https://picsum.photos/650/650' }];
+    } else {
+      images = data.image;
+    }
+    // 작성하는 현재날짜를 기록합니다.
+    const date = createDate();
     console.log(data);
-    addPost(data);
+
+    addPost({
+      postId: 2,
+      User: {
+        id: user.id,
+        nickname: user.nickname,
+      },
+      content: data.text,
+      hashtag: data.hashtag,
+      Images: images,
+      date: date,
+      Comments: [],
+    });
   });
 
   // addPostDone 게시글 작성이 완료되면 초기화 해줍니다.
   // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 초기화될수가 있습니다.
   useEffect(() => {
     if (addPostDone) {
-      reset({
-        text: '',
-        image: null,
-        tag: '',
-      });
+      // reset({
+      //   text: '',
+      //   image: null,
+      //   hashtag: '',
+      // });
       setPostCreating(false);
     }
-  }, [addPostDone, reset, setPostCreating]);
+  }, [addPostDone]);
 
   const onClose = useCallback(() => {
     setPostCreating(false);
@@ -114,7 +138,7 @@ function PostForm({ setPostCreating }: PostFormProps) {
         <Controller
           as={<Input />}
           type="text"
-          name="tag"
+          name="hashtag"
           control={control}
           placeholder="해시태그 추가 ex) #쓰다 #마음"
           defaultValue=""
