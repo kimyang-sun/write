@@ -25,7 +25,7 @@ export type UserDataPayload = {
   userEmail: string;
   nickname: string;
   description: string;
-  Posts: any[];
+  Posts: { postId: number }[];
   Followers: Follow[];
   Followings: Follow[];
 };
@@ -57,8 +57,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Login
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loginRequest(state: UserState, action: PayloadAction<LoginRequestPayload>) {
+    loginRequest(
+      state: UserState,
+      _action: PayloadAction<LoginRequestPayload>
+    ) {
       state.userLoading = true;
       state.error = null;
     },
@@ -92,8 +94,7 @@ const userSlice = createSlice({
     // Sign up
     signUpRequest(
       state: UserState,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      action: PayloadAction<SignUpRequestPayload>
+      _action: PayloadAction<SignUpRequestPayload>
     ) {
       state.signUpData.signUpLoading = true;
       state.error = null;
@@ -108,6 +109,13 @@ const userSlice = createSlice({
       state.signUpData.signUpLoading = false;
       state.error = action.payload;
     },
+
+    // User Post Add & Remove
+    addUserPost(state: UserState, action: PayloadAction<{ postId: number }>) {
+      state.userData.Posts.unshift(action.payload);
+    },
+
+    removeUserPost(state: UserState) {},
 
     // Change Profile
   },
@@ -125,5 +133,7 @@ export const {
   signUpRequest,
   signUpSuccess,
   signUpFailure,
+  addUserPost,
+  removeUserPost,
 } = actions;
 export default reducer;

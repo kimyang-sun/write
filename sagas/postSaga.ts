@@ -11,6 +11,7 @@ import {
   addCommentSuccess,
   addCommentFailure,
 } from 'store/modules/post';
+import { addUserPost } from 'store/modules/user';
 
 // API 요청
 function addPostAPI(data: Post) {
@@ -29,6 +30,7 @@ function* addPost(action: PayloadAction<Post>) {
     yield delay(1000);
     const result = yield call(addPostAPI, action.payload);
     yield put(addPostSuccess(result));
+    yield put(addUserPost(result.id));
   } catch (e) {
     yield put(addPostFailure(e.response.data));
   }

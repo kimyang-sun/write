@@ -5,6 +5,7 @@ import { Post } from 'store/modules/post';
 import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
+import shortId from 'shortid';
 
 // Types
 type CommentFormProps = {
@@ -26,14 +27,24 @@ const StyledCommentForm = styled(Form)`
   }
 `;
 
+const NotLoggedInText = styled.p`
+  text-align: center;
+  padding: 15px 0;
+`;
+
 // export
 function CommentForm({ post }: CommentFormProps) {
   const { userData } = useUser();
   const userId = userData && userData.id;
-  const { addCommentDone } = usePost();
+  const { addCommentDone, addComment } = usePost();
   const { handleSubmit, control, reset } = useForm<CommentFormType>();
   const onSubmit = handleSubmit((data: CommentFormType) => {
-    console.log(data, post.postId, userId);
+    addComment({
+      id: shortId.generate(),
+      postId: post.id,
+      User: { id: userId, nickname: userData.nickname },
+      content: data.commentText,
+    });
   });
 
   // 댓글 작성완료시 초기화
@@ -44,16 +55,26 @@ function CommentForm({ post }: CommentFormProps) {
   }, [addCommentDone, reset]);
 
   return (
-    <StyledCommentForm onFinish={onSubmit}>
-      <Form.Item>
-        <Controller
-          as={<Input.TextArea />}
-          name="commentText"
-          control={control}
-        />
-        <Button htmlType="submit">댓글작성</Button>
-      </Form.Item>
-    </StyledCommentForm>
+    <>
+      {userId ? (
+        <StyledCommentForm onFinish={onSubmit}>
+          <Form.Item>
+            <Controller
+              as={<Input.TextArea />}
+              name="commentText"
+              control={control}
+              placeholder="댓글을 작성하세요."
+              defaultValue=""
+            />
+            <Button htmlType="submit">댓글작성</Button>
+          </Form.Item>
+        </StyledCommentForm>
+      ) : (
+        <NotLoggedInText>
+          로그인을 하시면 댓글을 작성하실 수 있습니다. 😫
+        </NotLoggedInText>
+      )}
+    </>
   );
 }
 

@@ -21,7 +21,6 @@ function Home() {
   const { userData } = useUser();
   const { mainPosts } = usePost();
   const [postCreating, setPostCreating] = useState(false);
-
   return (
     <>
       <PageTitle title="최신 글" />
@@ -34,7 +33,7 @@ function Home() {
         <SubTitle>로그인을 하시면 글을 작성하실 수 있습니다.</SubTitle>
       )}
       {mainPosts.map((post: Post) => (
-        <PostCard key={post.postId} post={post} />
+        <PostCard key={post.id} post={post} />
       ))}
       {postCreating && (
         <PostForm user={userData} setPostCreating={setPostCreating} />

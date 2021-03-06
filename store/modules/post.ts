@@ -16,7 +16,7 @@ export type PostState = {
 // User, Images, Comments 이런건 다른 정보들과 합쳐서 주기 때문에 대문자입니다.
 // 이 경우에는 서버 개발자와 사전에 협의를 봐서 대문자로 구분할건지 전부 소문자로 할건지 정해야 합니다.
 export type Post = {
-  postId: number;
+  id: number;
   User: {
     id: number;
     nickname: string;
@@ -30,7 +30,14 @@ export type Post = {
 
 // 댓글 타입
 export type PostComment = {
-  commentId: number;
+  id: number;
+  User: { id: number; nickname: string };
+  content: string;
+};
+
+export type CommentActionType = {
+  id: number;
+  postId: number;
   User: { id: number; nickname: string };
   content: string;
 };
@@ -39,7 +46,7 @@ export type PostComment = {
 const initialState: PostState = {
   mainPosts: [
     {
-      postId: 1,
+      id: 1,
       User: {
         id: 1,
         nickname: '선양',
@@ -55,7 +62,7 @@ const initialState: PostState = {
       date: '2021년 03월 06일 토요일',
       Comments: [
         {
-          commentId: 1,
+          id: 1,
           User: {
             id: 2,
             nickname: '태연',
@@ -63,7 +70,7 @@ const initialState: PostState = {
           content: '첫번째 댓글 테스트입니다.',
         },
         {
-          commentId: 2,
+          id: 2,
           User: {
             id: 3,
             nickname: '병관',
@@ -82,7 +89,7 @@ const initialState: PostState = {
 };
 
 const dummyPost = {
-  postId: 2,
+  id: 2,
   User: {
     id: 1,
     nickname: '선양',
@@ -118,15 +125,15 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     // Add Post
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    addPostRequest(state: PostState, action: PayloadAction<Post>) {
+    addPostRequest(state: PostState, _action: PayloadAction<Post>) {
       state.addPostLoading = true;
       state.error = null;
+      state.addPostDone = false;
     },
 
     addPostSuccess(state: PostState, action: PayloadAction<Post>) {
-      state.addPostLoading = false;
       state.mainPosts.unshift(action.payload);
+      state.addPostLoading = false;
       state.addPostDone = true;
     },
 
@@ -135,14 +142,31 @@ const postSlice = createSlice({
       state.error = action.payload;
     },
 
+    // Remove Post
+
     // Add Comment
-    addCommentRequest(state: PostState, action: PayloadAction<PostComment>) {
+    addCommentRequest(
+      state: PostState,
+      _action: PayloadAction<CommentActionType>
+    ) {
       state.addCommentLoading = true;
       state.error = null;
       state.addCommentDone = false;
     },
 
-    addCommentSuccess(state: PostState, action: PayloadAction<PostComment>) {
+    addCommentSuccess(
+      state: PostState,
+      action: PayloadAction<CommentActionType>
+    ) {
+      const postIndex = state.mainPosts.findIndex(
+        post => post.id === action.payload.postId
+      );
+      const comment: PostComment = {
+        id: action.payload.id,
+        User: action.payload.User,
+        content: action.payload.content,
+      };
+      state.mainPosts[postIndex].Comments.push(comment);
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },
@@ -152,6 +176,8 @@ const postSlice = createSlice({
       state.error = action.payload;
       state.addCommentDone = false;
     },
+
+    // Remove Comment
   },
 });
 

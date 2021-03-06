@@ -8,6 +8,7 @@ import Dialog from './Dialog';
 import usePost from 'store/modules/postHook';
 import { UserDataPayload } from 'store/modules/user';
 import createDate from 'service/date';
+import shortId from 'shortid';
 
 // Types
 type PostFormProps = {
@@ -66,10 +67,9 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
     }
     // 작성하는 현재날짜를 기록합니다.
     const date = createDate();
-    console.log(data);
 
     addPost({
-      postId: 2,
+      id: shortId.generate(),
       User: {
         id: user.id,
         nickname: user.nickname,
@@ -80,20 +80,14 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
       date: date,
       Comments: [],
     });
-  });
 
-  // addPostDone 게시글 작성이 완료되면 초기화 해줍니다.
-  // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 초기화될수가 있습니다.
-  useEffect(() => {
+    // addPostDone 게시글 작성이 완료되면 창을 닫아줍니다.
+    // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 창이 닫힐수가 있습니다.
     if (addPostDone) {
-      // reset({
-      //   text: '',
-      //   image: null,
-      //   hashtag: '',
-      // });
+      console.log('false!');
       setPostCreating(false);
     }
-  }, [addPostDone]);
+  });
 
   const onClose = useCallback(() => {
     setPostCreating(false);
