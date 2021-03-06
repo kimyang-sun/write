@@ -25,6 +25,7 @@ const StyledPostContent = styled.div`
     text-align: center;
     padding: 0 50px;
     color: #f8f8f8;
+    word-break: keep-all;
   }
   @media (max-width: ${props => props.theme.mediaSize.medium}) {
     font-size: 0.875rem;

@@ -119,7 +119,7 @@ const userSlice = createSlice({
       state: UserState,
       action: PayloadAction<{ postId: number }>
     ) {
-      state.userData.Posts.filter(
+      state.userData.Posts = state.userData.Posts.filter(
         post => post.postId !== action.payload.postId
       );
     },

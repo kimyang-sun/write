@@ -7,7 +7,7 @@ import CloseButton from './CloseButton';
 import Dialog from './Dialog';
 import usePost from 'store/modules/postHook';
 import { UserDataPayload } from 'store/modules/user';
-import createDate from 'service/date';
+import createDate from 'lib/date';
 import shortId from 'shortid';
 
 // Types

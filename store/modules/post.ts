@@ -1,4 +1,7 @@
+import shortId from 'shortid';
+import faker from 'faker';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FacebookFilled } from '@ant-design/icons';
 
 // 초기 상태 타입
 export type PostState = {
@@ -54,7 +57,7 @@ const initialState: PostState = {
         nickname: '선양',
       },
       content:
-        '늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다. 늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다. 늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다. 늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. <br>늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다.',
+        '늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. 늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다.',
       hashtag: '#쓰다 #마음',
       Images: [
         { src: 'https://picsum.photos/600/600' },
@@ -92,36 +95,36 @@ const initialState: PostState = {
   error: null,
 };
 
-const dummyPost = {
-  id: 2,
-  User: {
-    id: 1,
-    nickname: '선양',
-  },
-  content: '첫 번째 게시글 #해시태그 #익스프레스',
-  hashtag: '#쓰다 #마음',
-  Images: [
-    { src: 'https://picsum.photos/200/300' },
-    { src: 'https://picsum.photos/200/300' },
-    { src: 'https://picsum.photos/200/300' },
-  ],
-  Comments: [
-    {
+// 더미 데이터
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20)
+    .fill(0)
+    .map(() => ({
+      id: shortId.generate(),
       User: {
-        id: 2,
-        nickname: '태연',
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
       },
-      content: '첫번째 댓글 테스트입니다.',
-    },
-    {
-      User: {
-        id: 3,
-        nickname: '병관',
-      },
-      content: '두번째 댓글 테스트입니다.',
-    },
-  ],
-};
+      content: faker.lorem.paragraph(),
+      hashtag: '#쓰다 #마음',
+      Images: [
+        {
+          src: faker.image.image(),
+        },
+      ],
+      date: '2021년 03월 06일 토요일',
+      Comments: [
+        {
+          id: shortId.generate(),
+          User: {
+            id: shortId.generate(),
+            nickname: faker.name.findName(),
+          },
+          content: faker.lorem.sentence(),
+        },
+      ],
+    }))
+);
 
 // 리듀서 슬라이스
 const postSlice = createSlice({
@@ -187,7 +190,7 @@ const postSlice = createSlice({
       state: PostState,
       action: PayloadAction<CommentActionType>
     ) {
-      const postIndex = state.mainPosts.findIndex(
+      const post = state.mainPosts.find(
         post => post.id === action.payload.postId
       );
       const comment: PostComment = {
@@ -195,14 +198,13 @@ const postSlice = createSlice({
         User: action.payload.User,
         content: action.payload.content,
       };
-      state.mainPosts[postIndex].Comments.push(comment);
+      post.Comments.push(comment);
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },
 
     addCommentFailure(state: PostState, action: PayloadAction<{ error: any }>) {
       state.addCommentLoading = false;
-      state.addCommentDone = false;
       state.error = action.payload;
     },
 

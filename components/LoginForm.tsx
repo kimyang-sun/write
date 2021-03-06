@@ -4,7 +4,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { loginValidation } from 'service/yup';
+import { loginValidation } from 'lib/yup';
 import FormErrorMessage from './FormErrorMessage';
 import { LoginRequestPayload } from 'store/modules/user';
 
