@@ -56,7 +56,7 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
   const { addPost, addPostDone } = usePost();
   const imageInputRef = useRef<HTMLInputElement>(null);
   // React Hook Form 연동
-  const { handleSubmit, control, register, reset } = useForm<PostFormType>();
+  const { handleSubmit, control, register } = useForm<PostFormType>();
   const onSubmit = handleSubmit((data: PostFormType) => {
     // 이미지가 없으면 랜덤이미지를 넣습니다.
     let images: any[] = [];

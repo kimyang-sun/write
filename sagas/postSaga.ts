@@ -7,14 +7,22 @@ import {
   addPostFailure,
   addPostRequest,
   addPostSuccess,
+  removePostRequest,
+  removePostSuccess,
+  removePostFailure,
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,
 } from 'store/modules/post';
-import { addUserPost } from 'store/modules/user';
+import { addUserPost, removeUserPost } from 'store/modules/user';
 
 // API 요청
 function addPostAPI(data: Post) {
+  // return axios.post('/api/post', data);
+  return data;
+}
+
+function removePostAPI(data: { postId: number }) {
   // return axios.post('/api/post', data);
   return data;
 }
@@ -30,9 +38,20 @@ function* addPost(action: PayloadAction<Post>) {
     yield delay(1000);
     const result = yield call(addPostAPI, action.payload);
     yield put(addPostSuccess(result));
-    yield put(addUserPost(result.id));
+    yield put(addUserPost({ postId: result.id }));
   } catch (e) {
     yield put(addPostFailure(e.response.data));
+  }
+}
+
+function* removePost(action: PayloadAction<{ postId: number }>) {
+  try {
+    yield delay(1000);
+    const result = yield call(removePostAPI, action.payload);
+    yield put(removePostSuccess(result));
+    yield put(removeUserPost(result));
+  } catch (e) {
+    yield put(removePostFailure(e.response.data));
   }
 }
 
@@ -46,9 +65,13 @@ function* addComment(action: PayloadAction<PostComment>) {
   }
 }
 
-// Watch 함수
+// Saga를 작동시키는 Watch 함수
 export function* watchAddPost() {
   yield takeLatest(addPostRequest.type, addPost);
+}
+
+export function* watchRemovePost() {
+  yield takeLatest(removePostRequest.type, removePost);
 }
 
 export function* watchAddComment() {

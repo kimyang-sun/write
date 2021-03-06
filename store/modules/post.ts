@@ -6,6 +6,8 @@ export type PostState = {
   imagePaths: string[];
   addPostLoading: boolean;
   addPostDone: boolean;
+  removePostLoading: boolean;
+  removePostDone: boolean;
   addCommentLoading: boolean;
   addCommentDone: boolean;
   error: any;
@@ -83,6 +85,8 @@ const initialState: PostState = {
   imagePaths: [],
   addPostLoading: false,
   addPostDone: false,
+  removePostLoading: false,
+  removePostDone: false,
   addCommentLoading: false,
   addCommentDone: false,
   error: null,
@@ -127,8 +131,8 @@ const postSlice = createSlice({
     // Add Post
     addPostRequest(state: PostState, _action: PayloadAction<Post>) {
       state.addPostLoading = true;
-      state.error = null;
       state.addPostDone = false;
+      state.error = null;
     },
 
     addPostSuccess(state: PostState, action: PayloadAction<Post>) {
@@ -143,6 +147,31 @@ const postSlice = createSlice({
     },
 
     // Remove Post
+    removePostRequest(
+      state: PostState,
+      _action: PayloadAction<{ postId: number }>
+    ) {
+      state.removePostLoading = true;
+      state.removePostDone = false;
+      state.error = null;
+    },
+
+    removePostSuccess(
+      state: PostState,
+      action: PayloadAction<{ postId: number }>
+    ) {
+      console.log('remove');
+      state.mainPosts = state.mainPosts.filter(
+        post => post.id !== action.payload.postId
+      );
+      state.removePostLoading = false;
+      state.removePostDone = true;
+    },
+
+    removePostFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+      state.addPostLoading = false;
+      state.error = action.payload;
+    },
 
     // Add Comment
     addCommentRequest(
@@ -150,8 +179,8 @@ const postSlice = createSlice({
       _action: PayloadAction<CommentActionType>
     ) {
       state.addCommentLoading = true;
-      state.error = null;
       state.addCommentDone = false;
+      state.error = null;
     },
 
     addCommentSuccess(
@@ -173,8 +202,8 @@ const postSlice = createSlice({
 
     addCommentFailure(state: PostState, action: PayloadAction<{ error: any }>) {
       state.addCommentLoading = false;
-      state.error = action.payload;
       state.addCommentDone = false;
+      state.error = action.payload;
     },
 
     // Remove Comment
@@ -187,6 +216,9 @@ export const {
   addPostRequest,
   addPostSuccess,
   addPostFailure,
+  removePostRequest,
+  removePostSuccess,
+  removePostFailure,
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,

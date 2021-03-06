@@ -115,7 +115,14 @@ const userSlice = createSlice({
       state.userData.Posts.unshift(action.payload);
     },
 
-    removeUserPost(state: UserState) {},
+    removeUserPost(
+      state: UserState,
+      action: PayloadAction<{ postId: number }>
+    ) {
+      state.userData.Posts.filter(
+        post => post.postId !== action.payload.postId
+      );
+    },
 
     // Change Profile
   },

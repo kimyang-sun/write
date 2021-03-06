@@ -8,6 +8,7 @@ import {
 import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
 import React, { useState } from 'react';
 import { PostComment, Post } from 'store/modules/post';
+import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import CommentForm from './CommentForm';
@@ -36,10 +37,14 @@ const StyledPostCard = styled.div`
 function PostCard({ post }: PostCardProps) {
   const { userData } = useUser();
   const userEmail = userData && userData.id;
+  const { removePost, removePostLoading } = usePost();
   const [liked, setLiked] = useState(false);
   const [commentOpened, setCommentOpened] = useState(false);
+  const onRemovePost = (id: number) => {
+    removePost({ postId: id });
+  };
   const onToggleLike = () => {
-    setLiked(!liked);
+    setLiked(liked => !liked);
   };
   const onToggleComment = () => {
     setCommentOpened(commentOpened => !commentOpened);
@@ -73,7 +78,13 @@ function PostCard({ post }: PostCardProps) {
                 {userEmail && userEmail === post.User.id ? (
                   <>
                     <Button>수정</Button>
-                    <Button danger>삭제</Button>
+                    <Button
+                      onClick={() => onRemovePost(post.id)}
+                      loading={removePostLoading}
+                      danger
+                    >
+                      삭제
+                    </Button>
                   </>
                 ) : (
                   <Button danger>신고</Button>
