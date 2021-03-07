@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '.';
 import {
+  loadPostsRequest,
   addCommentRequest,
   addPostRequest,
   Post,
@@ -13,6 +14,8 @@ export default function usePost() {
   const {
     mainPosts,
     imagePaths,
+    loadPostsLoading,
+    hasMorePosts,
     addPostLoading,
     addPostDone,
     removePostLoading,
@@ -20,6 +23,10 @@ export default function usePost() {
     addCommentDone,
   } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch();
+
+  const loadPosts = useCallback((posts: Post[]) => {
+    dispatch(loadPostsRequest(posts));
+  }, []);
 
   const addPost = useCallback((post: Post) => {
     dispatch(addPostRequest(post));
@@ -36,6 +43,9 @@ export default function usePost() {
   return {
     mainPosts,
     imagePaths,
+    loadPosts,
+    loadPostsLoading,
+    hasMorePosts,
     addPost,
     addPostLoading,
     addPostDone,

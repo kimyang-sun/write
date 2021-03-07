@@ -1,12 +1,15 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { call, delay, put, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, takeLatest, takeLeading } from 'redux-saga/effects';
 import {
   Post,
   PostComment,
-  addPostFailure,
+  loadPostsRequest,
+  loadPostsSuccess,
+  loadPostsFailure,
   addPostRequest,
   addPostSuccess,
+  addPostFailure,
   removePostRequest,
   removePostSuccess,
   removePostFailure,
@@ -17,6 +20,10 @@ import {
 import { addUserPost, removeUserPost } from 'store/modules/user';
 
 // API 요청
+function loadPostsAPI(data: Post[]) {
+  return data;
+}
+
 function addPostAPI(data: Post) {
   // return axios.post('/api/post', data);
   return data;
@@ -33,6 +40,16 @@ function addCommentAPI(data: PostComment) {
 }
 
 // Saga 실행함수
+function* loadPosts(action: PayloadAction<Post[]>) {
+  try {
+    yield delay(1000);
+    const result = yield call(loadPostsAPI, action.payload);
+    yield put(loadPostsSuccess(result));
+  } catch (e) {
+    yield put(loadPostsFailure(e.response.data));
+  }
+}
+
 function* addPost(action: PayloadAction<Post>) {
   try {
     yield delay(1000);
@@ -66,6 +83,10 @@ function* addComment(action: PayloadAction<PostComment>) {
 }
 
 // Saga를 작동시키는 Watch 함수
+export function* watchLoadPosts() {
+  yield takeLeading(loadPostsRequest.type, loadPosts);
+}
+
 export function* watchAddPost() {
   yield takeLatest(addPostRequest.type, addPost);
 }

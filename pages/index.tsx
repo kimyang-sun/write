@@ -2,8 +2,8 @@ import { Button } from 'antd';
 import PageTitle from 'components/PageTitle';
 import PostForm from 'components/PostForm';
 import PostCard from 'components/PostCard';
-import React, { useState } from 'react';
-import { Post } from 'store/modules/post';
+import React, { useEffect, useState } from 'react';
+import { generateDummyPost, Post } from 'store/modules/post';
 import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
@@ -19,8 +19,33 @@ const SubTitle = styled.div`
 
 function Home() {
   const { userData } = useUser();
-  const { mainPosts } = usePost();
+  const { mainPosts, loadPosts, loadPostsLoading, hasMorePosts } = usePost();
   const [postCreating, setPostCreating] = useState(false);
+
+  // 초기 렌더링시 게시물을 불러옵니다
+  useEffect(() => {
+    loadPosts(generateDummyPost(5));
+  }, []);
+
+  // 스크롤시 게시물을 더 불러옵니다.
+  useEffect(() => {
+    function onScroll() {
+      // 스크롤이 가장 밑이면 게시글을 더 불러옵니다.
+      if (
+        window.scrollY + document.documentElement.clientHeight >
+        document.documentElement.scrollHeight - 300
+      ) {
+        if (hasMorePosts && !loadPostsLoading) loadPosts(generateDummyPost(5));
+      }
+    }
+    window.addEventListener('scroll', onScroll);
+
+    // unmount될때 스크롤 이벤트를 취소해줘야 합니다. (메모리에 쌓이게 됨)
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [hasMorePosts]);
+
   return (
     <>
       <PageTitle title="최신 글" />

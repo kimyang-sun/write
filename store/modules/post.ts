@@ -7,6 +7,9 @@ import { FacebookFilled } from '@ant-design/icons';
 export type PostState = {
   mainPosts: Post[];
   imagePaths: string[];
+  hasMorePosts: boolean;
+  loadPostsLoading: boolean;
+  loadPostsDone: boolean;
   addPostLoading: boolean;
   addPostDone: boolean;
   removePostLoading: boolean;
@@ -86,6 +89,9 @@ const initialState: PostState = {
     },
   ],
   imagePaths: [],
+  hasMorePosts: true,
+  loadPostsLoading: false,
+  loadPostsDone: false,
   addPostLoading: false,
   addPostDone: false,
   removePostLoading: false,
@@ -96,8 +102,8 @@ const initialState: PostState = {
 };
 
 // 더미 데이터
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20)
+export const generateDummyPost = (num: number) =>
+  Array(num)
     .fill(0)
     .map(() => ({
       id: shortId.generate(),
@@ -123,14 +129,32 @@ initialState.mainPosts = initialState.mainPosts.concat(
           content: faker.lorem.sentence(),
         },
       ],
-    }))
-);
+    }));
 
 // 리듀서 슬라이스
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
+    // Load Post
+    loadPostsRequest(state: PostState, _action: PayloadAction<Post[]>) {
+      state.loadPostsLoading = true;
+      state.loadPostsDone = false;
+      state.error = null;
+    },
+
+    loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+      state.mainPosts = action.payload.concat(state.mainPosts);
+      state.loadPostsLoading = false;
+      state.loadPostsDone = true;
+      state.hasMorePosts = state.mainPosts.length < 16;
+    },
+
+    loadPostsFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+      state.loadPostsLoading = false;
+      state.error = action.payload;
+    },
+
     // Add Post
     addPostRequest(state: PostState, _action: PayloadAction<Post>) {
       state.addPostLoading = true;
@@ -215,6 +239,9 @@ const postSlice = createSlice({
 // 리듀서 & 액션 리턴
 const { reducer, actions } = postSlice;
 export const {
+  loadPostsRequest,
+  loadPostsSuccess,
+  loadPostsFailure,
   addPostRequest,
   addPostSuccess,
   addPostFailure,
