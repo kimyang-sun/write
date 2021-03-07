@@ -27,7 +27,7 @@ function Home() {
     loadPosts(generateDummyPost(5));
   }, []);
 
-  // 스크롤시 게시물을 더 불러옵니다.
+  //스크롤시 게시물을 더 불러옵니다.
   useEffect(() => {
     function onScroll() {
       // 스크롤이 가장 밑이면 게시글을 더 불러옵니다.

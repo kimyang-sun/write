@@ -1,7 +1,6 @@
 import shortId from 'shortid';
 import faker from 'faker';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FacebookFilled } from '@ant-design/icons';
 
 // 초기 상태 타입
 export type PostState = {
