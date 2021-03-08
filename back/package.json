@@ -1,0 +1,9 @@
+{
+  "name": "write-back",
+  "version": "0.1.0",
+  "description": "React Write App (Back)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

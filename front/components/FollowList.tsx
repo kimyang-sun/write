@@ -56,7 +56,7 @@ function FollowList({ header, data }: FollowListProps) {
       dataSource={data}
       renderItem={(item: Follow) => (
         <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
-          <ListItem.Meta avatar={<Avatar>선양</Avatar>} title={item.name} />
+          <ListItem.Meta avatar={<Avatar>선양</Avatar>} title={item.nickname} />
         </ListItem>
       )}
     />
