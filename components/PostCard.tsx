@@ -12,6 +12,7 @@ import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import CommentForm from './CommentForm';
+import FollowButton from './FollowButton';
 import PostHashtag from './PostHashtag';
 import PostImages from './PostImages';
 
@@ -36,7 +37,7 @@ const StyledPostCard = styled.div`
 
 function PostCard({ post }: PostCardProps) {
   const { userData } = useUser();
-  const userEmail = userData && userData.id;
+  const userId = userData && userData.id;
   const { removePost, removePostLoading } = usePost();
   const [liked, setLiked] = useState(false);
   const [commentOpened, setCommentOpened] = useState(false);
@@ -75,7 +76,7 @@ function PostCard({ post }: PostCardProps) {
             trigger="click"
             content={
               <Button.Group>
-                {userEmail && userEmail === post.User.id ? (
+                {userId && userId === post.User.id ? (
                   <>
                     <Button>수정</Button>
                     <Button
@@ -95,6 +96,7 @@ function PostCard({ post }: PostCardProps) {
             <EllipsisOutlined key="more" />
           </Popover>,
         ]}
+        extra={userId && <FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar>선양</Avatar>}

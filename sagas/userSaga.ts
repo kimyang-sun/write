@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import shortId from 'shortid';
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import {
   LoginRequestPayload,
@@ -13,30 +14,36 @@ import {
   signUpRequest,
   signUpSuccess,
   signUpFailure,
-  SignUpDataPayload,
   SignUpRequestPayload,
+  FollowRequestPayload,
+  followRequest,
+  followSuccess,
+  followFailure,
+  unFollowRequest,
+  unFollowSuccess,
+  unFollowFailure,
 } from 'store/modules/user';
 
 // API 요청
 function loginAPI(data: LoginRequestPayload) {
   // return axios.post('api/login', data);
   const userData: UserDataPayload = {
-    id: 1,
+    id: shortId.generate(),
     userEmail: data.userEmail,
     nickname: '선양',
     description: '배움을 즐기는 개발자입니다.',
     Posts: [],
     Followers: [
-      { name: '류태연' },
-      { name: '민병관' },
-      { name: '박희진' },
-      { name: '임서윤 & 임이슬' },
+      { id: shortId.generate(), nickname: '류태연' },
+      { id: shortId.generate(), nickname: '민병관' },
+      { id: shortId.generate(), nickname: '박희진' },
+      { id: shortId.generate(), nickname: '임서윤 & 임이슬' },
     ],
     Followings: [
-      { name: '류태연' },
-      { name: '민병관' },
-      { name: '박희진' },
-      { name: '임서윤 & 임이슬' },
+      { id: shortId.generate(), nickname: '류태연' },
+      { id: shortId.generate(), nickname: '민병관' },
+      { id: shortId.generate(), nickname: '박희진' },
+      { id: shortId.generate(), nickname: '임서윤 & 임이슬' },
     ],
   };
   return userData;
@@ -50,10 +57,16 @@ function logoutAPI(data: LoginRequestPayload) {
 
 function signUpAPI(data: SignUpRequestPayload) {
   // return axios.post('api/signup', data);
-  const userData: SignUpDataPayload = {
-    signUpLoading: true,
-  };
-  return userData;
+  const signUpData = {};
+  return signUpData;
+}
+
+function followAPI(data: FollowRequestPayload) {
+  return data;
+}
+
+function unFollowAPI(data: FollowRequestPayload) {
+  return data;
 }
 
 // Saga 실행 함수
@@ -92,6 +105,26 @@ function* signUp(action: PayloadAction<SignUpRequestPayload>) {
   }
 }
 
+function* follow(action: PayloadAction<FollowRequestPayload>) {
+  try {
+    yield delay(1000);
+    const result = yield call(followAPI, action.payload);
+    yield put(followSuccess(result));
+  } catch (e) {
+    yield put(followFailure(e.response.data));
+  }
+}
+
+function* unFollow(action: PayloadAction<FollowRequestPayload>) {
+  try {
+    yield delay(1000);
+    const result = yield call(unFollowAPI, action.payload);
+    yield put(unFollowSuccess(result));
+  } catch (e) {
+    yield put(unFollowFailure(e.response.data));
+  }
+}
+
 // Watch 함수
 export function* watchLogin() {
   yield takeLatest(loginRequest.type, login);
@@ -105,6 +138,14 @@ export function* watchLogout() {
 
 export function* watchSignUp() {
   yield takeLatest(signUpRequest.type, signUp);
+}
+
+export function* watchFollow() {
+  yield takeLatest(followRequest.type, follow);
+}
+
+export function* watchUnFollow() {
+  yield takeLatest(unFollowRequest.type, unFollow);
 }
 
 /*

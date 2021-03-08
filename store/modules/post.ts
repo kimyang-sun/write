@@ -143,7 +143,7 @@ const postSlice = createSlice({
     },
 
     loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
-      state.mainPosts = action.payload.concat(state.mainPosts);
+      state.mainPosts = state.mainPosts.concat(action.payload);
       state.loadPostsLoading = false;
       state.loadPostsDone = true;
       state.hasMorePosts = state.mainPosts.length < 16;

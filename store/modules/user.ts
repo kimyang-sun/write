@@ -3,15 +3,18 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 초기 상태 타입
 export type UserState = {
   userLoading: boolean;
+  signUpLoading: boolean;
+  followLoading: number;
   userData: UserDataPayload;
-  signUpData: SignUpDataPayload;
+  signUpData: any;
   loginData: any;
   error: any;
 };
 
 // Follow 타입
 export type Follow = {
-  name: string;
+  id: number;
+  nickname: string;
 };
 
 // 액션 Payload 타입
@@ -36,17 +39,18 @@ export type SignUpRequestPayload = {
   password: string;
 };
 
-export type SignUpDataPayload = {
-  signUpLoading: boolean;
+export type FollowRequestPayload = {
+  postId: number;
+  postUserId: number;
 };
 
 // 초기 상태
 const initialState: UserState = {
   userLoading: false,
+  signUpLoading: false,
+  followLoading: null,
   userData: null,
-  signUpData: {
-    signUpLoading: false,
-  },
+  signUpData: {},
   loginData: {},
   error: null,
 };
@@ -96,17 +100,17 @@ const userSlice = createSlice({
       state: UserState,
       _action: PayloadAction<SignUpRequestPayload>
     ) {
-      state.signUpData.signUpLoading = true;
+      state.signUpLoading = true;
       state.error = null;
     },
 
-    signUpSuccess(state: UserState, action: PayloadAction<SignUpDataPayload>) {
-      state.signUpData.signUpLoading = false;
+    signUpSuccess(state: UserState, action: PayloadAction<any>) {
+      state.signUpLoading = false;
       state.signUpData = action.payload;
     },
 
     signUpFailure(state: UserState, action: PayloadAction<{ error: any }>) {
-      state.signUpData.signUpLoading = false;
+      state.signUpLoading = false;
       state.error = action.payload;
     },
 
@@ -124,7 +128,53 @@ const userSlice = createSlice({
       );
     },
 
-    // Change Profile
+    // Follow
+    followRequest(
+      state: UserState,
+      action: PayloadAction<{ postId: number; postUserId: number }>
+    ) {
+      state.followLoading = action.payload.postId;
+      state.error = null;
+    },
+
+    followSuccess(
+      state: UserState,
+      action: PayloadAction<{ postId: number; postUserId: number }>
+    ) {
+      state.followLoading = null;
+      state.userData.Followings.push({
+        id: action.payload.postUserId,
+        nickname: '아무나',
+      });
+    },
+
+    followFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+      state.followLoading = null;
+      state.error = action.payload;
+    },
+
+    unFollowRequest(
+      state: UserState,
+      action: PayloadAction<FollowRequestPayload>
+    ) {
+      state.followLoading = action.payload.postId;
+      state.error = null;
+    },
+
+    unFollowSuccess(
+      state: UserState,
+      action: PayloadAction<FollowRequestPayload>
+    ) {
+      state.followLoading = null;
+      state.userData.Followings = state.userData.Followings.filter(
+        following => following.id !== action.payload.postUserId
+      );
+    },
+
+    unFollowFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+      state.followLoading = null;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -142,5 +192,11 @@ export const {
   signUpFailure,
   addUserPost,
   removeUserPost,
+  followRequest,
+  followSuccess,
+  followFailure,
+  unFollowRequest,
+  unFollowSuccess,
+  unFollowFailure,
 } = actions;
 export default reducer;
