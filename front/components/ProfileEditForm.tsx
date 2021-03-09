@@ -27,6 +27,7 @@ function ProfileEditForm() {
         <Input.Search
           name="nickname"
           onSearch={onChangeNickname}
+          maxLength={15}
           enterButton="변경"
         />
       </div>
@@ -35,6 +36,7 @@ function ProfileEditForm() {
         <Input.Search
           name="descriptition"
           onSearch={onChangeDescripttion}
+          maxLength={40}
           enterButton="변경"
         />
       </div>
