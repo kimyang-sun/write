@@ -4,7 +4,7 @@
   "private": true,
   "description": "React Write App (Next.js)",
   "scripts": {
-    "dev": "next dev -p 3010",
+    "dev": "next dev -p 3005",
     "build": "next build",
     "start": "next start"
   },

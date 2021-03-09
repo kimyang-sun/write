@@ -8,6 +8,8 @@ export default (sequelize, DataTypes) => {
     },
     { charset: 'utf8', collate: 'utf8_general_ci' } // 한글적용.
   );
-  Image.associate = db => {};
+  Image.associate = db => {
+    db.Image.belongsTo(db.Post);
+  };
   return User;
 };

@@ -60,7 +60,7 @@ function PostCard({ post }: PostCardProps) {
           )
         }
         actions={[
-          <RetweetOutlined key="share" />,
+          <RetweetOutlined key="scrap" />,
           liked ? (
             <HeartTwoTone
               key="heart"

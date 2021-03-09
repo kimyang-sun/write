@@ -31,7 +31,7 @@ function loginAPI(data: LoginRequestPayload) {
     id: shortId.generate(),
     userEmail: data.userEmail,
     nickname: '선양',
-    description: '배움을 즐기는 개발자입니다.',
+    introduction: '배움을 즐기는 개발자입니다.',
     Posts: [],
     Followers: [
       { id: shortId.generate(), nickname: '류태연' },

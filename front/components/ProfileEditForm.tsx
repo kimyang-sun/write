@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // Types
 type ProfileInputType = {
   nickname: string;
-  descriptition: string;
+  introduction: string;
 };
 
 // styled components
@@ -17,7 +17,7 @@ function ProfileEditForm() {
     console.log('nickname change');
   };
   const onChangeDescripttion = () => {
-    console.log('descripttion change');
+    console.log('bio change');
   };
 
   return (
@@ -32,9 +32,9 @@ function ProfileEditForm() {
         />
       </div>
       <div>
-        <label htmlFor="description">소개</label>
+        <label htmlFor="introduction">소개</label>
         <Input.Search
-          name="descriptition"
+          name="introduction"
           onSearch={onChangeDescripttion}
           maxLength={40}
           enterButton="변경"

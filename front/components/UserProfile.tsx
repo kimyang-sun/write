@@ -22,7 +22,7 @@ function UserProfile({ loading, user, logout }: UserProfileProps) {
       <Card.Meta
         avatar={<Avatar>{user.nickname}</Avatar>}
         title={user.nickname}
-        description={user.description}
+        description={user.introduction}
       />
       <Button onClick={logout} loading={loading}>
         로그아웃

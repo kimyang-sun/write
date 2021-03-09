@@ -8,6 +8,9 @@ export default (sequelize, DataTypes) => {
     },
     { charset: 'utf8mb4', collate: 'utf8_general_ci' } // 한글적용 이모티콘 저장을 위해 mb4를 붙혀줍니다.
   );
-  Comment.associate = db => {};
+  Comment.associate = db => {
+    db.Comment.belongsTo(db.User);
+    db.Comment.belongsTo(db.Post);
+  };
   return User;
 };

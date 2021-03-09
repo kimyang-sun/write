@@ -27,7 +27,7 @@ export type UserDataPayload = {
   id: number;
   userEmail: string;
   nickname: string;
-  description: string;
+  introduction: string;
   Posts: { postId: number }[];
   Followers: Follow[];
   Followings: Follow[];

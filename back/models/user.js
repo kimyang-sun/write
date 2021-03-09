@@ -9,12 +9,25 @@ export default (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING(30), allowNull: false, unique: true },
       nickname: { type: DataTypes.STRING(30), allowNull: false },
       password: { type: DataTypes.STRING(100), allowNull: false },
-      description: { type: DataTypes.STRING(50), allowNull: true },
+      introduction: { type: DataTypes.STRING(50), allowNull: true },
+      avatar: { type: DataTypes.STRING(200), allowNull: true },
     },
     { charset: 'utf8', collate: 'utf8_general_ci' } // 한글적용
   );
   User.associate = db => {
-    db.User.hasMany(db.Post); // 유저가 포스트를 여러개 가질 수 있다.
+    db.User.hasMany(db.Post); // 유저가 게시글을 여러개 가질 수 있다.
+    db.User.hasMany(db.Comment);
+    db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' }); // 하나의 유저가 여러개의 게시글 좋아요가 가능하다. (중간 테이블의 이름을 Like로 변경)
+    db.User.belongsToMany(db.User, {
+      through: 'Follow',
+      as: 'Followers',
+      foreignKey: 'FollowingId',
+    }); // 나를 팔로우 한 사람을 찾으려면 팔로잉을 먼저 찾아야 합니다.
+    db.User.belongsToMany(db.User, {
+      through: 'Follow',
+      as: 'Followings',
+      foreignKey: 'FollowerId',
+    });
   };
   return User;
 };
