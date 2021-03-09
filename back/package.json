@@ -2,6 +2,7 @@
   "name": "write-back",
   "version": "0.1.0",
   "description": "React Write App (Back)",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "start": "tsc-watch --onSuccess \"ts-node dist/app.js\""

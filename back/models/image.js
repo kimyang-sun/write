@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   // MySQL에는 users 테이블로 생성됩니다.
   const Image = sequelize.define(
     'Image',
@@ -11,5 +11,5 @@ export default (sequelize, DataTypes) => {
   Image.associate = db => {
     db.Image.belongsTo(db.Post);
   };
-  return User;
+  return Image;
 };
