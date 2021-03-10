@@ -1,11 +1,11 @@
+import React, { useEffect, useState } from 'react';
+import usePost from 'store/modules/postHook';
+import useUser from 'store/modules/userHook';
 import { Button } from 'antd';
 import PageTitle from 'components/PageTitle';
 import PostForm from 'components/PostForm';
 import PostCard from 'components/PostCard';
-import React, { useEffect, useState } from 'react';
 import { generateDummyPost, Post } from 'store/modules/post';
-import usePost from 'store/modules/postHook';
-import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 
 // styled components

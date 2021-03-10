@@ -1,7 +1,7 @@
-import { Button } from 'antd';
 import React, { useCallback } from 'react';
-import { Post } from 'store/modules/post';
 import useUser from 'store/modules/userHook';
+import { Button } from 'antd';
+import { Post } from 'store/modules/post';
 
 // Types
 type FollowButtonProps = {

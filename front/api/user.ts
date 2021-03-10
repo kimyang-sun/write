@@ -12,7 +12,7 @@ export function loginAPI(data: LoginRequestPayload) {
   // return axios.post('api/login', data);
   const userData: UserDataPayload = {
     id: shortId.generate(),
-    userEmail: data.userEmail,
+    email: data.email,
     nickname: '선양',
     introduction: '배움을 즐기는 개발자입니다.',
     Posts: [],
@@ -38,7 +38,7 @@ export function logoutAPI(data: LoginRequestPayload) {
 }
 
 export function signUpAPI(data: SignUpRequestPayload) {
-  return axios.post('http://localhost:3006/user');
+  return axios.post('http://localhost:3006/user', data);
 }
 
 export function followAPI(data: FollowRequestPayload) {

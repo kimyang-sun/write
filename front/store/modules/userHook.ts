@@ -13,9 +13,15 @@ import {
 
 // 커스텀 훅
 export default function useUser() {
-  const { userData, userLoading, followLoading } = useSelector(
-    (state: RootState) => state.user
-  );
+  const {
+    userData,
+    loginLoading,
+    logoutLoading,
+    followLoading,
+    signUpLoading,
+    signUpDone,
+    signUpError,
+  } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const login = useCallback((data: LoginRequestPayload) => {
@@ -42,10 +48,14 @@ export default function useUser() {
   );
 
   return {
-    userLoading,
+    loginLoading,
+    logoutLoading,
     userData,
     login,
     logout,
+    signUpLoading,
+    signUpDone,
+    signUpError,
     signUp,
     followLoading,
     follow,

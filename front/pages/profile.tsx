@@ -1,10 +1,10 @@
+import React, { useEffect } from 'react';
+import useUser from 'store/modules/userHook';
 import ProfileEditForm from 'components/ProfileEditForm';
 import FollowList from 'components/FollowList';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
 import PageTitle from 'components/PageTitle';
 import styled from 'styled-components';
-import useUser from 'store/modules/userHook';
 import Router from 'next/router';
 
 // Types

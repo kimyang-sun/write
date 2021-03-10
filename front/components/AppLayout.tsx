@@ -1,10 +1,10 @@
 import { Col, Row } from 'antd';
 import React from 'react';
+import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import Header from './Header';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
-import useUser from 'store/modules/userHook';
 
 // Types
 type AppLayoutProps = {
@@ -18,7 +18,7 @@ const StyledRow = styled(Row)`
 
 // export
 function AppLayout({ children }: AppLayoutProps) {
-  const { userLoading, login, logout, userData } = useUser();
+  const { loginLoading, logoutLoading, login, logout, userData } = useUser();
   return (
     <div>
       <Header />
@@ -26,12 +26,12 @@ function AppLayout({ children }: AppLayoutProps) {
         <Col xs={24} xl={6}>
           {userData ? (
             <UserProfile
-              loading={userLoading}
+              loading={logoutLoading}
               logout={logout}
               user={userData}
             />
           ) : (
-            <LoginForm loading={userLoading} login={login} />
+            <LoginForm loading={loginLoading} login={login} />
           )}
         </Col>
         <Col xs={24} xl={12}>

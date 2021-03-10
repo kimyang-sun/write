@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 // Yup으로 유효성 검사
 export const loginValidation = yup.object({
-  userEmail: yup
+  email: yup
     .string()
     .email('이메일 형식이 아닙니다.')
     .required('이메일을 입력해주세요.'),
@@ -14,7 +14,7 @@ export const loginValidation = yup.object({
 });
 
 export const signUpValidation = yup.object({
-  userEmail: yup
+  email: yup
     .string()
     .email('이메일 형식이 아닙니다.')
     .required('이메일을 입력해주세요.'),

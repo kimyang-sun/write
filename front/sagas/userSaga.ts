@@ -2,7 +2,6 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import {
   LoginRequestPayload,
-  UserDataPayload,
   loginRequest,
   loginFailure,
   loginSuccess,
@@ -58,7 +57,7 @@ function* logout() {
 function* signUp(action: PayloadAction<SignUpRequestPayload>) {
   try {
     const result = yield call(signUpAPI, action.payload);
-    yield put(signUpSuccess(result));
+    yield put(signUpSuccess());
   } catch (e) {
     yield put(signUpFailure(e.response.data));
   }

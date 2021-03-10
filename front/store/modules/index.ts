@@ -16,7 +16,6 @@ const rootReducer = (state: RootStateType, action: AnyAction) => {
     // HYDRATE를 추가해주기 위해 switch로 추가해줬습니다.
     // 서버에서 생성한 스토어의 상태를 클라이언트에 합쳐주는 작업
     case HYDRATE:
-      console.log('HYDRATE');
       return action.payload;
 
     default: {

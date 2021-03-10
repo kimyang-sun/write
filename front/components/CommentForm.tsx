@@ -1,9 +1,9 @@
-import { Button, Form, Input } from 'antd';
 import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Post } from 'store/modules/post';
 import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
+import { Controller, useForm } from 'react-hook-form';
+import { Post } from 'store/modules/post';
+import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
 import shortId from 'shortid';
 

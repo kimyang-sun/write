@@ -1,5 +1,7 @@
 import * as express from 'express';
+import userRouter from './routes/user';
 import postRouter from './routes/post';
+const cors = require('cors');
 const db = require('../models');
 
 const app: express.Application = express();
@@ -10,6 +12,10 @@ db.sequelize
     console.log('db 연결 성공');
   })
   .catch(console.error);
+
+// 이 코드는 위에쪽에 있어야함.
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req: express.Request, res: express.Response) => {
   res.send('hello express');
@@ -23,6 +29,13 @@ app.get('/posts', (req: express.Request, res: express.Response) => {
   ]);
 });
 
+app.use(
+  cors({
+    origin: '*',
+    credentials: false,
+  })
+);
+app.use('/user', userRouter);
 app.use('/post', postRouter);
 
 app.listen(3006, () => {

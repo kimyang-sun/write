@@ -1,3 +1,13 @@
+import React, { useState } from 'react';
+import usePost from 'store/modules/postHook';
+import useUser from 'store/modules/userHook';
+import { PostComment, Post } from 'store/modules/post';
+import styled from 'styled-components';
+import CommentForm from './CommentForm';
+import FollowButton from './FollowButton';
+import PostHashtag from './PostHashtag';
+import PostImages from './PostImages';
+import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
 import {
   HeartOutlined,
   RetweetOutlined,
@@ -5,16 +15,6 @@ import {
   EllipsisOutlined,
   HeartTwoTone,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
-import React, { useState } from 'react';
-import { PostComment, Post } from 'store/modules/post';
-import usePost from 'store/modules/postHook';
-import useUser from 'store/modules/userHook';
-import styled from 'styled-components';
-import CommentForm from './CommentForm';
-import FollowButton from './FollowButton';
-import PostHashtag from './PostHashtag';
-import PostImages from './PostImages';
 
 // Types
 type PostCardProps = {

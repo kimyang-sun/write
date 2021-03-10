@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpValidation } from 'lib/yup';
 import FormErrorMessage from 'components/FormErrorMessage';
-import useUser from 'store/modules/userHook';
+import Router from 'next/router';
 
 // Types
 type SignUpFormType = {
-  userEmail: string;
+  email: string;
   nickname: string;
   password: string;
   password2: string;
@@ -34,42 +35,46 @@ const StyledSignUpForm = styled(Form)`
 
 // export
 function SignUpForm() {
-  const { handleSubmit, errors, control, reset } = useForm<SignUpFormType>({
+  const { signUp, signUpLoading, signUpDone, signUpError } = useUser();
+  const { handleSubmit, errors, control } = useForm<SignUpFormType>({
     resolver: yupResolver(signUpValidation),
     mode: 'onBlur',
   });
 
   const onSubmit = handleSubmit((data: SignUpFormType) => {
-    console.log(data);
-    const { signUp } = useUser();
     signUp({
-      userEmail: data.userEmail,
+      email: data.email,
       nickname: data.nickname,
       password: data.password,
     });
-    reset({
-      userEmail: '',
-      nickname: '',
-      password: '',
-      password2: '',
-      term: false,
-    });
   });
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   return (
     <StyledSignUpForm onFinish={onSubmit} size="large">
       <div>
-        <label htmlFor="userEmail">이메일</label>
+        <label htmlFor="email">이메일</label>
         <Controller
           as={<Input />}
           type="text"
-          name="userEmail"
+          name="email"
           control={control}
           placeholder="이메일을 입력해주세요."
           defaultValue=""
         />
-        {errors.userEmail && (
-          <FormErrorMessage errorMessage={errors.userEmail.message} />
+        {errors.email && (
+          <FormErrorMessage errorMessage={errors.email.message} />
         )}
       </div>
       <div>
@@ -101,7 +106,7 @@ function SignUpForm() {
         )}
       </div>
       <div>
-        <label htmlFor="password2">비밀번호</label>
+        <label htmlFor="password2">비밀번호 확인</label>
         <Controller
           as={<Input />}
           type="password"
@@ -131,7 +136,7 @@ function SignUpForm() {
         {errors.term && <FormErrorMessage errorMessage={errors.term.message} />}
       </div>
       <div>
-        <Button type="primary" htmlType="submit" block>
+        <Button loading={signUpLoading} type="primary" htmlType="submit" block>
           가입하기
         </Button>
       </div>
