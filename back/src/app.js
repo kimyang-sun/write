@@ -1,15 +1,17 @@
-import * as express from 'express';
-import userRouter from './routes/user';
-import postRouter from './routes/post';
+const express = require('express');
 const cors = require('cors');
-const db = require('../models');
+const passportConfig = require('../passport');
 
-const app: express.Application = express();
+const db = require('../models');
+const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
+
+const app = express();
 
 db.sequelize
   .sync()
   .then(() => {
-    console.log('db 연결 성공');
+    console.log('db 연결 성공 😶');
   })
   .catch(console.error);
 
@@ -17,11 +19,11 @@ db.sequelize
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req: express.Request, res: express.Response) => {
+app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/posts', (req: express.Request, res: express.Response) => {
+app.get('/posts', (req, res) => {
   res.json([
     { id: 1, content: 'hello' },
     { id: 2, content: 'hello2' },
@@ -39,7 +41,7 @@ app.use('/user', userRouter);
 app.use('/post', postRouter);
 
 app.listen(3006, () => {
-  console.log('실행중');
+  console.log('실행중 😶');
 });
 
 /*  보통은 이렇게 사용합니다.

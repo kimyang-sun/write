@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { all, fork } from 'redux-saga/effects';
 import {
   watchLoadPosts,
@@ -12,6 +13,9 @@ import {
   watchUnFollow,
   watchSignUp,
 } from './userSaga';
+
+// Axios Config Defaults
+axios.defaults.baseURL = 'http://localhost:3006';
 
 // rootSaga를 만들어줘서 store에 추가해주어야 합니다.
 export default function* rootSaga() {

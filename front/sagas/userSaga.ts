@@ -32,7 +32,6 @@ import {
 // 여기서는 밑에 loginRequest의 액션이 인자로 들어옵니다.
 function* login(action: PayloadAction<LoginRequestPayload>) {
   try {
-    yield delay(1000); // 테스트를 위한 가짜 딜레이
     // fork는 비동기 call은 동기
     // fork를 쓰면 불러온것들을 result에 넣어줘야 하는데 바로 다음코드가 실행됨
     const result = yield call(loginAPI, action.payload);
