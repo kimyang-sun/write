@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpValidation } from 'lib/yup';
 import FormErrorMessage from 'components/FormErrorMessage';
+import useUser from 'store/modules/userHook';
 
 // Types
 type SignUpFormType = {
@@ -40,6 +41,12 @@ function SignUpForm() {
 
   const onSubmit = handleSubmit((data: SignUpFormType) => {
     console.log(data);
+    const { signUp } = useUser();
+    signUp({
+      userEmail: data.userEmail,
+      nickname: data.nickname,
+      password: data.password,
+    });
     reset({
       userEmail: '',
       nickname: '',

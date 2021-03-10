@@ -1,5 +1,4 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { call, delay, put, takeLatest, takeLeading } from 'redux-saga/effects';
 import {
   Post,
@@ -18,26 +17,12 @@ import {
   addCommentFailure,
 } from 'store/modules/post';
 import { addUserPost, removeUserPost } from 'store/modules/user';
-
-// API 요청
-function loadPostsAPI(data: Post[]) {
-  return data;
-}
-
-function addPostAPI(data: Post) {
-  // return axios.post('/api/post', data);
-  return data;
-}
-
-function removePostAPI(data: { postId: number }) {
-  // return axios.post('/api/post', data);
-  return data;
-}
-
-function addCommentAPI(data: PostComment) {
-  // return axios.post('/api/post/${data.commentId}/comment', data);
-  return data;
-}
+import {
+  loadPostsAPI,
+  addPostAPI,
+  removePostAPI,
+  addCommentAPI,
+} from 'api/post';
 
 // Saga 실행함수
 function* loadPosts(action: PayloadAction<Post[]>) {

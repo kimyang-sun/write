@@ -1,6 +1,4 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import shortId from 'shortid';
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import {
   LoginRequestPayload,
@@ -23,51 +21,13 @@ import {
   unFollowSuccess,
   unFollowFailure,
 } from 'store/modules/user';
-
-// API 요청
-function loginAPI(data: LoginRequestPayload) {
-  // return axios.post('api/login', data);
-  const userData: UserDataPayload = {
-    id: shortId.generate(),
-    userEmail: data.userEmail,
-    nickname: '선양',
-    introduction: '배움을 즐기는 개발자입니다.',
-    Posts: [],
-    Followers: [
-      { id: shortId.generate(), nickname: '류태연' },
-      { id: shortId.generate(), nickname: '민병관' },
-      { id: shortId.generate(), nickname: '박희진' },
-      { id: shortId.generate(), nickname: '임서윤 & 임이슬' },
-    ],
-    Followings: [
-      { id: shortId.generate(), nickname: '류태연' },
-      { id: shortId.generate(), nickname: '민병관' },
-      { id: shortId.generate(), nickname: '박희진' },
-      { id: shortId.generate(), nickname: '임서윤 & 임이슬' },
-    ],
-  };
-  return userData;
-}
-
-function logoutAPI(data: LoginRequestPayload) {
-  // return axios.post('api/login', data);
-
-  return data;
-}
-
-function signUpAPI(data: SignUpRequestPayload) {
-  // return axios.post('api/signup', data);
-  const signUpData = {};
-  return signUpData;
-}
-
-function followAPI(data: FollowRequestPayload) {
-  return data;
-}
-
-function unFollowAPI(data: FollowRequestPayload) {
-  return data;
-}
+import {
+  followAPI,
+  loginAPI,
+  logoutAPI,
+  signUpAPI,
+  unFollowAPI,
+} from 'api/user';
 
 // Saga 실행 함수
 // 여기서는 밑에 loginRequest의 액션이 인자로 들어옵니다.
@@ -97,7 +57,6 @@ function* logout() {
 
 function* signUp(action: PayloadAction<SignUpRequestPayload>) {
   try {
-    yield delay(1000);
     const result = yield call(signUpAPI, action.payload);
     yield put(signUpSuccess(result));
   } catch (e) {

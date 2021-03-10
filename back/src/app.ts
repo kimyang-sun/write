@@ -25,7 +25,7 @@ app.get('/posts', (req: express.Request, res: express.Response) => {
 
 app.use('/post', postRouter);
 
-app.listen(3005, () => {
+app.listen(3006, () => {
   console.log('실행중');
 });
 
