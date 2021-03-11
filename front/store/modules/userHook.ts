@@ -16,7 +16,9 @@ export default function useUser() {
   const {
     userData,
     loginLoading,
+    loginError,
     logoutLoading,
+    logoutError,
     followLoading,
     signUpLoading,
     signUpDone,
@@ -49,7 +51,9 @@ export default function useUser() {
 
   return {
     loginLoading,
+    loginError,
     logoutLoading,
+    logoutError,
     userData,
     login,
     logout,

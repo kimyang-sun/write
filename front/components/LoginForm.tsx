@@ -1,6 +1,6 @@
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +12,7 @@ import { LoginRequestPayload } from 'store/modules/user';
 type LoginFormProps = {
   loading: boolean;
   login: (data: LoginRequestPayload) => void;
+  loginError: string;
 };
 
 type LoginFormType = {
@@ -42,7 +43,7 @@ const StyledLoginForm = styled(Form)`
 `;
 
 // export
-function LoginForm({ loading, login }: LoginFormProps) {
+function LoginForm({ loading, login, loginError }: LoginFormProps) {
   const { handleSubmit, errors, control } = useForm<LoginFormType>({
     resolver: yupResolver(loginValidation),
     mode: 'onBlur',
@@ -50,6 +51,11 @@ function LoginForm({ loading, login }: LoginFormProps) {
   const onSubmit = handleSubmit((data: LoginFormType) => {
     login(data);
   });
+
+  // 로그인 에러
+  useEffect(() => {
+    if (loginError) alert(loginError);
+  }, [loginError]);
 
   return (
     <StyledLoginForm onFinish={onSubmit} size="large">

@@ -49,16 +49,17 @@ function SignUpForm() {
     });
   });
 
+  // 회원가입 완료
   useEffect(() => {
     if (signUpDone) {
-      Router.push('/');
+      alert('회원가입이 완료되었습니다.');
+      Router.replace('/');
     }
   }, [signUpDone]);
 
+  // 회원가입 에러
   useEffect(() => {
-    if (signUpError) {
-      alert(signUpError);
-    }
+    if (signUpError) alert(signUpError);
   }, [signUpError]);
 
   return (

@@ -19,7 +19,9 @@ function Profile() {
   const { userData } = useUser();
   useEffect(() => {
     if (!(userData && userData.id)) {
-      Router.push('/');
+      // push와 다른점은 push는 이동시키고 뒤로가기를 누르면 다시 그페이지로 감
+      // replace는 아예 기록도 없애서 뒤로가기가 남지않음.
+      Router.replace('/');
     }
   }, [userData && userData.id]);
 

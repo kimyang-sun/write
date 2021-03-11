@@ -3,15 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 초기 상태 타입
 export type UserState = {
   loginLoading: boolean;
-  loginError: any;
+  loginError: string;
   logoutLoading: boolean;
-  logoutError: any;
+  logoutError: string;
   signUpLoading: boolean;
   signUpDone: boolean;
-  signUpError: any;
+  signUpError: string;
   followLoading: number;
-  followError: any;
-  unFollowError: any;
+  followError: string;
+  unFollowError: string;
   userData: UserDataPayload;
 };
 
@@ -82,7 +82,7 @@ const userSlice = createSlice({
       state.userData = action.payload;
     },
 
-    loginFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+    loginFailure(state: UserState, action: PayloadAction<string>) {
       state.loginLoading = false;
       state.loginError = action.payload;
     },
@@ -99,7 +99,7 @@ const userSlice = createSlice({
       state.signUpDone = false;
     },
 
-    logoutFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+    logoutFailure(state: UserState, action: PayloadAction<string>) {
       state.logoutLoading = false;
       state.logoutError = action.payload;
     },
@@ -119,7 +119,7 @@ const userSlice = createSlice({
       state.signUpDone = true;
     },
 
-    signUpFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+    signUpFailure(state: UserState, action: PayloadAction<string>) {
       state.signUpLoading = false;
       state.signUpError = action.payload;
     },
@@ -158,7 +158,7 @@ const userSlice = createSlice({
       });
     },
 
-    followFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+    followFailure(state: UserState, action: PayloadAction<string>) {
       state.followLoading = null;
       state.followError = action.payload;
     },
@@ -181,7 +181,7 @@ const userSlice = createSlice({
       );
     },
 
-    unFollowFailure(state: UserState, action: PayloadAction<{ error: any }>) {
+    unFollowFailure(state: UserState, action: PayloadAction<string>) {
       state.followLoading = null;
       state.unFollowError = action.payload;
     },

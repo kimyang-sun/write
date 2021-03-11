@@ -36,7 +36,7 @@ function* login(action: PayloadAction<LoginRequestPayload>) {
     // fork를 쓰면 불러온것들을 result에 넣어줘야 하는데 바로 다음코드가 실행됨
     const result = yield call(loginAPI, action.payload);
     //요청 성공시
-    yield put(loginSuccess(result));
+    yield put(loginSuccess(result.data));
   } catch (e) {
     // 요청 실패시
     yield put(loginFailure(e.response.data));
@@ -45,8 +45,7 @@ function* login(action: PayloadAction<LoginRequestPayload>) {
 
 function* logout() {
   try {
-    yield delay(1000);
-    // const result = yield call(logoutAPI);
+    yield call(logoutAPI);
     yield put(logoutSuccess());
   } catch (e) {
     yield put(logoutFailure(e.response.data));
@@ -55,7 +54,7 @@ function* logout() {
 
 function* signUp(action: PayloadAction<SignUpRequestPayload>) {
   try {
-    const result = yield call(signUpAPI, action.payload);
+    yield call(signUpAPI, action.payload);
     yield put(signUpSuccess());
   } catch (e) {
     yield put(signUpFailure(e.response.data));

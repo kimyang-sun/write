@@ -1,29 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User } = require('../../models');
-
+const { User, Post } = require('../../models');
+const db = require('../../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
-
-// 로그인 - POST /user/login
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      console.error(err);
-      next(err);
-    }
-    if (info) {
-      return res.status(401).send(info.reason);
-    }
-    return req.login(user, async loginErr => {
-      if (loginErr) {
-        console.error(loginErr);
-        return next(loginErr);
-      }
-      return res.json(user);
-    });
-  })(req, res, next);
-});
 
 // 회원가입 - POST /user/
 router.post('/', async (req, res, next) => {
@@ -54,6 +35,53 @@ router.post('/', async (req, res, next) => {
     console.error(e);
     next(e);
   }
+});
+
+// 로그인 - POST /user/login
+router.post('/login', isNotLoggedIn, (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      next(err);
+    }
+    if (info) {
+      return res.status(401).send(info.reason);
+    }
+    return req.login(user, async loginErr => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+
+      // 비밀번호는 굳이 프론트로 보내줄 필요가 없어서 제외해주고 Post 정보도 같이 넣어줌
+      const userWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: { exclude: ['password'] }, // 비밀번호 제외
+        include: [
+          {
+            model: Post,
+          },
+          {
+            model: User,
+            as: 'Followers',
+          },
+          {
+            model: User,
+            as: 'Followings',
+          },
+        ],
+      });
+
+      return res.status(200).json(userWithoutPassword); // 완료되면 유저정보를 프론트로 보내줌
+    });
+  })(req, res, next);
+});
+
+// 로그아웃 - POST /user/logout
+router.post('/logout', isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('ok');
 });
 
 module.exports = router;

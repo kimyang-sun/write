@@ -18,7 +18,15 @@ const StyledRow = styled(Row)`
 
 // export
 function AppLayout({ children }: AppLayoutProps) {
-  const { loginLoading, logoutLoading, login, logout, userData } = useUser();
+  const {
+    loginLoading,
+    loginError,
+    logoutLoading,
+    logoutError,
+    login,
+    logout,
+    userData,
+  } = useUser();
   return (
     <div>
       <Header />
@@ -28,10 +36,15 @@ function AppLayout({ children }: AppLayoutProps) {
             <UserProfile
               loading={logoutLoading}
               logout={logout}
+              logoutError={logoutError}
               user={userData}
             />
           ) : (
-            <LoginForm loading={loginLoading} login={login} />
+            <LoginForm
+              loading={loginLoading}
+              login={login}
+              loginError={loginError}
+            />
           )}
         </Col>
         <Col xs={24} xl={12}>
