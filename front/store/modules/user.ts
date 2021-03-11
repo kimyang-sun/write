@@ -30,8 +30,9 @@ export type LoginRequestPayload = {
 export type UserDataPayload = {
   id: number;
   email: string;
+  avatar: any | null;
   nickname: string;
-  introduction: string;
+  introduction: string | null;
   Posts: { postId: number }[];
   Followers: Follow[];
   Followings: Follow[];

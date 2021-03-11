@@ -2,11 +2,22 @@ import React, { useCallback } from 'react';
 import useUser from 'store/modules/userHook';
 import { Button } from 'antd';
 import { Post } from 'store/modules/post';
+import styled from 'styled-components';
 
 // Types
 type FollowButtonProps = {
   post: Post;
 };
+
+// styled components
+const StyledFollowButton = styled(Button)`
+  padding: 0 8px;
+  margin-left: 12px;
+
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    font-size: 0.813rem;
+  }
+`;
 
 function FollowButton({ post }: FollowButtonProps) {
   const { userData, follow, followLoading, unFollow } = useUser();
@@ -24,9 +35,9 @@ function FollowButton({ post }: FollowButtonProps) {
   }, [isFollowing]);
 
   return (
-    <Button loading={followLoading === post.id} onClick={onFollow}>
+    <StyledFollowButton loading={followLoading === post.id} onClick={onFollow}>
       {isFollowing ? '언팔로우' : '팔로우'}
-    </Button>
+    </StyledFollowButton>
   );
 }
 export default FollowButton;

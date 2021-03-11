@@ -1,16 +1,16 @@
-// 한글식 표기
 function createDate(): string {
-  const today = new Date();
-  const dateString = today.toLocaleDateString('ko-KR', {
+  const today = new Date(); // 현재 날짜
+  const year = today.toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
-    day: 'numeric',
   });
-  const dayName = today.toLocaleDateString('ko-KR', {
-    weekday: 'long',
+  const month = today.toLocaleDateString('en-US', {
+    month: '2-digit',
+  });
+  const day = today.toLocaleDateString('en-US', {
+    day: '2-digit',
   });
 
-  return `${dateString} ${dayName}`;
+  return `${year}.${month}.${day}`;
 }
 
 export default createDate;

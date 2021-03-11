@@ -66,7 +66,7 @@ const initialState: PostState = {
         { src: 'https://picsum.photos/400/400' },
         { src: 'https://picsum.photos/500/500' },
       ],
-      date: '2021년 03월 06일 토요일',
+      date: '2021.03.06',
       Comments: [
         {
           id: 1,
@@ -117,7 +117,7 @@ export const generateDummyPost = (num: number) =>
           src: faker.image.image(),
         },
       ],
-      date: '2021년 03월 06일 토요일',
+      date: '2021.03.06',
       Comments: [
         {
           id: shortId.generate(),

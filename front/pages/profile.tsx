@@ -33,7 +33,7 @@ function Profile() {
       <PageTitle title="프로필" />
       {userData ? (
         <>
-          <ProfileEditForm />
+          <ProfileEditForm user={userData} />
           <FollowListContainer>
             <FollowList header="팔로워 목록" data={userData.Followers} />
             <FollowList header="팔로잉 목록" data={userData.Followings} />

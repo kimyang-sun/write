@@ -21,7 +21,7 @@ export const signUpValidation = yup.object({
   nickname: yup
     .string()
     .required('닉네임을 입력해주세요.')
-    .max(15, '닉네임은 15자리 이하여야 합니다.')
+    .max(12, '닉네임은 12자리 이하여야 합니다.')
     .min(2, '닉네임은 2자리 이상이어야 합니다.'),
   password: yup
     .string()

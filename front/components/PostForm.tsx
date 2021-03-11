@@ -80,13 +80,6 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
       date: date,
       Comments: [],
     });
-
-    // addPostDone 게시글 작성이 완료되면 창을 닫아줍니다.
-    // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 창이 닫힐수가 있습니다.
-    if (addPostDone) {
-      console.log('false!');
-      setPostCreating(false);
-    }
   });
 
   const onClose = useCallback(() => {
@@ -96,6 +89,12 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
   const onClickImageUpload = useCallback(() => {
     imageInputRef.current && imageInputRef.current.click();
   }, []);
+
+  // addPostDone 게시글 작성이 완료되면 창을 닫아줍니다.
+  // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 창이 닫힐수가 있습니다.
+  useEffect(() => {
+    if (addPostDone) setPostCreating(false);
+  }, [addPostDone]);
 
   return (
     <Dialog onClose={onClose}>
@@ -128,6 +127,7 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
           hidden
         />
         <Button onClick={onClickImageUpload}>사진 업로드</Button>
+        <p>사진을 첨부하지 않으면 랜덤이미지가 등록됩니다.</p>
         <ImagePaths />
         <Controller
           as={<Input />}

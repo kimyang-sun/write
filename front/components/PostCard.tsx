@@ -26,12 +26,29 @@ const StyledPostCard = styled.div`
   margin-top: 24px;
   .ant-card-body {
     position: relative;
+    padding: 20px;
+  }
+  .ant-card-meta-avatar {
+    padding-right: 10px;
   }
   .post-date {
     font-size: 0.813rem;
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 15px;
+  }
+
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    .ant-card-body {
+      font-size: 0.813rem;
+      padding-top: 35px;
+    }
+    .ant-card-meta-title {
+      font-size: 0.875rem;
+    }
+    .post-date {
+      top: 10px;
+    }
   }
 `;
 
@@ -96,11 +113,15 @@ function PostCard({ post }: PostCardProps) {
             <EllipsisOutlined key="more" />
           </Popover>,
         ]}
-        extra={userId && <FollowButton post={post} />}
       >
         <Card.Meta
-          avatar={<Avatar>선양</Avatar>}
-          title={post.User.nickname}
+          avatar={<Avatar>{post.User.nickname.charAt(0)}</Avatar>}
+          title={
+            <>
+              {post.User.nickname}
+              {userId && <FollowButton post={post} />}
+            </>
+          }
           description={
             <>
               <PostHashtag hashtag={post.hashtag} />
@@ -119,7 +140,7 @@ function PostCard({ post }: PostCardProps) {
               <List.Item>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>선양</Avatar>}
+                  avatar={<Avatar>{item.User.nickname.charAt(0)}</Avatar>}
                   content={item.content}
                 />
               </List.Item>
