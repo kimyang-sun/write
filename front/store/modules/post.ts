@@ -167,6 +167,10 @@ const postSlice = createSlice({
       state.addPostDone = true;
     },
 
+    addPostComplete(state: PostState) {
+      state.addPostDone = false;
+    },
+
     addPostFailure(state: PostState, action: PayloadAction<{ error: any }>) {
       state.addPostLoading = false;
       state.error = action.payload;
@@ -243,6 +247,7 @@ export const {
   loadPostsFailure,
   addPostRequest,
   addPostSuccess,
+  addPostComplete,
   addPostFailure,
   removePostRequest,
   removePostSuccess,

@@ -8,6 +8,7 @@ import {
   loadPostsFailure,
   addPostRequest,
   addPostSuccess,
+  addPostComplete,
   addPostFailure,
   removePostRequest,
   removePostSuccess,
@@ -41,6 +42,7 @@ function* addPost(action: PayloadAction<Post>) {
     const result = yield call(addPostAPI, action.payload);
     yield put(addPostSuccess(result));
     yield put(addUserPost({ postId: result.id }));
+    yield put(addPostComplete());
   } catch (e) {
     yield put(addPostFailure(e.response.data));
   }

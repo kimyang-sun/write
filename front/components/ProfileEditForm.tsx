@@ -3,6 +3,8 @@ import { UserDataPayload } from 'store/modules/user';
 import styled from 'styled-components';
 import { Input, Button, Form, Avatar } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
+import ImageCropper from './ImageCropper';
+import { readFile } from 'lib/readFile';
 
 // Types
 type ProfileEditFormProps = {
@@ -34,6 +36,8 @@ const StyledProfileEditForm = styled(Form)`
 // export
 function ProfileEditForm({ user }: ProfileEditFormProps) {
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const [inputImg, setInputImg] = useState<string | ArrayBuffer>(null);
+  const [blob, setBlob] = useState(null);
   const [avatarImage, setAvatarImage] = useState(
     user.avatar ? user.avatar : null
   );
@@ -59,8 +63,26 @@ function ProfileEditForm({ user }: ProfileEditFormProps) {
     imageInputRef.current && imageInputRef.current.click();
   }, []);
 
+  // 사진 업로드
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 이미지 파일을 문자열로 변환
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      let imageDataUrl: any = await readFile(file);
+      setInputImg(imageDataUrl);
+    }
+  };
+
+  // 사진 업로드 버튼을 누른 후에 실행되는 콜백함수 (아바타 미리보기 변경)
+  useEffect(() => {
+    if (blob) {
+      setAvatarImage(blob);
+    }
+  }, [blob]);
+
   // 사진 지우기 클릭
   const onClickImageErase = useCallback(() => {
+    setBlob(null);
     setAvatarImage(null);
   }, []);
 
@@ -77,6 +99,7 @@ function ProfileEditForm({ user }: ProfileEditFormProps) {
           }}
           accept="image/*"
           hidden
+          onChange={onFileChange}
         />
         {avatarImage ? (
           <Avatar src={avatarImage} />
@@ -91,7 +114,13 @@ function ProfileEditForm({ user }: ProfileEditFormProps) {
           사진 지우기
         </Button>
       </div>
-
+      {inputImg && (
+        <ImageCropper
+          inputImg={inputImg}
+          setInputImg={setInputImg}
+          setBlob={setBlob}
+        />
+      )}
       <div className="input-box">
         <label htmlFor="nickname">닉네임 (최소 2글자, 최대 12글자)</label>
         <Controller
