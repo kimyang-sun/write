@@ -27,7 +27,7 @@ export type Post = {
   UserId: string;
   content: string;
   tag: string;
-  Images?: { src: string }[];
+  Images: { src: string }[];
   date: string;
   Comments?: PostComment[];
 };
@@ -156,7 +156,6 @@ const postSlice = createSlice({
       state: PostState,
       action: PayloadAction<{ postId: number }>
     ) {
-      console.log('remove');
       state.mainPosts = state.mainPosts.filter(
         post => post.id !== action.payload.postId
       );

@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const db = require('../models');
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const passportConfig = require('../passport');
 
 dotenv.config();
@@ -47,6 +48,7 @@ app.use(
 );
 app.use('/user', userRouter);
 app.use('/post', postRouter);
+// app.use('/posts', postsRouter);
 
 app.listen(3006, () => {
   console.log('서버 실행중 😶');

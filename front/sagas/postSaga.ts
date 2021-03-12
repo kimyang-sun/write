@@ -29,7 +29,6 @@ import {
 // Saga 실행함수
 function* loadPosts(action: PayloadAction<Post[]>) {
   try {
-    yield delay(1000);
     const result = yield call(loadPostsAPI, action.payload);
     yield put(loadPostsSuccess(result));
   } catch (e) {
@@ -39,7 +38,6 @@ function* loadPosts(action: PayloadAction<Post[]>) {
 
 function* addPost(action: PayloadAction<Post>) {
   try {
-    yield delay(1000);
     const result = yield call(addPostAPI, action.payload);
     yield put(addPostSuccess(result.data));
     yield put(addUserPost({ postId: result.data.id }));

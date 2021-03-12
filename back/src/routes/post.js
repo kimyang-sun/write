@@ -9,11 +9,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.create({
       content: req.body.content,
+      tag: req.body.tag,
       UserId: req.user.id,
     });
     // 기본정보에는 content, UserId 밖에 없어서 더 추가해줍니다.
     const fullPost = await Post.findOne({
       where: { id: post.id }, // 작성하는 해당 post를 찾아서
+      attributes: { exclude: ['password'] },
       include: [
         {
           model: Image, // 해당 글의 이미지도 넣어주고

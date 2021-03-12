@@ -54,10 +54,13 @@ function PostImages({ images, content }: PostImagesProps) {
     setShowImageMore(false);
   }, []);
 
-  // 글 내용 열고닫
+  // 글 내용 열고닫기
   const onContentToggle = useCallback(() => {
     setContentOpened(contentOpened => !contentOpened);
   }, []);
+  if (images.length === 0) {
+    return;
+  }
 
   if (images.length === 1) {
     return (

@@ -72,7 +72,7 @@ function PostCard({ post }: PostCardProps) {
     <StyledPostCard>
       <Card
         cover={
-          post.Images && (
+          post.Images.length > 0 && (
             <PostImages images={post.Images} content={post.content} />
           )
         }

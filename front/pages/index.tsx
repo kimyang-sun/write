@@ -61,9 +61,7 @@ function Home() {
       {mainPosts.map((post: Post) => (
         <PostCard key={post.id} post={post} />
       ))}
-      {postCreating && (
-        <PostForm user={userData} setPostCreating={setPostCreating} />
-      )}
+      {postCreating && <PostForm setPostCreating={setPostCreating} />}
     </>
   );
 }
