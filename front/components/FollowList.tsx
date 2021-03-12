@@ -1,8 +1,10 @@
 import { Button, List, Avatar } from 'antd';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { DisconnectOutlined } from '@ant-design/icons';
 import { Follow } from 'store/modules/user';
+import Dialog from './Dialog';
+import CloseButton from './CloseButton';
 
 // Types
 type FollowListProps = {
@@ -42,27 +44,73 @@ const ListItem = styled(List.Item)`
   }
 `;
 
+const LoadMoreList = styled(List)`
+  position: relative;
+  .anticon-close-circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  ul {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+`;
+
 // export
 function FollowList({ header, data }: FollowListProps) {
+  const [loadMore, setLoadMore] = useState(false);
+  const onOpen = useCallback(() => {
+    setLoadMore(true);
+  }, [setLoadMore]);
+  const onClose = useCallback(() => {
+    setLoadMore(false);
+  }, [setLoadMore]);
+
   return (
-    <StyledList
-      header={<h3>{header}</h3>}
-      loadMore={
-        <LoadMore>
-          <Button>더 보기</Button>
-        </LoadMore>
-      }
-      itemLayout="horizontal"
-      dataSource={data}
-      renderItem={(item: Follow) => (
-        <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
-          <ListItem.Meta
-            avatar={<Avatar>{item.nickname.charAt(0)}</Avatar>}
-            title={item.nickname}
-          />
-        </ListItem>
+    <>
+      <StyledList
+        header={<h3>{header}</h3>}
+        loadMore={
+          <LoadMore>
+            <Button onClick={onOpen}>더 보기</Button>
+          </LoadMore>
+        }
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item: Follow) => (
+          <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
+            <ListItem.Meta
+              avatar={<Avatar>{item.nickname.charAt(0)}</Avatar>}
+              title={item.nickname}
+            />
+          </ListItem>
+        )}
+      />
+      {loadMore && (
+        <Dialog onClose={onClose}>
+          <div onClick={e => e.stopPropagation()}>
+            <LoadMoreList
+              header={
+                <>
+                  <h3>{header}</h3>
+                  <CloseButton onClose={onClose} />
+                </>
+              }
+              dataSource={data}
+              renderItem={(item: Follow) => (
+                <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
+                  <ListItem.Meta
+                    avatar={<Avatar>{item.nickname.charAt(0)}</Avatar>}
+                    title={item.nickname}
+                  />
+                </ListItem>
+              )}
+            />
+          </div>
+        </Dialog>
       )}
-    />
+    </>
   );
 }
 
