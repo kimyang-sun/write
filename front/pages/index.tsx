@@ -18,12 +18,13 @@ const SubTitle = styled.div`
 `;
 
 function Home() {
-  const { userData } = useUser();
+  const { userData, loadMyInfo } = useUser();
   const { mainPosts, loadPosts, loadPostsLoading, hasMorePosts } = usePost();
   const [postCreating, setPostCreating] = useState(false);
 
   // 초기 렌더링시 게시물을 불러옵니다
   useEffect(() => {
+    loadMyInfo();
     loadPosts(generateDummyPost(5));
   }, []);
 

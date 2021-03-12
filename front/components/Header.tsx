@@ -83,9 +83,6 @@ function Header() {
         <Link href="/profile">
           <a>프로필</a>
         </Link>
-        <Link href="/signup">
-          <a>회원가입</a>
-        </Link>
       </Nav>
     </StyledHeader>
   );

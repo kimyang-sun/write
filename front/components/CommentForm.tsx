@@ -40,9 +40,8 @@ function CommentForm({ post }: CommentFormProps) {
   const { handleSubmit, control, reset } = useForm<CommentFormType>();
   const onSubmit = handleSubmit((data: CommentFormType) => {
     addComment({
-      id: shortId.generate(),
       postId: post.id,
-      User: { id: userId, nickname: userData.nickname },
+      userId: userId,
       content: data.commentText,
     });
   });

@@ -24,11 +24,11 @@ export default function usePost() {
   } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch();
 
-  const loadPosts = useCallback((posts: Post[]) => {
+  const loadPosts = useCallback((posts: any[]) => {
     dispatch(loadPostsRequest(posts));
   }, []);
 
-  const addPost = useCallback((post: Post) => {
+  const addPost = useCallback(post => {
     dispatch(addPostRequest(post));
   }, []);
 

@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 초기 상태 타입
 export type PostState = {
-  mainPosts: Post[];
+  mainPosts: any[];
   imagePaths: string[];
   hasMorePosts: boolean;
   loadPostsLoading: boolean;
@@ -24,69 +24,35 @@ export type PostState = {
 // 이 경우에는 서버 개발자와 사전에 협의를 봐서 대문자로 구분할건지 전부 소문자로 할건지 정해야 합니다.
 export type Post = {
   id: number;
-  User: {
-    id: number;
-    nickname: string;
-  };
+  UserId: string;
   content: string;
-  hashtag: string;
-  Images: { src: string }[];
+  tag: string;
+  Images?: { src: string }[];
   date: string;
-  Comments: PostComment[];
+  Comments?: PostComment[];
+};
+
+type PostPayloadType = {
+  content: string;
+  tag: string;
 };
 
 // 댓글 타입
 export type PostComment = {
-  id: number;
-  User: { id: number; nickname: string };
+  PostId: number;
+  UserId: number;
   content: string;
 };
 
 export type CommentActionType = {
-  id: number;
   postId: number;
-  User: { id: number; nickname: string };
+  userId: number;
   content: string;
 };
 
 // 초기 상태
 const initialState: PostState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: '선양',
-      },
-      content:
-        '늙는 것도, 죽는 것도 인간이라는 덧없는 생물의 아름다움이다. 늙기 때문에, 죽기 때문에 견딜 수 없이 사랑스럽고 존귀한거다.',
-      hashtag: '#쓰다 #마음',
-      Images: [
-        { src: 'https://picsum.photos/600/600' },
-        { src: 'https://picsum.photos/400/400' },
-        { src: 'https://picsum.photos/500/500' },
-      ],
-      date: '2021.03.06',
-      Comments: [
-        {
-          id: 1,
-          User: {
-            id: 2,
-            nickname: '태연',
-          },
-          content: '첫번째 댓글 테스트입니다.',
-        },
-        {
-          id: 2,
-          User: {
-            id: 3,
-            nickname: '병관',
-          },
-          content: '두번째 댓글 테스트입니다.',
-        },
-      ],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [],
   hasMorePosts: true,
   loadPostsLoading: false,
@@ -111,7 +77,7 @@ export const generateDummyPost = (num: number) =>
         nickname: faker.name.findName(),
       },
       content: faker.lorem.paragraph(),
-      hashtag: '#쓰다 #마음',
+      tag: '#쓰다 #마음',
       Images: [
         {
           src: faker.image.image(),
@@ -136,13 +102,13 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     // Load Post
-    loadPostsRequest(state: PostState, _action: PayloadAction<Post[]>) {
+    loadPostsRequest(state: PostState, _action: PayloadAction<any[]>) {
       state.loadPostsLoading = true;
       state.loadPostsDone = false;
       state.error = null;
     },
 
-    loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+    loadPostsSuccess(state: PostState, action: PayloadAction<any[]>) {
       state.mainPosts = state.mainPosts.concat(action.payload);
       state.loadPostsLoading = false;
       state.loadPostsDone = true;
@@ -155,7 +121,7 @@ const postSlice = createSlice({
     },
 
     // Add Post
-    addPostRequest(state: PostState, _action: PayloadAction<Post>) {
+    addPostRequest(state: PostState, _action: PayloadAction<PostPayloadType>) {
       state.addPostLoading = true;
       state.addPostDone = false;
       state.error = null;
@@ -215,17 +181,12 @@ const postSlice = createSlice({
 
     addCommentSuccess(
       state: PostState,
-      action: PayloadAction<CommentActionType>
+      action: PayloadAction<{ content: string; PostId: number; UserId: number }>
     ) {
       const post = state.mainPosts.find(
-        post => post.id === action.payload.postId
+        post => post.id === action.payload.PostId
       );
-      const comment: PostComment = {
-        id: action.payload.id,
-        User: action.payload.User,
-        content: action.payload.content,
-      };
-      post.Comments.push(comment);
+      post.Comments.push(action.payload);
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },

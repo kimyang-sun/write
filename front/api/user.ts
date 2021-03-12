@@ -6,6 +6,10 @@ import {
 } from 'store/modules/user';
 
 // API 요청
+export function loadMyInfoAPI() {
+  return axios.get('/user');
+}
+
 export function loginAPI(data: LoginRequestPayload) {
   return axios.post('/user/login', data);
 }

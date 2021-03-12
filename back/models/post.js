@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       // id가 기본적으로 들어있어 따로 안넣어줘도 됩니다.
       content: { type: DataTypes.TEXT, allowNull: false },
+      tag: { type: DataTypes.TEXT, allowNull: true },
     },
     { charset: 'utf8mb4', collate: 'utf8mb4_general_ci' } // 한글적용 이모티콘 저장을 위해 mb4를 붙혀줍니다.
   );

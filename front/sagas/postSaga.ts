@@ -16,6 +16,7 @@ import {
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,
+  CommentActionType,
 } from 'store/modules/post';
 import { addUserPost, removeUserPost } from 'store/modules/user';
 import {
@@ -40,8 +41,8 @@ function* addPost(action: PayloadAction<Post>) {
   try {
     yield delay(1000);
     const result = yield call(addPostAPI, action.payload);
-    yield put(addPostSuccess(result));
-    yield put(addUserPost({ postId: result.id }));
+    yield put(addPostSuccess(result.data));
+    yield put(addUserPost({ postId: result.data.id }));
     yield put(addPostComplete());
   } catch (e) {
     yield put(addPostFailure(e.response.data));
@@ -59,11 +60,11 @@ function* removePost(action: PayloadAction<{ postId: number }>) {
   }
 }
 
-function* addComment(action: PayloadAction<PostComment>) {
+function* addComment(action: PayloadAction<CommentActionType>) {
   try {
     yield delay(1000);
     const result = yield call(addCommentAPI, action.payload);
-    yield put(addCommentSuccess(result));
+    yield put(addCommentSuccess(result.data));
   } catch (e) {
     yield put(addCommentFailure(e.response.data));
   }

@@ -6,22 +6,19 @@ import styled from 'styled-components';
 import ImagePaths from './ImagePaths';
 import CloseButton from './CloseButton';
 import Dialog from './Dialog';
-import { UserDataPayload } from 'store/modules/user';
 import createDate from 'lib/date';
-import shortId from 'shortid';
 import ImageCropper from './ImageCropper';
 import { readFile } from 'lib/readFile';
 
 // Types
 type PostFormProps = {
   setPostCreating: React.Dispatch<React.SetStateAction<boolean>>;
-  user: UserDataPayload;
 };
 
 type PostFormType = {
   text: string;
   image: any;
-  hashtag: string;
+  tagText: string;
 };
 
 // styled components
@@ -60,7 +57,7 @@ const PostFormTitle = styled.div`
 `;
 
 // export
-function PostForm({ setPostCreating, user }: PostFormProps) {
+function PostForm({ setPostCreating }: PostFormProps) {
   const { addPost, addPostDone } = usePost();
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [inputImg, setInputImg] = useState<string | ArrayBuffer>(null);
@@ -79,16 +76,8 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
     const date = createDate();
 
     addPost({
-      id: shortId.generate(),
-      User: {
-        id: user.id,
-        nickname: user.nickname,
-      },
       content: data.text,
-      hashtag: data.hashtag,
-      Images: images,
-      date: date,
-      Comments: [],
+      tag: data.tagText,
     });
   });
 
@@ -161,7 +150,7 @@ function PostForm({ setPostCreating, user }: PostFormProps) {
         <Controller
           as={<Input />}
           type="text"
-          name="hashtag"
+          name="tagText"
           control={control}
           placeholder="해시태그 추가 ex) #쓰다 #마음"
           defaultValue=""

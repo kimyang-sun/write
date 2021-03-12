@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 초기 상태 타입
 export type UserState = {
+  loadUserLoading: boolean;
+  loadUserError: string;
   loginLoading: boolean;
   loginError: string;
   logoutLoading: boolean;
@@ -51,6 +53,8 @@ export type FollowRequestPayload = {
 
 // 초기 상태
 const initialState: UserState = {
+  loadUserLoading: false,
+  loadUserError: null,
   loginLoading: false,
   loginError: null,
   logoutLoading: false,
@@ -69,6 +73,25 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    // Load login info
+    loadMyInfoRequest(state: UserState) {
+      state.loadUserLoading = true;
+      state.loadUserError = null;
+    },
+
+    loadMyInfoSuccess(
+      state: UserState,
+      action: PayloadAction<UserDataPayload>
+    ) {
+      state.loadUserLoading = false;
+      state.userData = action.payload;
+    },
+
+    loadMyInfoFailure(state: UserState, action: PayloadAction<string>) {
+      state.loadUserLoading = false;
+      state.loadUserError = action.payload;
+    },
+
     // Login
     loginRequest(
       state: UserState,
@@ -192,6 +215,9 @@ const userSlice = createSlice({
 // 리듀서 & 액션 리턴
 const { reducer, actions } = userSlice;
 export const {
+  loadMyInfoRequest,
+  loadMyInfoSuccess,
+  loadMyInfoFailure,
   loginRequest,
   loginSuccess,
   loginFailure,

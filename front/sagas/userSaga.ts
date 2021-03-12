@@ -1,6 +1,9 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import {
+  loadMyInfoFailure,
+  loadMyInfoSuccess,
+  loadMyInfoRequest,
   LoginRequestPayload,
   loginRequest,
   loginFailure,
@@ -21,6 +24,7 @@ import {
   unFollowFailure,
 } from 'store/modules/user';
 import {
+  loadMyInfoAPI,
   followAPI,
   loginAPI,
   logoutAPI,
@@ -29,6 +33,15 @@ import {
 } from 'api/user';
 
 // Saga 실행 함수
+function* loadMyInfo() {
+  try {
+    const result = yield call(loadMyInfoAPI);
+    yield put(loadMyInfoSuccess(result.data));
+  } catch (e) {
+    yield put(loadMyInfoFailure(e.response.data));
+  }
+}
+
 // 여기서는 밑에 loginRequest의 액션이 인자로 들어옵니다.
 function* login(action: PayloadAction<LoginRequestPayload>) {
   try {
@@ -82,6 +95,10 @@ function* unFollow(action: PayloadAction<FollowRequestPayload>) {
 }
 
 // Watch 함수
+export function* watchLoadMyInfo() {
+  yield takeLatest(loadMyInfoRequest.type, loadMyInfo);
+}
+
 export function* watchLogin() {
   yield takeLatest(loginRequest.type, login);
   // loginRequest에서의 type이 실행되면 login함수가 실행되는데

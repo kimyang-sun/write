@@ -124,7 +124,7 @@ function PostCard({ post }: PostCardProps) {
           }
           description={
             <>
-              <PostHashtag hashtag={post.hashtag} />
+              {post.tag && <PostHashtag hashtag={post.tag} />}
               <span className="post-date">{post.date}</span>
             </>
           }

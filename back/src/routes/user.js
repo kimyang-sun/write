@@ -37,6 +37,40 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+// 새로고침 후 로그인 정보 다시 불러오기
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const userWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: { exclude: ['password'] }, // 비밀번호 제외
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+        ],
+      });
+      res.status(200).json(userWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 // 로그인 - POST /user/login
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -60,14 +94,17 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         include: [
           {
             model: Post,
+            attributes: ['id'],
           },
           {
             model: User,
             as: 'Followers',
+            attributes: ['id'],
           },
           {
             model: User,
             as: 'Followings',
+            attributes: ['id'],
           },
         ],
       });

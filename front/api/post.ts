@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Post, PostComment } from 'store/modules/post';
+import { CommentActionType, Post } from 'store/modules/post';
 
 // API 요청
 export function loadPostsAPI(data: Post[]) {
@@ -7,8 +7,7 @@ export function loadPostsAPI(data: Post[]) {
 }
 
 export function addPostAPI(data: Post) {
-  // return axios.post('/api/post', data);
-  return data;
+  return axios.post('/post', data);
 }
 
 export function removePostAPI(data: { postId: number }) {
@@ -16,7 +15,6 @@ export function removePostAPI(data: { postId: number }) {
   return data;
 }
 
-export function addCommentAPI(data: PostComment) {
-  // return axios.post('/api/post/${data.commentId}/comment', data);
-  return data;
+export function addCommentAPI(data: CommentActionType) {
+  return axios.post(`/post/${data.postId}/comment`, data);
 }
