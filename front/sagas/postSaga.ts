@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, delay, put, takeLatest, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLatest, takeLeading } from 'redux-saga/effects';
 import {
   Post,
   CommentActionType,
@@ -47,19 +47,18 @@ function* addPost(action: PayloadAction<Post>) {
   try {
     const result = yield call(addPostAPI, action.payload);
     yield put(addPostSuccess(result.data));
-    yield put(addUserPost({ postId: result.data.id }));
+    yield put(addUserPost({ id: result.data.id }));
     yield put(addPostComplete());
   } catch (e) {
     yield put(addPostFailure(e.response.data));
   }
 }
 
-function* removePost(action: PayloadAction<{ postId: number }>) {
+function* removePost(action: PayloadAction<number>) {
   try {
-    yield delay(1000);
     const result = yield call(removePostAPI, action.payload);
-    yield put(removePostSuccess(result));
-    yield put(removeUserPost(result));
+    yield put(removePostSuccess(result.data));
+    yield put(removeUserPost(result.data));
   } catch (e) {
     yield put(removePostFailure(e.response.data));
   }

@@ -32,7 +32,7 @@ export default function usePost() {
     dispatch(addPostRequest(post));
   }, []);
 
-  const removePost = useCallback((id: { postId: number }) => {
+  const removePost = useCallback((id: number) => {
     dispatch(removePostRequest(id));
   }, []);
 

@@ -15,11 +15,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     // 기본정보에는 content, UserId 밖에 없어서 더 추가해줍니다.
     const fullPost = await Post.findOne({
       where: { id: post.id }, // 작성하는 해당 post를 찾아서
-      attributes: { exclude: ['password'] },
       include: [
         {
           model: User, // 게시글 작성자
-          attributes: { exclude: ['password'] },
+          attributes: ['id', 'nickname', 'avatar'],
         },
         {
           model: Image, // 해당 글의 이미지도 넣어주고
@@ -29,18 +28,35 @@ router.post('/', isLoggedIn, async (req, res, next) => {
           include: [
             {
               model: User, // 댓글 작성자
-              attributes: { exclude: ['password'] },
+              attributes: ['id', 'nickname', 'avatar'],
             },
           ],
         },
         {
           model: User, // 좋아요 누른 사람
           as: 'Likers',
-          attributes: { exclude: ['password'] },
+          attributes: ['id'],
         },
       ],
     });
     res.status(201).json(fullPost);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 게시글 삭제 - DELETE /post/:postId
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    // 시퀄라이즈에선 제거할때 destroy로 합니다.
+    await Post.destroy({
+      where: {
+        id: req.params.postId, // 해당 포스트 id인 글을 찾아
+        UserId: req.user.id, // 아이디도 똑같은지 한번 더 비교하고 삭제
+      },
+    });
+    res.json({ PostId: parseInt(req.params.postId, 10) }); // 해당 포스트의 id를 다시 보내줌
   } catch (e) {
     console.error(e);
     next(e);

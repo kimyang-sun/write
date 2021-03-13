@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
       include: [
         {
           model: User, // 게시글 작성자
-          attributes: { exclude: ['password'] },
+          attributes: ['id', 'nickname', 'avatar'],
         },
         {
           model: Image, // 게시글 이미지
@@ -27,14 +27,14 @@ router.get('/', async (req, res, next) => {
           include: [
             {
               model: User, // 댓글 작성자
-              attributes: { exclude: ['password'] },
+              attributes: ['id', 'nickname', 'avatar'],
             },
           ],
         },
         {
           model: User, // 좋아요 누른 사람
           as: 'Likers',
-          attributes: { exclude: ['password'] },
+          attributes: ['id'],
         },
       ],
     });

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { UserDataPayload } from 'store/modules/user';
+import { UserDataPayload, ProfilePayload } from 'store/modules/user';
 import styled from 'styled-components';
 import { Input, Button, Form, Avatar } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import { readFile } from 'lib/readFile';
 // Types
 type ProfileEditFormProps = {
   user: UserDataPayload;
+  onChangeProfile: (data: ProfilePayload) => void;
+  profileLoading: boolean;
 };
 
 type ProfileEditFormType = {
@@ -34,7 +36,11 @@ const StyledProfileEditForm = styled(Form)`
 `;
 
 // export
-function ProfileEditForm({ user }: ProfileEditFormProps) {
+function ProfileEditForm({
+  user,
+  onChangeProfile,
+  profileLoading,
+}: ProfileEditFormProps) {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [inputImg, setInputImg] = useState<string | ArrayBuffer>(null);
   const [blob, setBlob] = useState(null);
@@ -50,7 +56,11 @@ function ProfileEditForm({ user }: ProfileEditFormProps) {
     errors,
   } = useForm<ProfileEditFormType>();
   const onSubmit = handleSubmit((data: ProfileEditFormType) => {
-    console.log(data);
+    onChangeProfile({
+      nickname: data.nickname,
+      introduction: data.introduction,
+      avatar: blob,
+    });
   });
 
   // 닉네임을 비워두면 에러가 알려줍니다.
@@ -145,7 +155,7 @@ function ProfileEditForm({ user }: ProfileEditFormProps) {
           defaultValue={user.introduction}
         />
       </div>
-      <Button htmlType="submit" type="primary">
+      <Button htmlType="submit" type="primary" loading={profileLoading}>
         변경하기
       </Button>
     </StyledProfileEditForm>

@@ -141,10 +141,7 @@ const postSlice = createSlice({
     },
 
     // Remove Post
-    removePostRequest(
-      state: PostState,
-      _action: PayloadAction<{ postId: number }>
-    ) {
+    removePostRequest(state: PostState, _action: PayloadAction<number>) {
       state.removePostLoading = true;
       state.removePostDone = false;
       state.removePostError = null;
@@ -152,10 +149,10 @@ const postSlice = createSlice({
 
     removePostSuccess(
       state: PostState,
-      action: PayloadAction<{ postId: number }>
+      action: PayloadAction<{ PostId: number }>
     ) {
       state.mainPosts = state.mainPosts.filter(
-        post => post.id !== action.payload.postId
+        post => post.id !== action.payload.PostId
       );
       state.removePostLoading = false;
       state.removePostDone = true;

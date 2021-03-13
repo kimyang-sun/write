@@ -3,6 +3,7 @@ import {
   LoginRequestPayload,
   SignUpRequestPayload,
   FollowRequestPayload,
+  ProfilePayload,
 } from 'store/modules/user';
 
 // API 요청
@@ -16,6 +17,10 @@ export function loginAPI(data: LoginRequestPayload) {
 
 export function logoutAPI() {
   return axios.post('/user/logout');
+}
+
+export function changeProfileAPI(data: ProfilePayload) {
+  return axios.patch('/user/profile', data);
 }
 
 export function signUpAPI(data: SignUpRequestPayload) {

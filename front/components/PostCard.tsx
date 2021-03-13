@@ -58,8 +58,8 @@ function PostCard({ post }: PostCardProps) {
   const liked = post.Likers.find(liker => liker.id === userId);
   const { removePost, removePostLoading, likePost, unLikePost } = usePost();
   const [commentOpened, setCommentOpened] = useState(false);
-  const onRemovePost = (id: number) => {
-    removePost({ postId: id });
+  const onRemovePost = () => {
+    removePost(post.id);
   };
   const onLike = () => {
     likePost(post.id);
@@ -98,11 +98,12 @@ function PostCard({ post }: PostCardProps) {
               <Button.Group>
                 {userId && userId === post.User.id ? (
                   <>
-                    <Button>수정</Button>
+                    <Button block>수정</Button>
                     <Button
-                      onClick={() => onRemovePost(post.id)}
+                      onClick={onRemovePost}
                       loading={removePostLoading}
                       danger
+                      block
                     >
                       삭제
                     </Button>

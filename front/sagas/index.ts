@@ -11,6 +11,7 @@ import {
 import {
   watchLogin,
   watchLogout,
+  watchChangeProfile,
   watchFollow,
   watchUnFollow,
   watchSignUp,
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     fork(watchLoadMyInfo),
     fork(watchLogin),
     fork(watchLogout),
+    fork(watchChangeProfile),
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnFollow),

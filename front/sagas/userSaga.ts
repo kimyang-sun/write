@@ -22,6 +22,10 @@ import {
   unFollowRequest,
   unFollowSuccess,
   unFollowFailure,
+  ProfilePayload,
+  changeProfileSuccess,
+  changeProfileFailure,
+  changeProfileRequest,
 } from 'store/modules/user';
 import {
   loadMyInfoAPI,
@@ -30,6 +34,7 @@ import {
   logoutAPI,
   signUpAPI,
   unFollowAPI,
+  changeProfileAPI,
 } from 'api/user';
 
 // Saga 실행 함수
@@ -74,6 +79,15 @@ function* signUp(action: PayloadAction<SignUpRequestPayload>) {
   }
 }
 
+function* changeProfile(action: PayloadAction<ProfilePayload>) {
+  try {
+    const result = yield call(changeProfileAPI, action.payload);
+    yield put(changeProfileSuccess(result.data));
+  } catch (e) {
+    yield put(changeProfileFailure(e.response.data));
+  }
+}
+
 function* follow(action: PayloadAction<FollowRequestPayload>) {
   try {
     yield delay(1000);
@@ -111,6 +125,10 @@ export function* watchLogout() {
 
 export function* watchSignUp() {
   yield takeLatest(signUpRequest.type, signUp);
+}
+
+export function* watchChangeProfile() {
+  yield takeLatest(changeProfileRequest.type, changeProfile);
 }
 
 export function* watchFollow() {

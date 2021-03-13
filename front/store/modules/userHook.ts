@@ -7,9 +7,11 @@ import {
   LoginRequestPayload,
   logoutRequest,
   signUpRequest,
+  changeProfileRequest,
   followRequest,
   unFollowRequest,
   SignUpRequestPayload,
+  ProfilePayload,
 } from './user';
 
 // 커스텀 훅
@@ -20,6 +22,7 @@ export default function useUser() {
     loginError,
     logoutLoading,
     logoutError,
+    changeProfileLoading,
     followLoading,
     signUpLoading,
     signUpDone,
@@ -37,6 +40,10 @@ export default function useUser() {
 
   const logout = useCallback(() => {
     dispatch(logoutRequest());
+  }, []);
+
+  const changeProfile = useCallback((data: ProfilePayload) => {
+    dispatch(changeProfileRequest(data));
   }, []);
 
   const signUp = useCallback((data: SignUpRequestPayload) => {
@@ -63,6 +70,8 @@ export default function useUser() {
     userData,
     login,
     logout,
+    changeProfileLoading,
+    changeProfile,
     signUpLoading,
     signUpDone,
     signUpError,

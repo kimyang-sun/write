@@ -121,6 +121,28 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.send('ok');
 });
 
+// 프로필 수정
+router.patch('/profile', isLoggedIn, async (req, res, next) => {
+  try {
+    User.update(
+      {
+        nickname: req.body.nickname,
+        introduction: req.body.introduction,
+        avatar: req.body.avatar,
+      },
+      { where: { id: req.user.id } } // 조건 : 내 아이디의 프로필을 수정해야함
+    );
+    res.status(200).json({
+      nickname: req.body.nickname,
+      introduction: req.body.introduction,
+      avatar: req.body.avatar,
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 module.exports = router;
 
 /* 

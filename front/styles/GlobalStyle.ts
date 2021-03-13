@@ -99,6 +99,16 @@ const GlobalStyle = createGlobalStyle`
   .slick-next:before {
     content: "▶";
   }
+
+  // 게시글 더보기 버튼 정렬
+  .ant-btn-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ant-btn-group > button:first-child {
+    margin-bottom: 5px;
+  }
   
 `;
 

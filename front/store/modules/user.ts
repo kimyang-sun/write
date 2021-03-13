@@ -14,6 +14,9 @@ export type UserState = {
   signUpLoading: boolean;
   signUpDone: boolean;
   signUpError: string;
+  changeProfileLoading: boolean;
+  changeProfileDone: boolean;
+  changeProfileError: string;
   followLoading: number;
   followDone: boolean;
   followError: string;
@@ -40,7 +43,7 @@ export type UserDataPayload = {
   avatar: string | null;
   nickname: string;
   introduction: string | null;
-  Posts: { postId: number }[];
+  Posts: { id: number }[];
   Followers: Follow[];
   Followings: Follow[];
 };
@@ -54,6 +57,12 @@ export type SignUpRequestPayload = {
 export type FollowRequestPayload = {
   postId: number;
   postUserId: number;
+};
+
+export type ProfilePayload = {
+  nickname: string;
+  introduction: string | null;
+  avatar: string | null;
 };
 
 // 초기 상태
@@ -70,6 +79,9 @@ const initialState: UserState = {
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
+  changeProfileLoading: false,
+  changeProfileDone: false,
+  changeProfileError: null,
   followLoading: null,
   followDone: false,
   followError: null,
@@ -94,6 +106,7 @@ const userSlice = createSlice({
       state: UserState,
       action: PayloadAction<UserDataPayload>
     ) {
+      console.log(action.payload);
       state.userData = action.payload;
       state.loadUserLoading = false;
       state.loadUserDone = true;
@@ -165,17 +178,43 @@ const userSlice = createSlice({
     },
 
     // User Post Add & Remove
-    addUserPost(state: UserState, action: PayloadAction<{ postId: number }>) {
+    addUserPost(state: UserState, action: PayloadAction<{ id: number }>) {
       state.userData.Posts.unshift(action.payload);
     },
 
     removeUserPost(
       state: UserState,
-      action: PayloadAction<{ postId: number }>
+      action: PayloadAction<{ PostId: number }>
     ) {
       state.userData.Posts = state.userData.Posts.filter(
-        post => post.postId !== action.payload.postId
+        post => post.id !== action.payload.PostId
       );
+    },
+
+    // Change Profile
+    changeProfileRequest(
+      state: UserState,
+      _action: PayloadAction<ProfilePayload>
+    ) {
+      state.changeProfileLoading = true;
+      state.changeProfileDone = false;
+      state.changeProfileError = null;
+    },
+
+    changeProfileSuccess(
+      state: UserState,
+      action: PayloadAction<ProfilePayload>
+    ) {
+      state.userData.nickname = action.payload.nickname;
+      state.userData.introduction = action.payload.introduction;
+      state.userData.avatar = action.payload.avatar;
+      state.changeProfileLoading = false;
+      state.changeProfileDone = true;
+    },
+
+    changeProfileFailure(state: UserState, action: PayloadAction<string>) {
+      state.changeProfileError = action.payload;
+      state.changeProfileLoading = false;
     },
 
     // Follow
@@ -247,6 +286,9 @@ export const {
   signUpRequest,
   signUpSuccess,
   signUpFailure,
+  changeProfileRequest,
+  changeProfileSuccess,
+  changeProfileFailure,
   addUserPost,
   removeUserPost,
   followRequest,
