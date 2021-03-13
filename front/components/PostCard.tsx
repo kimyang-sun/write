@@ -54,8 +54,8 @@ const StyledPostCard = styled.div`
 
 function PostCard({ post }: PostCardProps) {
   const { userData } = useUser();
-  const userId = userData && userData.id;
-  const liked = post.Likers.find(liker => liker.id === userId);
+  const userId = userData && userData.id; // 유저 아이디
+  const liked = post.Likers.find(liker => liker.id === userId); // 좋아요 버튼
   const { removePost, removePostLoading, likePost, unLikePost } = usePost();
   const [commentOpened, setCommentOpened] = useState(false);
   const onRemovePost = () => {
@@ -123,7 +123,9 @@ function PostCard({ post }: PostCardProps) {
           title={
             <>
               {post.User.nickname}
-              {userId && <FollowButton post={post} />}
+              {userId && userId !== post.User.id && (
+                <FollowButton post={post} />
+              )}
             </>
           }
           description={

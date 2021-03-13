@@ -21,6 +21,7 @@ const StyledFollowButton = styled(Button)`
 
 function FollowButton({ post }: FollowButtonProps) {
   const { userData, follow, followLoading, unFollow } = useUser();
+
   // 사용자의 팔로잉에서 해당 게시글 작성자의 id와 일치하는것이 있는지 판단합니다. (게시글 작성자 팔로잉 유무)
   const isFollowing =
     userData && userData.Followings.find(value => value.id === post.User.id);
