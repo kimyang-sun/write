@@ -48,7 +48,7 @@ app.use(
 );
 app.use('/user', userRouter);
 app.use('/post', postRouter);
-// app.use('/posts', postsRouter);
+app.use('/posts', postsRouter);
 
 app.listen(3006, () => {
   console.log('서버 실행중 😶');

@@ -5,6 +5,8 @@ import {
   watchAddComment,
   watchAddPost,
   watchRemovePost,
+  watchLikePost,
+  watchUnLikePost,
 } from './postSaga';
 import {
   watchLogin,
@@ -32,5 +34,7 @@ export default function* rootSaga() {
     fork(watchAddPost),
     fork(watchRemovePost),
     fork(watchAddComment),
+    fork(watchLikePost),
+    fork(watchUnLikePost),
   ]);
 }

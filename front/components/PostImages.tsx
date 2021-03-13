@@ -58,11 +58,8 @@ function PostImages({ images, content }: PostImagesProps) {
   const onContentToggle = useCallback(() => {
     setContentOpened(contentOpened => !contentOpened);
   }, []);
-  if (images.length === 0) {
-    return;
-  }
 
-  if (images.length === 1) {
+  if (images.length <= 1) {
     return (
       <StyledPostImages>
         <Button
@@ -71,7 +68,11 @@ function PostImages({ images, content }: PostImagesProps) {
           onClick={onContentToggle}
         />
         {contentOpened && <PostContent content={content} />}
-        <PostImage imageUrl={images[0].src} />
+        <PostImage
+          imageUrl={
+            images.length === 1 ? images[0].src : 'https://picsum.photos/650'
+          }
+        />
       </StyledPostImages>
     );
   }

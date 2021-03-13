@@ -41,7 +41,6 @@ function CommentForm({ post }: CommentFormProps) {
   const onSubmit = handleSubmit((data: CommentFormType) => {
     addComment({
       postId: post.id,
-      userId: userId,
       content: data.commentText,
     });
   });

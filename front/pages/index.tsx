@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import PageTitle from 'components/PageTitle';
 import PostForm from 'components/PostForm';
 import PostCard from 'components/PostCard';
-import { generateDummyPost, Post } from 'store/modules/post';
+import { Post } from 'store/modules/post';
 import styled from 'styled-components';
 
 // styled components
@@ -25,7 +25,7 @@ function Home() {
   // 초기 렌더링시 게시물을 불러옵니다
   useEffect(() => {
     loadMyInfo();
-    loadPosts(generateDummyPost(5));
+    loadPosts();
   }, []);
 
   //스크롤시 게시물을 더 불러옵니다.
@@ -36,7 +36,7 @@ function Home() {
         window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
-        if (hasMorePosts && !loadPostsLoading) loadPosts(generateDummyPost(5));
+        if (hasMorePosts && !loadPostsLoading) loadPosts();
       }
     }
     window.addEventListener('scroll', onScroll);

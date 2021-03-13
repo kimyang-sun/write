@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { call, delay, put, takeLatest, takeLeading } from 'redux-saga/effects';
 import {
   Post,
-  PostComment,
+  CommentActionType,
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
@@ -16,7 +16,12 @@ import {
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,
-  CommentActionType,
+  likePostRequest,
+  likePostSuccess,
+  likePostFailure,
+  unLikePostRequest,
+  unLikePostSuccess,
+  unLikePostFailure,
 } from 'store/modules/post';
 import { addUserPost, removeUserPost } from 'store/modules/user';
 import {
@@ -24,13 +29,15 @@ import {
   addPostAPI,
   removePostAPI,
   addCommentAPI,
+  likePostAPI,
+  unLikePostAPI,
 } from 'api/post';
 
 // Saga 실행함수
-function* loadPosts(action: PayloadAction<Post[]>) {
+function* loadPosts() {
   try {
-    const result = yield call(loadPostsAPI, action.payload);
-    yield put(loadPostsSuccess(result));
+    const result = yield call(loadPostsAPI);
+    yield put(loadPostsSuccess(result.data));
   } catch (e) {
     yield put(loadPostsFailure(e.response.data));
   }
@@ -60,11 +67,28 @@ function* removePost(action: PayloadAction<{ postId: number }>) {
 
 function* addComment(action: PayloadAction<CommentActionType>) {
   try {
-    yield delay(1000);
     const result = yield call(addCommentAPI, action.payload);
     yield put(addCommentSuccess(result.data));
   } catch (e) {
     yield put(addCommentFailure(e.response.data));
+  }
+}
+
+function* likePost(action: PayloadAction<number>) {
+  try {
+    const result = yield call(likePostAPI, action.payload);
+    yield put(likePostSuccess(result.data));
+  } catch (e) {
+    yield put(likePostFailure(e.response.data));
+  }
+}
+
+function* unLikePost(action: PayloadAction<number>) {
+  try {
+    const result = yield call(unLikePostAPI, action.payload);
+    yield put(unLikePostSuccess(result.data));
+  } catch (e) {
+    yield put(unLikePostFailure(e.response.data));
   }
 }
 
@@ -83,4 +107,12 @@ export function* watchRemovePost() {
 
 export function* watchAddComment() {
   yield takeLatest(addCommentRequest.type, addComment);
+}
+
+export function* watchLikePost() {
+  yield takeLatest(likePostRequest.type, likePost);
+}
+
+export function* watchUnLikePost() {
+  yield takeLatest(unLikePostRequest.type, unLikePost);
 }

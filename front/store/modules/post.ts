@@ -1,5 +1,3 @@
-import shortId from 'shortid';
-import faker from 'faker';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 초기 상태 타입
@@ -9,13 +7,22 @@ export type PostState = {
   hasMorePosts: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
+  loadPostsError: string;
   addPostLoading: boolean;
   addPostDone: boolean;
+  addPostError: string;
   removePostLoading: boolean;
   removePostDone: boolean;
+  removePostError: string;
   addCommentLoading: boolean;
   addCommentDone: boolean;
-  error: any;
+  addCommentError: string;
+  likePostLoading: boolean;
+  likePostDone: boolean;
+  likePostError: string;
+  unLikePostLoading: boolean;
+  unLikePostDone: boolean;
+  unLikePostError: string;
 };
 
 // Post 타입
@@ -28,8 +35,14 @@ export type Post = {
   content: string;
   tag: string;
   Images: { src: string }[];
-  date: string;
-  Comments?: PostComment[];
+  createdAt: string;
+  Comments: PostComment[];
+  User: {
+    id: number;
+    nickname: string;
+    avatar: string | null;
+  };
+  Likers: { id: number }[];
 };
 
 type PostPayloadType = {
@@ -42,11 +55,16 @@ export type PostComment = {
   PostId: number;
   UserId: number;
   content: string;
+  createdAt: string;
+  User: {
+    id: number;
+    nickname: string;
+    avatar: string | null;
+  };
 };
 
 export type CommentActionType = {
   postId: number;
-  userId: number;
   content: string;
 };
 
@@ -57,44 +75,23 @@ const initialState: PostState = {
   hasMorePosts: true,
   loadPostsLoading: false,
   loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false,
   addPostDone: false,
+  addPostError: null,
   removePostLoading: false,
   removePostDone: false,
+  removePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
-  error: null,
+  addCommentError: null,
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unLikePostLoading: false,
+  unLikePostDone: false,
+  unLikePostError: null,
 };
-
-// 더미 데이터
-export const generateDummyPost = (num: number) =>
-  Array(num)
-    .fill(0)
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      tag: '#쓰다 #마음',
-      Images: [
-        {
-          src: faker.image.image(),
-        },
-      ],
-      date: '2021.03.06',
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
 
 // 리듀서 슬라이스
 const postSlice = createSlice({
@@ -102,29 +99,30 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     // Load Post
-    loadPostsRequest(state: PostState, _action: PayloadAction<any[]>) {
+    loadPostsRequest(state: PostState) {
       state.loadPostsLoading = true;
       state.loadPostsDone = false;
-      state.error = null;
+      state.loadPostsError = null;
     },
 
-    loadPostsSuccess(state: PostState, action: PayloadAction<any[]>) {
+    loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+      console.log(action.payload);
       state.mainPosts = state.mainPosts.concat(action.payload);
+      state.hasMorePosts = state.mainPosts.length < 16;
       state.loadPostsLoading = false;
       state.loadPostsDone = true;
-      state.hasMorePosts = state.mainPosts.length < 16;
     },
 
-    loadPostsFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+    loadPostsFailure(state: PostState, action: PayloadAction<string>) {
       state.loadPostsLoading = false;
-      state.error = action.payload;
+      state.loadPostsError = action.payload;
     },
 
     // Add Post
     addPostRequest(state: PostState, _action: PayloadAction<PostPayloadType>) {
       state.addPostLoading = true;
       state.addPostDone = false;
-      state.error = null;
+      state.addPostError = null;
     },
 
     addPostSuccess(state: PostState, action: PayloadAction<Post>) {
@@ -137,9 +135,9 @@ const postSlice = createSlice({
       state.addPostDone = false;
     },
 
-    addPostFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+    addPostFailure(state: PostState, action: PayloadAction<string>) {
       state.addPostLoading = false;
-      state.error = action.payload;
+      state.addPostError = action.payload;
     },
 
     // Remove Post
@@ -149,7 +147,7 @@ const postSlice = createSlice({
     ) {
       state.removePostLoading = true;
       state.removePostDone = false;
-      state.error = null;
+      state.removePostError = null;
     },
 
     removePostSuccess(
@@ -163,9 +161,9 @@ const postSlice = createSlice({
       state.removePostDone = true;
     },
 
-    removePostFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+    removePostFailure(state: PostState, action: PayloadAction<string>) {
       state.addPostLoading = false;
-      state.error = action.payload;
+      state.removePostError = action.payload;
     },
 
     // Add Comment
@@ -175,12 +173,16 @@ const postSlice = createSlice({
     ) {
       state.addCommentLoading = true;
       state.addCommentDone = false;
-      state.error = null;
+      state.addCommentError = null;
     },
 
     addCommentSuccess(
       state: PostState,
-      action: PayloadAction<{ content: string; PostId: number; UserId: number }>
+      action: PayloadAction<{
+        content: string;
+        PostId: number | string;
+        UserId: number;
+      }>
     ) {
       const post = state.mainPosts.find(
         post => post.id === action.payload.PostId
@@ -190,12 +192,61 @@ const postSlice = createSlice({
       state.addCommentDone = true;
     },
 
-    addCommentFailure(state: PostState, action: PayloadAction<{ error: any }>) {
+    addCommentFailure(state: PostState, action: PayloadAction<string>) {
+      console.error(action.payload);
       state.addCommentLoading = false;
-      state.error = action.payload;
+      state.addCommentError = action.payload;
     },
 
-    // Remove Comment
+    // Like Post
+    likePostRequest(state: PostState, _action: PayloadAction<number>) {
+      state.likePostLoading = true;
+      state.likePostDone = false;
+      state.likePostError = null;
+    },
+
+    likePostSuccess(
+      state: PostState,
+      action: PayloadAction<{ PostId: number; UserId: number }>
+    ) {
+      const post = state.mainPosts.find(
+        post => post.id === action.payload.PostId
+      );
+      post.Likers.push({ id: action.payload.UserId });
+      state.likePostLoading = false;
+      state.likePostDone = true;
+    },
+
+    likePostFailure(state: PostState, action: PayloadAction<string>) {
+      state.likePostLoading = false;
+      state.likePostError = action.payload;
+    },
+
+    // Unlike Post
+    unLikePostRequest(state: PostState, _action: PayloadAction<number>) {
+      state.unLikePostLoading = true;
+      state.unLikePostDone = false;
+      state.unLikePostError = null;
+    },
+
+    unLikePostSuccess(
+      state: PostState,
+      action: PayloadAction<{ PostId: number; UserId: number }>
+    ) {
+      const post = state.mainPosts.find(
+        post => post.id === action.payload.PostId
+      );
+      post.Likers = post.Likers.filter(
+        user => user.id !== action.payload.UserId
+      );
+      state.unLikePostLoading = false;
+      state.unLikePostDone = true;
+    },
+
+    unLikePostFailure(state: PostState, action: PayloadAction<string>) {
+      state.unLikePostLoading = false;
+      state.unLikePostError = action.payload;
+    },
   },
 });
 
@@ -215,5 +266,11 @@ export const {
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,
+  likePostRequest,
+  likePostSuccess,
+  likePostFailure,
+  unLikePostRequest,
+  unLikePostSuccess,
+  unLikePostFailure,
 } = actions;
 export default reducer;

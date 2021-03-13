@@ -55,14 +55,17 @@ const StyledPostCard = styled.div`
 function PostCard({ post }: PostCardProps) {
   const { userData } = useUser();
   const userId = userData && userData.id;
-  const { removePost, removePostLoading } = usePost();
-  const [liked, setLiked] = useState(false);
+  const liked = post.Likers.find(liker => liker.id === userId);
+  const { removePost, removePostLoading, likePost, unLikePost } = usePost();
   const [commentOpened, setCommentOpened] = useState(false);
   const onRemovePost = (id: number) => {
     removePost({ postId: id });
   };
-  const onToggleLike = () => {
-    setLiked(liked => !liked);
+  const onLike = () => {
+    likePost(post.id);
+  };
+  const onUnLike = () => {
+    unLikePost(post.id);
   };
   const onToggleComment = () => {
     setCommentOpened(commentOpened => !commentOpened);
@@ -72,7 +75,7 @@ function PostCard({ post }: PostCardProps) {
     <StyledPostCard>
       <Card
         cover={
-          post.Images.length > 0 && (
+          post.Images && (
             <PostImages images={post.Images} content={post.content} />
           )
         }
@@ -82,10 +85,10 @@ function PostCard({ post }: PostCardProps) {
             <HeartTwoTone
               key="heart"
               twoToneColor="#eb2f96"
-              onClick={onToggleLike}
+              onClick={onUnLike}
             />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onLike} />
           ),
           <MessageOutlined key="comments" onClick={onToggleComment} />,
           <Popover
@@ -125,7 +128,7 @@ function PostCard({ post }: PostCardProps) {
           description={
             <>
               {post.tag && <PostHashtag hashtag={post.tag} />}
-              <span className="post-date">{post.date}</span>
+              <span className="post-date">{post.createdAt.slice(0, 10)}</span>
             </>
           }
         ></Card.Meta>
@@ -142,6 +145,7 @@ function PostCard({ post }: PostCardProps) {
                   author={item.User.nickname}
                   avatar={<Avatar>{item.User.nickname.charAt(0)}</Avatar>}
                   content={item.content}
+                  datetime={item.createdAt.slice(0, 10)}
                 />
               </List.Item>
             )}

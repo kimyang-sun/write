@@ -3,16 +3,21 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 초기 상태 타입
 export type UserState = {
   loadUserLoading: boolean;
+  loadUserDone: boolean;
   loadUserError: string;
   loginLoading: boolean;
+  loginDone: boolean;
   loginError: string;
   logoutLoading: boolean;
+  logoutDone: boolean;
   logoutError: string;
   signUpLoading: boolean;
   signUpDone: boolean;
   signUpError: string;
   followLoading: number;
+  followDone: boolean;
   followError: string;
+  unFollowDone: boolean;
   unFollowError: string;
   userData: UserDataPayload;
 };
@@ -32,7 +37,7 @@ export type LoginRequestPayload = {
 export type UserDataPayload = {
   id: number;
   email: string;
-  avatar: any | null;
+  avatar: string | null;
   nickname: string;
   introduction: string | null;
   Posts: { postId: number }[];
@@ -54,17 +59,22 @@ export type FollowRequestPayload = {
 // 초기 상태
 const initialState: UserState = {
   loadUserLoading: false,
+  loadUserDone: false,
   loadUserError: null,
   loginLoading: false,
+  loginDone: false,
   loginError: null,
   logoutLoading: false,
+  logoutDone: false,
   logoutError: null,
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
   followLoading: null,
+  followDone: false,
   followError: null,
   unFollowError: null,
+  unFollowDone: false,
   userData: null,
 };
 
@@ -76,6 +86,7 @@ const userSlice = createSlice({
     // Load login info
     loadMyInfoRequest(state: UserState) {
       state.loadUserLoading = true;
+      state.loadUserDone = false;
       state.loadUserError = null;
     },
 
@@ -83,8 +94,9 @@ const userSlice = createSlice({
       state: UserState,
       action: PayloadAction<UserDataPayload>
     ) {
-      state.loadUserLoading = false;
       state.userData = action.payload;
+      state.loadUserLoading = false;
+      state.loadUserDone = true;
     },
 
     loadMyInfoFailure(state: UserState, action: PayloadAction<string>) {
@@ -98,12 +110,14 @@ const userSlice = createSlice({
       _action: PayloadAction<LoginRequestPayload>
     ) {
       state.loginLoading = true;
+      state.loginDone = false;
       state.loginError = null;
     },
 
     loginSuccess(state: UserState, action: PayloadAction<UserDataPayload>) {
-      state.loginLoading = false;
       state.userData = action.payload;
+      state.loginLoading = false;
+      state.loginDone = true;
     },
 
     loginFailure(state: UserState, action: PayloadAction<string>) {
@@ -114,13 +128,15 @@ const userSlice = createSlice({
     // Logout
     logoutRequest(state: UserState) {
       state.logoutLoading = true;
+      state.logoutDone = false;
       state.logoutError = null;
     },
 
     logoutSuccess(state: UserState) {
-      state.logoutLoading = false;
       state.userData = null;
       state.signUpDone = false;
+      state.logoutLoading = false;
+      state.logoutDone = true;
     },
 
     logoutFailure(state: UserState, action: PayloadAction<string>) {
@@ -144,8 +160,8 @@ const userSlice = createSlice({
     },
 
     signUpFailure(state: UserState, action: PayloadAction<string>) {
-      state.signUpLoading = false;
       state.signUpError = action.payload;
+      state.signUpLoading = false;
     },
 
     // User Post Add & Remove
@@ -168,6 +184,7 @@ const userSlice = createSlice({
       action: PayloadAction<{ postId: number; postUserId: number }>
     ) {
       state.followLoading = action.payload.postId;
+      state.followDone = false;
       state.followError = null;
     },
 
@@ -175,11 +192,12 @@ const userSlice = createSlice({
       state: UserState,
       action: PayloadAction<{ postId: number; postUserId: number }>
     ) {
-      state.followLoading = null;
       state.userData.Followings.push({
         id: action.payload.postUserId,
         nickname: '아무나',
       });
+      state.followLoading = null;
+      state.followDone = true;
     },
 
     followFailure(state: UserState, action: PayloadAction<string>) {
@@ -192,6 +210,7 @@ const userSlice = createSlice({
       action: PayloadAction<FollowRequestPayload>
     ) {
       state.followLoading = action.payload.postId;
+      state.unFollowDone = false;
       state.unFollowError = null;
     },
 
@@ -199,10 +218,11 @@ const userSlice = createSlice({
       state: UserState,
       action: PayloadAction<FollowRequestPayload>
     ) {
-      state.followLoading = null;
       state.userData.Followings = state.userData.Followings.filter(
         following => following.id !== action.payload.postUserId
       );
+      state.followLoading = null;
+      state.unFollowDone = true;
     },
 
     unFollowFailure(state: UserState, action: PayloadAction<string>) {

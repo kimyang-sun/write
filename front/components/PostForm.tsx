@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import ImagePaths from './ImagePaths';
 import CloseButton from './CloseButton';
 import Dialog from './Dialog';
-import createDate from 'lib/date';
 import ImageCropper from './ImageCropper';
 import { readFile } from 'lib/readFile';
 
@@ -72,8 +71,6 @@ function PostForm({ setPostCreating }: PostFormProps) {
     } else {
       images = data.image;
     }
-    // 작성하는 현재날짜를 기록합니다.
-    const date = createDate();
 
     addPost({
       content: data.text,

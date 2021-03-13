@@ -5,9 +5,10 @@ import {
   loadPostsRequest,
   addCommentRequest,
   addPostRequest,
-  Post,
   CommentActionType,
   removePostRequest,
+  likePostRequest,
+  unLikePostRequest,
 } from './post';
 
 export default function usePost() {
@@ -19,13 +20,12 @@ export default function usePost() {
     addPostLoading,
     addPostDone,
     removePostLoading,
-    removePostDone,
     addCommentDone,
   } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch();
 
-  const loadPosts = useCallback((posts: any[]) => {
-    dispatch(loadPostsRequest(posts));
+  const loadPosts = useCallback(() => {
+    dispatch(loadPostsRequest());
   }, []);
 
   const addPost = useCallback(post => {
@@ -40,6 +40,14 @@ export default function usePost() {
     dispatch(addCommentRequest(comment));
   }, []);
 
+  const likePost = useCallback((id: number) => {
+    dispatch(likePostRequest(id));
+  }, []);
+
+  const unLikePost = useCallback((id: number) => {
+    dispatch(unLikePostRequest(id));
+  }, []);
+
   return {
     mainPosts,
     imagePaths,
@@ -51,8 +59,9 @@ export default function usePost() {
     addPostDone,
     removePost,
     removePostLoading,
-    removePostDone,
     addComment,
     addCommentDone,
+    likePost,
+    unLikePost,
   };
 }
