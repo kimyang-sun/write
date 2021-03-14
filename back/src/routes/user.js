@@ -37,7 +37,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// 새로고침 후 로그인 정보 다시 불러오기
+// 새로고침 후 로그인 정보 다시 불러오기 - GET /user/
 router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
@@ -121,7 +121,7 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.send('ok');
 });
 
-// 프로필 수정
+// 프로필 수정 - PATCH /user/profile
 router.patch('/profile', isLoggedIn, async (req, res, next) => {
   try {
     User.update(
@@ -137,6 +137,81 @@ router.patch('/profile', isLoggedIn, async (req, res, next) => {
       introduction: req.body.introduction,
       avatar: req.body.avatar,
     });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 팔로우 - PATCH /user/:userId/follow
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } }); // 팔로우 하려는 유저가 있는지 확인
+    if (!user) {
+      res.status(403).send('팔로우하려는 사람이 존재하지 않습니다.');
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 팔로우 취소 - DELETE /user/:userId/follow
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } }); // 팔로우 하려는 유저가 있는지 확인
+    if (!user) {
+      res.status(403).send('언팔로우하려는 사람이 존재하지 않습니다.');
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 팔로워 삭제 - DELETE /user/follower/:userId
+router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } }); // 로그인된 본인을 찾습니다.
+    if (!user) {
+      res.status(403).send('삭제할 팔로워가 없습니다.');
+    }
+    await user.removeFollowings(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 팔로우 목록 가져오기 - GET /user/followers
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } }); // 로그인된 본인을 찾습니다.
+    if (!user) {
+      res.status(403).send('나의 아이디가 존재하지 않습니다.');
+    }
+    const followers = await user.getFollowers();
+    res.status(200).json(followers);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 팔로잉 목록 가져오기 - GET /user/followings
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } }); // 로그인된 본인을 찾습니다.
+    if (!user) {
+      res.status(403).send('나의 아이디가 존재하지 않습니다.');
+    }
+    const followings = await user.getFollowings();
+    res.status(200).json(followings);
   } catch (e) {
     console.error(e);
     next(e);

@@ -12,6 +12,9 @@ import {
   unFollowRequest,
   SignUpRequestPayload,
   ProfilePayload,
+  loadFollowingsRequest,
+  loadFollowersRequest,
+  removeFollowerRequest,
 } from './user';
 
 // 커스텀 훅
@@ -24,6 +27,7 @@ export default function useUser() {
     logoutError,
     changeProfileLoading,
     followLoading,
+    unFollowLoading,
     signUpLoading,
     signUpDone,
     signUpError,
@@ -50,16 +54,25 @@ export default function useUser() {
     dispatch(signUpRequest(data));
   }, []);
 
-  const follow = useCallback((ids: { postId: number; postUserId: number }) => {
-    dispatch(followRequest(ids));
+  const follow = useCallback((id: number) => {
+    dispatch(followRequest(id));
   }, []);
 
-  const unFollow = useCallback(
-    (ids: { postId: number; postUserId: number }) => {
-      dispatch(unFollowRequest(ids));
-    },
-    []
-  );
+  const unFollow = useCallback((id: number) => {
+    dispatch(unFollowRequest(id));
+  }, []);
+
+  const removeFollower = useCallback((id: number) => {
+    dispatch(removeFollowerRequest(id));
+  }, []);
+
+  const loadFollowers = useCallback(() => {
+    dispatch(loadFollowersRequest());
+  }, []);
+
+  const loadFollwings = useCallback(() => {
+    dispatch(loadFollowingsRequest());
+  }, []);
 
   return {
     loadMyInfo,
@@ -77,7 +90,11 @@ export default function useUser() {
     signUpError,
     signUp,
     followLoading,
+    unFollowLoading,
     follow,
     unFollow,
+    removeFollower,
+    loadFollowers,
+    loadFollwings,
   };
 }

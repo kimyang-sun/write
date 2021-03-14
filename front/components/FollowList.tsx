@@ -5,6 +5,7 @@ import { DisconnectOutlined } from '@ant-design/icons';
 import { Follow } from 'store/modules/user';
 import Dialog from './Dialog';
 import CloseButton from './CloseButton';
+import useUser from 'store/modules/userHook';
 
 // Types
 type FollowListProps = {
@@ -60,12 +61,24 @@ const LoadMoreList = styled(List)`
 // export
 function FollowList({ header, data }: FollowListProps) {
   const [loadMore, setLoadMore] = useState(false);
+  const { unFollow, removeFollower } = useUser();
+
+  // 더보기 버튼 팝업
   const onOpen = useCallback(() => {
     setLoadMore(true);
   }, [setLoadMore]);
   const onClose = useCallback(() => {
     setLoadMore(false);
   }, [setLoadMore]);
+
+  // 팔로워, 팔로잉 제거 버튼
+  const onRemove = useCallback((id: number) => {
+    if (header === '팔로워 목록') {
+      removeFollower(id);
+    } else {
+      unFollow(id);
+    }
+  }, []);
 
   return (
     <>
@@ -79,9 +92,22 @@ function FollowList({ header, data }: FollowListProps) {
         itemLayout="horizontal"
         dataSource={data}
         renderItem={(item: Follow) => (
-          <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
+          <ListItem
+            actions={[
+              <DisconnectOutlined
+                key="unfollow"
+                onClick={() => onRemove(item.id)}
+              />,
+            ]}
+          >
             <ListItem.Meta
-              avatar={<Avatar>{item.nickname.charAt(0)}</Avatar>}
+              avatar={
+                item.avatar ? (
+                  <Avatar src={item.avatar} />
+                ) : (
+                  <Avatar>{item.nickname && item.nickname.charAt(0)}</Avatar>
+                )
+              }
               title={item.nickname}
             />
           </ListItem>
@@ -101,7 +127,15 @@ function FollowList({ header, data }: FollowListProps) {
               renderItem={(item: Follow) => (
                 <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
                   <ListItem.Meta
-                    avatar={<Avatar>{item.nickname.charAt(0)}</Avatar>}
+                    avatar={
+                      item.avatar ? (
+                        <Avatar src={item.avatar} />
+                      ) : (
+                        <Avatar>
+                          {item.nickname && item.nickname.charAt(0)}
+                        </Avatar>
+                      )
+                    }
                     title={item.nickname}
                   />
                 </ListItem>

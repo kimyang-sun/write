@@ -2,7 +2,6 @@ import axios from 'axios';
 import {
   LoginRequestPayload,
   SignUpRequestPayload,
-  FollowRequestPayload,
   ProfilePayload,
 } from 'store/modules/user';
 
@@ -27,10 +26,22 @@ export function signUpAPI(data: SignUpRequestPayload) {
   return axios.post('/user', data);
 }
 
-export function followAPI(data: FollowRequestPayload) {
-  return data;
+export function followAPI(data: number) {
+  return axios.patch(`/user/${data}/follow`);
 }
 
-export function unFollowAPI(data: FollowRequestPayload) {
-  return data;
+export function unFollowAPI(data: number) {
+  return axios.delete(`/user/${data}/follow`);
+}
+
+export function removeFollowerAPI(data: number) {
+  return axios.delete(`/user/follower/${data}`);
+}
+
+export function loadFollowersAPI() {
+  return axios.get('/user/followers');
+}
+
+export function loadFollowingsAPI() {
+  return axios.get('/user/followings');
 }

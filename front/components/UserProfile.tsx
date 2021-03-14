@@ -34,7 +34,13 @@ function UserProfile({ loading, user, logout, logoutError }: UserProfileProps) {
       ]}
     >
       <Card.Meta
-        avatar={<Avatar>{user.nickname.charAt(0)}</Avatar>}
+        avatar={
+          user.avatar ? (
+            <Avatar src={user.avatar} />
+          ) : (
+            <Avatar>{user.nickname.charAt(0)}</Avatar>
+          )
+        }
         title={user.nickname}
         description={user.introduction}
       />

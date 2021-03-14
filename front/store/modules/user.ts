@@ -17,18 +17,29 @@ export type UserState = {
   changeProfileLoading: boolean;
   changeProfileDone: boolean;
   changeProfileError: string;
-  followLoading: number;
+  followLoading: boolean;
   followDone: boolean;
   followError: string;
+  unFollowLoading: boolean;
   unFollowDone: boolean;
   unFollowError: string;
+  removeFollowerLoading: boolean;
+  removeFollowerDone: boolean;
+  removeFollowerError: string;
+  loadFollowersLoading: boolean;
+  loadFollowersDone: boolean;
+  loadFollowersError: string;
+  loadFollowingsLoading: boolean;
+  loadFollowingsDone: boolean;
+  loadFollowingsError: string;
   userData: UserDataPayload;
 };
 
 // Follow 타입
 export type Follow = {
   id: number;
-  nickname: string;
+  nickname?: string;
+  avatar?: string | null;
 };
 
 // 액션 Payload 타입
@@ -52,11 +63,6 @@ export type SignUpRequestPayload = {
   email: string;
   nickname: string;
   password: string;
-};
-
-export type FollowRequestPayload = {
-  postId: number;
-  postUserId: number;
 };
 
 export type ProfilePayload = {
@@ -85,8 +91,18 @@ const initialState: UserState = {
   followLoading: null,
   followDone: false,
   followError: null,
-  unFollowError: null,
+  unFollowLoading: false,
   unFollowDone: false,
+  unFollowError: null,
+  removeFollowerLoading: false,
+  removeFollowerDone: false,
+  removeFollowerError: null,
+  loadFollowersLoading: false,
+  loadFollowersDone: false,
+  loadFollowersError: null,
+  loadFollowingsLoading: false,
+  loadFollowingsDone: false,
+  loadFollowingsError: null,
   userData: null,
 };
 
@@ -218,55 +234,103 @@ const userSlice = createSlice({
     },
 
     // Follow
-    followRequest(
-      state: UserState,
-      action: PayloadAction<{ postId: number; postUserId: number }>
-    ) {
-      state.followLoading = action.payload.postId;
+    followRequest(state: UserState, _action: PayloadAction<number>) {
+      state.followLoading = true;
       state.followDone = false;
       state.followError = null;
     },
 
-    followSuccess(
-      state: UserState,
-      action: PayloadAction<{ postId: number; postUserId: number }>
-    ) {
-      state.userData.Followings.push({
-        id: action.payload.postUserId,
-        nickname: '아무나',
-      });
-      state.followLoading = null;
+    followSuccess(state: UserState, action: PayloadAction<{ UserId: number }>) {
+      state.userData.Followings.push({ id: action.payload.UserId });
+      state.followLoading = false;
       state.followDone = true;
     },
 
     followFailure(state: UserState, action: PayloadAction<string>) {
-      state.followLoading = null;
+      state.followLoading = false;
       state.followError = action.payload;
     },
 
-    unFollowRequest(
-      state: UserState,
-      action: PayloadAction<FollowRequestPayload>
-    ) {
-      state.followLoading = action.payload.postId;
+    // Unfollow
+    unFollowRequest(state: UserState, _action: PayloadAction<number>) {
+      state.unFollowLoading = true;
       state.unFollowDone = false;
       state.unFollowError = null;
     },
 
     unFollowSuccess(
       state: UserState,
-      action: PayloadAction<FollowRequestPayload>
+      action: PayloadAction<{ UserId: number }>
     ) {
       state.userData.Followings = state.userData.Followings.filter(
-        following => following.id !== action.payload.postUserId
+        following => following.id !== action.payload.UserId
       );
-      state.followLoading = null;
+      state.unFollowLoading = false;
       state.unFollowDone = true;
     },
 
     unFollowFailure(state: UserState, action: PayloadAction<string>) {
-      state.followLoading = null;
+      state.unFollowLoading = false;
       state.unFollowError = action.payload;
+    },
+
+    // Remove Follower
+    removeFollowerRequest(state: UserState, _action: PayloadAction<number>) {
+      state.removeFollowerLoading = true;
+      state.removeFollowerDone = false;
+      state.removeFollowerError = null;
+    },
+
+    removeFollowerSuccess(
+      state: UserState,
+      action: PayloadAction<{ UserId: number }>
+    ) {
+      state.userData.Followers = state.userData.Followers.filter(
+        follower => follower.id !== action.payload.UserId
+      );
+      state.removeFollowerLoading = false;
+      state.removeFollowerDone = true;
+    },
+
+    removeFollowerFailure(state: UserState, action: PayloadAction<string>) {
+      state.removeFollowerLoading = false;
+      state.removeFollowerError = action.payload;
+    },
+
+    // Load Followers
+    loadFollowersRequest(state: UserState) {
+      state.loadFollowersLoading = true;
+      state.loadFollowersDone = false;
+      state.loadFollowersError = null;
+    },
+
+    loadFollowersSuccess(state: UserState, action: PayloadAction<any>) {
+      state.userData.Followers = action.payload;
+      state.loadFollowersLoading = false;
+      state.loadFollowersDone = true;
+    },
+
+    loadFollowersFailure(state: UserState, action: PayloadAction<string>) {
+      state.loadFollowersLoading = null;
+      state.loadFollowersError = action.payload;
+    },
+
+    // Load Followings
+    loadFollowingsRequest(state: UserState) {
+      state.loadFollowingsLoading = true;
+      state.loadFollowingsDone = false;
+      state.loadFollowingsError = null;
+    },
+
+    loadFollowingsSuccess(state: UserState, action: PayloadAction<any>) {
+      state.userData.Followings = action.payload;
+      state.loadFollowingsLoading = false;
+      state.loadFollowingsDone = true;
+    },
+
+    loadFollowingsFailure(state: UserState, action: PayloadAction<string>) {
+      state.loadFollowingsLoading = null;
+      state.loadFollowingsError = action.payload;
     },
   },
 });
@@ -297,5 +361,14 @@ export const {
   unFollowRequest,
   unFollowSuccess,
   unFollowFailure,
+  removeFollowerRequest,
+  removeFollowerSuccess,
+  removeFollowerFailure,
+  loadFollowersRequest,
+  loadFollowersSuccess,
+  loadFollowersFailure,
+  loadFollowingsRequest,
+  loadFollowingsSuccess,
+  loadFollowingsFailure,
 } = actions;
 export default reducer;

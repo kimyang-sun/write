@@ -16,6 +16,9 @@ import {
   watchUnFollow,
   watchSignUp,
   watchLoadMyInfo,
+  watchLoadFollowers,
+  watchLoadFollowings,
+  watchRemoveFollower,
 } from './userSaga';
 
 // Axios Config Defaults
@@ -32,11 +35,14 @@ export default function* rootSaga() {
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnFollow),
+    fork(watchRemoveFollower),
     fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchRemovePost),
     fork(watchAddComment),
     fork(watchLikePost),
     fork(watchUnLikePost),
+    fork(watchLoadFollowers),
+    fork(watchLoadFollowings),
   ]);
 }

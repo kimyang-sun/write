@@ -15,17 +15,25 @@ import {
   signUpSuccess,
   signUpFailure,
   SignUpRequestPayload,
-  FollowRequestPayload,
   followRequest,
   followSuccess,
   followFailure,
   unFollowRequest,
   unFollowSuccess,
   unFollowFailure,
+  removeFollowerRequest,
+  removeFollowerSuccess,
+  removeFollowerFailure,
   ProfilePayload,
   changeProfileSuccess,
   changeProfileFailure,
   changeProfileRequest,
+  loadFollowersRequest,
+  loadFollowersSuccess,
+  loadFollowersFailure,
+  loadFollowingsRequest,
+  loadFollowingsSuccess,
+  loadFollowingsFailure,
 } from 'store/modules/user';
 import {
   loadMyInfoAPI,
@@ -35,6 +43,9 @@ import {
   signUpAPI,
   unFollowAPI,
   changeProfileAPI,
+  loadFollowersAPI,
+  loadFollowingsAPI,
+  removeFollowerAPI,
 } from 'api/user';
 
 // Saga 실행 함수
@@ -88,23 +99,48 @@ function* changeProfile(action: PayloadAction<ProfilePayload>) {
   }
 }
 
-function* follow(action: PayloadAction<FollowRequestPayload>) {
+function* follow(action: PayloadAction<number>) {
   try {
-    yield delay(1000);
     const result = yield call(followAPI, action.payload);
-    yield put(followSuccess(result));
+    yield put(followSuccess(result.data));
   } catch (e) {
     yield put(followFailure(e.response.data));
   }
 }
 
-function* unFollow(action: PayloadAction<FollowRequestPayload>) {
+function* unFollow(action: PayloadAction<number>) {
   try {
-    yield delay(1000);
     const result = yield call(unFollowAPI, action.payload);
-    yield put(unFollowSuccess(result));
+    yield put(unFollowSuccess(result.data));
   } catch (e) {
     yield put(unFollowFailure(e.response.data));
+  }
+}
+
+function* removeFollower(action: PayloadAction<number>) {
+  try {
+    const result = yield call(removeFollowerAPI, action.payload);
+    yield put(removeFollowerSuccess(result.data));
+  } catch (e) {
+    yield put(removeFollowerFailure(e.response.data));
+  }
+}
+
+function* loadFollowers() {
+  try {
+    const result = yield call(loadFollowersAPI);
+    yield put(loadFollowersSuccess(result.data));
+  } catch (e) {
+    yield put(loadFollowersFailure(e.response.data));
+  }
+}
+
+function* loadFollowings() {
+  try {
+    const result = yield call(loadFollowingsAPI);
+    yield put(loadFollowingsSuccess(result.data));
+  } catch (e) {
+    yield put(loadFollowingsFailure(e.response.data));
   }
 }
 
@@ -137,6 +173,18 @@ export function* watchFollow() {
 
 export function* watchUnFollow() {
   yield takeLatest(unFollowRequest.type, unFollow);
+}
+
+export function* watchRemoveFollower() {
+  yield takeLatest(removeFollowerRequest.type, removeFollower);
+}
+
+export function* watchLoadFollowers() {
+  yield takeLatest(loadFollowersRequest.type, loadFollowers);
+}
+
+export function* watchLoadFollowings() {
+  yield takeLatest(loadFollowingsRequest.type, loadFollowings);
 }
 
 /*

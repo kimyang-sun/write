@@ -119,7 +119,13 @@ function PostCard({ post }: PostCardProps) {
         ]}
       >
         <Card.Meta
-          avatar={<Avatar>{post.User.nickname.charAt(0)}</Avatar>}
+          avatar={
+            post.User.avatar ? (
+              <Avatar src={post.User.avatar} />
+            ) : (
+              <Avatar>{post.User.nickname.charAt(0)}</Avatar>
+            )
+          }
           title={
             <>
               {post.User.nickname}
@@ -146,7 +152,13 @@ function PostCard({ post }: PostCardProps) {
               <List.Item>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname.charAt(0)}</Avatar>}
+                  avatar={
+                    item.User.avatar ? (
+                      <Avatar src={item.User.avatar} />
+                    ) : (
+                      <Avatar>{item.User.nickname.charAt(0)}</Avatar>
+                    )
+                  }
                   content={item.content}
                   datetime={item.createdAt.slice(0, 10)}
                 />
