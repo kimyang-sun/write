@@ -4,12 +4,13 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
+const path = require('path');
 
-const db = require('../models');
+const db = require('./models');
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
-const passportConfig = require('../passport');
+const passportConfig = require('./passport');
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,17 @@ db.sequelize
   })
   .catch(console.error);
 passportConfig();
+
+app.use(
+  cors({
+    origin: 'http://localhost:3005',
+    credentials: true,
+  })
+);
+
+// 현재 back 폴더 안에 uploads로 합쳐줌, 프론트에서는 백엔드의 폴더 구조를 모름
+// 그래서 http://localhost:3006/ 이 백엔드 서버로 접근 가능하도록 '/'으로 해줌
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 
 // 이 코드는 위에쪽에 있어야함.
 app.use(express.json());
@@ -36,16 +48,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => {
-  res.send('hello express');
-});
-
-app.use(
-  cors({
-    origin: 'http://localhost:3005',
-    credentials: true,
-  })
-);
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);

@@ -1,14 +1,17 @@
 import { Button } from 'antd';
+import { dataURLtoFile } from 'lib/convertFile';
 import { getCroppedImg } from 'lib/easyCrop';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import styled from 'styled-components';
 
 // Types
 type ImageCropperProps = {
   inputImg: any;
-  setInputImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer>>;
-  setBlob: React.Dispatch<any>;
+  setInputImg: React.Dispatch<any>;
+  inputImgName: string;
+  setInputImgName: React.Dispatch<any>;
+  setCroppedFile: React.Dispatch<any>;
 };
 
 // styled components
@@ -36,7 +39,9 @@ const CropperBox = styled.div`
 const ImageCropper = ({
   inputImg,
   setInputImg,
-  setBlob,
+  inputImgName,
+  setInputImgName,
+  setCroppedFile,
 }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -52,10 +57,14 @@ const ImageCropper = ({
   // 사진 업로드 버튼을 눌렀을때 실행됩니다.
   const onCropUpload = useCallback(async () => {
     try {
-      const croppedImage = await getCroppedImg(inputImg, croppedAreaPixels);
-      console.log('done', { croppedImage });
-      setBlob(croppedImage);
+      const croppedImage: any = await getCroppedImg(
+        inputImg,
+        croppedAreaPixels
+      );
+      const croppedFile = dataURLtoFile(croppedImage, inputImgName);
+      setCroppedFile(croppedFile);
       setInputImg(null);
+      setInputImgName(null);
     } catch (e) {
       console.error(e);
     }

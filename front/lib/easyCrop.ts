@@ -50,8 +50,9 @@ export const getCroppedImg = async (imageSrc, pixelCrop) => {
   );
 
   return new Promise(resolve => {
-    canvas.toBlob(blob => {
-      resolve(URL.createObjectURL(blob));
-    }, 'image/jpeg');
+    resolve(canvas.toDataURL());
+    // canvas.toBlob(blob => {
+    //   resolve(URL.createObjectURL(blob));
+    // }, 'image/jpeg'); 미리보기용 toBlob
   });
 };

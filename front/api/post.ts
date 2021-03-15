@@ -10,6 +10,10 @@ export function addPostAPI(data: Post) {
   return axios.post('/post', data);
 }
 
+export function uploadPostImageAPI(data: FormData) {
+  return axios.post('/post/images', data);
+}
+
 export function removePostAPI(data: number) {
   // 여기서 data는 숫자이다. data를 백엔드로 보내려면 객체여야 하는데,
   // 이렇게 params로 넘겨주는 경우에는 따로 데이터를 객체로 넣어줄 필요가 없다.

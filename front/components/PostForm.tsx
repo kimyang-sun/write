@@ -7,7 +7,7 @@ import ImagePaths from './ImagePaths';
 import CloseButton from './CloseButton';
 import Dialog from './Dialog';
 import ImageCropper from './ImageCropper';
-import { readFile } from 'lib/readFile';
+import { readFile } from 'lib/convertFile';
 
 // Types
 type PostFormProps = {
@@ -57,26 +57,31 @@ const PostFormTitle = styled.div`
 
 // export
 function PostForm({ setPostCreating }: PostFormProps) {
-  const { addPost, addPostDone } = usePost();
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const [inputImg, setInputImg] = useState<string | ArrayBuffer>(null);
-  const [blob, setBlob] = useState(null);
+  const { addPost, addPostDone, uploadPostImage } = usePost();
+  const imageInputRef = useRef(null);
+  const [inputImg, setInputImg] = useState(null);
+  const [inputImgName, setInputImgName] = useState<string>(null);
+  const [CroppedFile, setCroppedFile] = useState(null);
   // React Hook Form 연동
-  const { handleSubmit, control, register } = useForm<PostFormType>();
+  const { handleSubmit, control } = useForm<PostFormType>();
   const onSubmit = handleSubmit((data: PostFormType) => {
-    // 이미지가 없으면 랜덤이미지를 넣습니다.
-    let images: any[] = [];
-    if (data.image.length === 0) {
-      images = [{ src: 'https://picsum.photos/650/650' }];
-    } else {
-      images = data.image;
-    }
-
+    console.log(data);
     addPost({
       content: data.text,
       tag: data.tagText,
     });
   });
+
+  // 이미지를 Crop한 후 생기는 CroppedFile
+  useEffect(() => {
+    if (CroppedFile) {
+      const imageFormData = new FormData();
+      imageFormData.append('image', CroppedFile);
+
+      // 이미지 업로드
+      uploadPostImage(imageFormData);
+    }
+  }, [CroppedFile]);
 
   const onClose = useCallback(() => {
     setPostCreating(false);
@@ -88,14 +93,18 @@ function PostForm({ setPostCreating }: PostFormProps) {
   }, []);
 
   // 사진 업로드
-  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 이미지 파일을 문자열로 변환
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      let imageDataUrl: any = await readFile(file);
-      setInputImg(imageDataUrl);
-    }
-  };
+  const onFileChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      // 이미지 파일을 base64 URL로 변환 및 이미지 이름 저장
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0];
+        let imageDataUrl: any = await readFile(file);
+        setInputImg(imageDataUrl);
+        setInputImgName(file.name);
+      }
+    },
+    []
+  );
 
   // addPostDone 게시글 작성이 완료되면 창을 닫아줍니다.
   // 그냥 onSubmit에서 하게되면 만약 서버에 문제가 있거나 하면 작동이 안됐는데 창이 닫힐수가 있습니다.
@@ -125,12 +134,8 @@ function PostForm({ setPostCreating }: PostFormProps) {
         <input
           type="file"
           name="image"
-          ref={e => {
-            register(e);
-            imageInputRef.current = e;
-          }}
+          ref={imageInputRef}
           accept="image/*"
-          multiple
           hidden
           onChange={onFileChange}
         />
@@ -138,7 +143,9 @@ function PostForm({ setPostCreating }: PostFormProps) {
           <ImageCropper
             inputImg={inputImg}
             setInputImg={setInputImg}
-            setBlob={setBlob}
+            inputImgName={inputImgName}
+            setInputImgName={setInputImgName}
+            setCroppedFile={setCroppedFile}
           />
         )}
         <Button onClick={onClickImageUpload}>사진 업로드</Button>

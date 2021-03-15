@@ -3,26 +3,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 초기 상태 타입
 export type PostState = {
   mainPosts: any[];
-  imagePaths: string[];
+  imagePaths: any[];
   hasMorePosts: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
-  loadPostsError: string;
+  loadPostsError: any;
   addPostLoading: boolean;
   addPostDone: boolean;
-  addPostError: string;
+  addPostError: any;
+  uploadPostImageLoading: boolean;
+  uploadPostImageDone: boolean;
+  uploadPostImageError: any;
   removePostLoading: boolean;
   removePostDone: boolean;
-  removePostError: string;
+  removePostError: any;
   addCommentLoading: boolean;
   addCommentDone: boolean;
-  addCommentError: string;
+  addCommentError: any;
   likePostLoading: boolean;
   likePostDone: boolean;
-  likePostError: string;
+  likePostError: any;
   unLikePostLoading: boolean;
   unLikePostDone: boolean;
-  unLikePostError: string;
+  unLikePostError: any;
 };
 
 // Post 타입
@@ -79,6 +82,9 @@ const initialState: PostState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  uploadPostImageLoading: false,
+  uploadPostImageDone: false,
+  uploadPostImageError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
@@ -113,7 +119,7 @@ const postSlice = createSlice({
       state.loadPostsDone = true;
     },
 
-    loadPostsFailure(state: PostState, action: PayloadAction<string>) {
+    loadPostsFailure(state: PostState, action: PayloadAction<any>) {
       state.loadPostsLoading = false;
       state.loadPostsError = action.payload;
     },
@@ -135,9 +141,38 @@ const postSlice = createSlice({
       state.addPostDone = false;
     },
 
-    addPostFailure(state: PostState, action: PayloadAction<string>) {
+    addPostFailure(state: PostState, action: PayloadAction<any>) {
       state.addPostLoading = false;
       state.addPostError = action.payload;
+    },
+
+    // Upload Image
+    uploadPostImageRequest(
+      state: PostState,
+      _action: PayloadAction<PostPayloadType>
+    ) {
+      state.uploadPostImageLoading = true;
+      state.uploadPostImageDone = false;
+      state.uploadPostImageError = null;
+    },
+
+    uploadPostImageSuccess(state: PostState, action: PayloadAction<any>) {
+      state.imagePaths = state.imagePaths.concat(action.payload);
+      state.uploadPostImageLoading = false;
+      state.uploadPostImageDone = true;
+    },
+
+    uploadPostImageFailure(state: PostState, action: PayloadAction<any>) {
+      state.uploadPostImageLoading = false;
+      state.uploadPostImageError = action.payload;
+    },
+
+    // Rmove Post Image
+    removeUploadedPostImage(state: PostState, action: PayloadAction<number>) {
+      console.log(action.payload);
+      state.imagePaths = state.imagePaths.filter((_image, index) => {
+        index !== action.payload;
+      });
     },
 
     // Remove Post
@@ -158,7 +193,7 @@ const postSlice = createSlice({
       state.removePostDone = true;
     },
 
-    removePostFailure(state: PostState, action: PayloadAction<string>) {
+    removePostFailure(state: PostState, action: PayloadAction<any>) {
       state.addPostLoading = false;
       state.removePostError = action.payload;
     },
@@ -189,7 +224,7 @@ const postSlice = createSlice({
       state.addCommentDone = true;
     },
 
-    addCommentFailure(state: PostState, action: PayloadAction<string>) {
+    addCommentFailure(state: PostState, action: PayloadAction<any>) {
       console.error(action.payload);
       state.addCommentLoading = false;
       state.addCommentError = action.payload;
@@ -214,7 +249,7 @@ const postSlice = createSlice({
       state.likePostDone = true;
     },
 
-    likePostFailure(state: PostState, action: PayloadAction<string>) {
+    likePostFailure(state: PostState, action: PayloadAction<any>) {
       state.likePostLoading = false;
       state.likePostError = action.payload;
     },
@@ -240,7 +275,7 @@ const postSlice = createSlice({
       state.unLikePostDone = true;
     },
 
-    unLikePostFailure(state: PostState, action: PayloadAction<string>) {
+    unLikePostFailure(state: PostState, action: PayloadAction<any>) {
       state.unLikePostLoading = false;
       state.unLikePostError = action.payload;
     },
@@ -257,6 +292,10 @@ export const {
   addPostSuccess,
   addPostComplete,
   addPostFailure,
+  uploadPostImageRequest,
+  uploadPostImageSuccess,
+  uploadPostImageFailure,
+  removeUploadedPostImage,
   removePostRequest,
   removePostSuccess,
   removePostFailure,

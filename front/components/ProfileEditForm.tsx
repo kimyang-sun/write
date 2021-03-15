@@ -3,8 +3,7 @@ import { UserDataPayload, ProfilePayload } from 'store/modules/user';
 import styled from 'styled-components';
 import { Input, Button, Form, Avatar } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
-import ImageCropper from './ImageCropper';
-import { readFile } from 'lib/readFile';
+import { readFile } from 'lib/convertFile';
 
 // Types
 type ProfileEditFormProps = {
@@ -41,25 +40,18 @@ function ProfileEditForm({
   onChangeProfile,
   profileLoading,
 }: ProfileEditFormProps) {
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const [inputImg, setInputImg] = useState<string | ArrayBuffer>(null);
-  const [blob, setBlob] = useState(null);
+  const imageInputRef = useRef(null);
   const [avatarImage, setAvatarImage] = useState(
     user.avatar ? user.avatar : null
   );
 
   // React Hook Form 연동
-  const {
-    handleSubmit,
-    control,
-    register,
-    errors,
-  } = useForm<ProfileEditFormType>();
+  const { handleSubmit, control, errors } = useForm<ProfileEditFormType>();
   const onSubmit = handleSubmit((data: ProfileEditFormType) => {
     onChangeProfile({
       nickname: data.nickname,
       introduction: data.introduction,
-      avatar: blob,
+      avatar: null,
     });
   });
 
@@ -75,24 +67,17 @@ function ProfileEditForm({
 
   // 사진 업로드
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 이미지 파일을 문자열로 변환
+    const imageFormData = new FormData();
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       let imageDataUrl: any = await readFile(file);
-      setInputImg(imageDataUrl);
+      setAvatarImage(imageDataUrl);
+      imageFormData.append('image', file);
     }
   };
 
-  // 사진 업로드 버튼을 누른 후에 실행되는 콜백함수 (아바타 미리보기 변경)
-  useEffect(() => {
-    if (blob) {
-      setAvatarImage(blob);
-    }
-  }, [blob]);
-
   // 사진 지우기 클릭
   const onClickImageErase = useCallback(() => {
-    setBlob(null);
     setAvatarImage(null);
   }, []);
 
@@ -103,10 +88,7 @@ function ProfileEditForm({
         <input
           type="file"
           name="image"
-          ref={e => {
-            register(e);
-            imageInputRef.current = e;
-          }}
+          ref={imageInputRef}
           accept="image/*"
           hidden
           onChange={onFileChange}
@@ -124,13 +106,6 @@ function ProfileEditForm({
           사진 지우기
         </Button>
       </div>
-      {inputImg && (
-        <ImageCropper
-          inputImg={inputImg}
-          setInputImg={setInputImg}
-          setBlob={setBlob}
-        />
-      )}
       <div className="input-box">
         <label htmlFor="nickname">닉네임 (최소 2글자, 최대 12글자)</label>
         <Controller

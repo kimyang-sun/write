@@ -4,34 +4,34 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type UserState = {
   loadUserLoading: boolean;
   loadUserDone: boolean;
-  loadUserError: string;
+  loadUserError: any;
   loginLoading: boolean;
   loginDone: boolean;
-  loginError: string;
+  loginError: any;
   logoutLoading: boolean;
   logoutDone: boolean;
-  logoutError: string;
+  logoutError: any;
   signUpLoading: boolean;
   signUpDone: boolean;
-  signUpError: string;
+  signUpError: any;
   changeProfileLoading: boolean;
   changeProfileDone: boolean;
-  changeProfileError: string;
+  changeProfileError: any;
   followLoading: boolean;
   followDone: boolean;
-  followError: string;
+  followError: any;
   unFollowLoading: boolean;
   unFollowDone: boolean;
-  unFollowError: string;
+  unFollowError: any;
   removeFollowerLoading: boolean;
   removeFollowerDone: boolean;
-  removeFollowerError: string;
+  removeFollowerError: any;
   loadFollowersLoading: boolean;
   loadFollowersDone: boolean;
-  loadFollowersError: string;
+  loadFollowersError: any;
   loadFollowingsLoading: boolean;
   loadFollowingsDone: boolean;
-  loadFollowingsError: string;
+  loadFollowingsError: any;
   userData: UserDataPayload;
 };
 
@@ -128,7 +128,7 @@ const userSlice = createSlice({
       state.loadUserDone = true;
     },
 
-    loadMyInfoFailure(state: UserState, action: PayloadAction<string>) {
+    loadMyInfoFailure(state: UserState, action: PayloadAction<any>) {
       state.loadUserLoading = false;
       state.loadUserError = action.payload;
     },
@@ -149,7 +149,7 @@ const userSlice = createSlice({
       state.loginDone = true;
     },
 
-    loginFailure(state: UserState, action: PayloadAction<string>) {
+    loginFailure(state: UserState, action: PayloadAction<any>) {
       state.loginLoading = false;
       state.loginError = action.payload;
     },
@@ -168,7 +168,7 @@ const userSlice = createSlice({
       state.logoutDone = true;
     },
 
-    logoutFailure(state: UserState, action: PayloadAction<string>) {
+    logoutFailure(state: UserState, action: PayloadAction<any>) {
       state.logoutLoading = false;
       state.logoutError = action.payload;
     },
@@ -188,7 +188,7 @@ const userSlice = createSlice({
       state.signUpDone = true;
     },
 
-    signUpFailure(state: UserState, action: PayloadAction<string>) {
+    signUpFailure(state: UserState, action: PayloadAction<any>) {
       state.signUpError = action.payload;
       state.signUpLoading = false;
     },
@@ -228,7 +228,7 @@ const userSlice = createSlice({
       state.changeProfileDone = true;
     },
 
-    changeProfileFailure(state: UserState, action: PayloadAction<string>) {
+    changeProfileFailure(state: UserState, action: PayloadAction<any>) {
       state.changeProfileError = action.payload;
       state.changeProfileLoading = false;
     },
@@ -246,7 +246,7 @@ const userSlice = createSlice({
       state.followDone = true;
     },
 
-    followFailure(state: UserState, action: PayloadAction<string>) {
+    followFailure(state: UserState, action: PayloadAction<any>) {
       state.followLoading = false;
       state.followError = action.payload;
     },
@@ -269,7 +269,7 @@ const userSlice = createSlice({
       state.unFollowDone = true;
     },
 
-    unFollowFailure(state: UserState, action: PayloadAction<string>) {
+    unFollowFailure(state: UserState, action: PayloadAction<any>) {
       state.unFollowLoading = false;
       state.unFollowError = action.payload;
     },
@@ -292,7 +292,7 @@ const userSlice = createSlice({
       state.removeFollowerDone = true;
     },
 
-    removeFollowerFailure(state: UserState, action: PayloadAction<string>) {
+    removeFollowerFailure(state: UserState, action: PayloadAction<any>) {
       state.removeFollowerLoading = false;
       state.removeFollowerError = action.payload;
     },
@@ -310,7 +310,7 @@ const userSlice = createSlice({
       state.loadFollowersDone = true;
     },
 
-    loadFollowersFailure(state: UserState, action: PayloadAction<string>) {
+    loadFollowersFailure(state: UserState, action: PayloadAction<any>) {
       state.loadFollowersLoading = null;
       state.loadFollowersError = action.payload;
     },
@@ -328,7 +328,7 @@ const userSlice = createSlice({
       state.loadFollowingsDone = true;
     },
 
-    loadFollowingsFailure(state: UserState, action: PayloadAction<string>) {
+    loadFollowingsFailure(state: UserState, action: PayloadAction<any>) {
       state.loadFollowingsLoading = null;
       state.loadFollowingsError = action.payload;
     },

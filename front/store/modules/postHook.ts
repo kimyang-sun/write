@@ -9,6 +9,8 @@ import {
   removePostRequest,
   likePostRequest,
   unLikePostRequest,
+  uploadPostImageRequest,
+  removeUploadedPostImage,
 } from './post';
 
 export default function usePost() {
@@ -30,6 +32,14 @@ export default function usePost() {
 
   const addPost = useCallback(post => {
     dispatch(addPostRequest(post));
+  }, []);
+
+  const uploadPostImage = useCallback(data => {
+    dispatch(uploadPostImageRequest(data));
+  }, []);
+
+  const removePostImage = useCallback((index: number) => {
+    dispatch(removeUploadedPostImage(index));
   }, []);
 
   const removePost = useCallback((id: number) => {
@@ -57,6 +67,8 @@ export default function usePost() {
     addPost,
     addPostLoading,
     addPostDone,
+    uploadPostImage,
+    removePostImage,
     removePost,
     removePostLoading,
     addComment,

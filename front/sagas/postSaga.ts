@@ -10,6 +10,9 @@ import {
   addPostSuccess,
   addPostComplete,
   addPostFailure,
+  uploadPostImageRequest,
+  uploadPostImageSuccess,
+  uploadPostImageFailure,
   removePostRequest,
   removePostSuccess,
   removePostFailure,
@@ -31,6 +34,7 @@ import {
   addCommentAPI,
   likePostAPI,
   unLikePostAPI,
+  uploadPostImageAPI,
 } from 'api/post';
 
 // Saga 실행함수
@@ -51,6 +55,15 @@ function* addPost(action: PayloadAction<Post>) {
     yield put(addPostComplete());
   } catch (e) {
     yield put(addPostFailure(e.response.data));
+  }
+}
+
+function* uploadPostImage(action: PayloadAction<FormData>) {
+  try {
+    const result = yield call(uploadPostImageAPI, action.payload);
+    yield put(uploadPostImageSuccess(result.data));
+  } catch (e) {
+    yield put(uploadPostImageFailure(e.response.data));
   }
 }
 
@@ -98,6 +111,10 @@ export function* watchLoadPosts() {
 
 export function* watchAddPost() {
   yield takeLatest(addPostRequest.type, addPost);
+}
+
+export function* watchUploadPostImage() {
+  yield takeLatest(uploadPostImageRequest.type, uploadPostImage);
 }
 
 export function* watchRemovePost() {
