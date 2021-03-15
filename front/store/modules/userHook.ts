@@ -8,6 +8,8 @@ import {
   logoutRequest,
   signUpRequest,
   changeProfileRequest,
+  uploadUserImageRequest,
+  removeUploadedUserImage,
   followRequest,
   unFollowRequest,
   SignUpRequestPayload,
@@ -21,6 +23,7 @@ import {
 export default function useUser() {
   const {
     userData,
+    avatarURL,
     loginLoading,
     loginError,
     logoutLoading,
@@ -50,6 +53,14 @@ export default function useUser() {
     dispatch(changeProfileRequest(data));
   }, []);
 
+  const uploadUserImage = useCallback((data: FormData) => {
+    dispatch(uploadUserImageRequest(data));
+  }, []);
+
+  const removeUserImage = useCallback(() => {
+    dispatch(removeUploadedUserImage());
+  }, []);
+
   const signUp = useCallback((data: SignUpRequestPayload) => {
     dispatch(signUpRequest(data));
   }, []);
@@ -75,16 +86,19 @@ export default function useUser() {
   }, []);
 
   return {
+    userData,
+    avatarURL,
     loadMyInfo,
     loginLoading,
     loginError,
     logoutLoading,
     logoutError,
-    userData,
     login,
     logout,
     changeProfileLoading,
     changeProfile,
+    uploadUserImage,
+    removeUserImage,
     signUpLoading,
     signUpDone,
     signUpError,

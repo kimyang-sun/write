@@ -11,6 +11,7 @@ import {
   unLikePostRequest,
   uploadPostImageRequest,
   removeUploadedPostImage,
+  AddPostType,
 } from './post';
 
 export default function usePost() {
@@ -30,11 +31,11 @@ export default function usePost() {
     dispatch(loadPostsRequest());
   }, []);
 
-  const addPost = useCallback(post => {
+  const addPost = useCallback((post: AddPostType) => {
     dispatch(addPostRequest(post));
   }, []);
 
-  const uploadPostImage = useCallback(data => {
+  const uploadPostImage = useCallback((data: FormData) => {
     dispatch(uploadPostImageRequest(data));
   }, []);
 

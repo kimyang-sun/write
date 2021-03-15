@@ -121,7 +121,7 @@ function PostCard({ post }: PostCardProps) {
         <Card.Meta
           avatar={
             post.User.avatar ? (
-              <Avatar src={post.User.avatar} />
+              <Avatar src={`http://localhost:3006/${post.User.avatar}`} />
             ) : (
               <Avatar>{post.User.nickname.charAt(0)}</Avatar>
             )
@@ -154,7 +154,9 @@ function PostCard({ post }: PostCardProps) {
                   author={item.User.nickname}
                   avatar={
                     item.User.avatar ? (
-                      <Avatar src={item.User.avatar} />
+                      <Avatar
+                        src={`http://localhost:3006/${item.User.avatar}`}
+                      />
                     ) : (
                       <Avatar>{item.User.nickname.charAt(0)}</Avatar>
                     )

@@ -36,7 +36,7 @@ function UserProfile({ loading, user, logout, logoutError }: UserProfileProps) {
       <Card.Meta
         avatar={
           user.avatar ? (
-            <Avatar src={user.avatar} />
+            <Avatar src={`http://localhost:3006/${user.avatar}`} />
           ) : (
             <Avatar>{user.nickname.charAt(0)}</Avatar>
           )

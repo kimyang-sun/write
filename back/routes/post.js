@@ -22,6 +22,15 @@ router.post('/', isLoggedIn, async (req, res, next) => {
       tag: req.body.tag,
       UserId: req.user.id,
     });
+
+    // 이미지가 존재할 경우 Image 모델을 만들어줍니다.
+    if (req.body.image) {
+      const images = await Promise.all(
+        req.body.image.map(image => Image.create({ src: image }))
+      );
+      await post.addImages(images);
+    }
+
     // 기본정보에는 content, UserId 밖에 없어서 더 추가해줍니다.
     const fullPost = await Post.findOne({
       where: { id: post.id }, // 작성하는 해당 post를 찾아서
@@ -59,10 +68,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 // 게시글 이미지 첨부 - POST /post/images
 const upload = multer({
   storage: multer.diskStorage({
-    destination(req, file, done) {
+    destination(_req, _file, done) {
       done(null, 'uploads');
     },
-    filename(req, file, done) {
+    filename(_req, file, done) {
       // ex) kim.png
       const ext = path.extname(file.originalname); // 확장자 추출 - png
       const basename = path.basename(file.originalname, ext); // 이름 추출 - kim

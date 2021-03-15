@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 초기 상태 타입
 export type UserState = {
+  userData: UserDataPayload;
+  avatarURL: string;
   loadUserLoading: boolean;
   loadUserDone: boolean;
   loadUserError: any;
@@ -17,6 +19,9 @@ export type UserState = {
   changeProfileLoading: boolean;
   changeProfileDone: boolean;
   changeProfileError: any;
+  uploadUserImageLoading: boolean;
+  uploadUserImageDone: boolean;
+  uploadUserImageError: any;
   followLoading: boolean;
   followDone: boolean;
   followError: any;
@@ -32,7 +37,6 @@ export type UserState = {
   loadFollowingsLoading: boolean;
   loadFollowingsDone: boolean;
   loadFollowingsError: any;
-  userData: UserDataPayload;
 };
 
 // Follow 타입
@@ -73,6 +77,8 @@ export type ProfilePayload = {
 
 // 초기 상태
 const initialState: UserState = {
+  userData: null,
+  avatarURL: null,
   loadUserLoading: false,
   loadUserDone: false,
   loadUserError: null,
@@ -88,6 +94,9 @@ const initialState: UserState = {
   changeProfileLoading: false,
   changeProfileDone: false,
   changeProfileError: null,
+  uploadUserImageLoading: false,
+  uploadUserImageDone: false,
+  uploadUserImageError: null,
   followLoading: null,
   followDone: false,
   followError: null,
@@ -103,7 +112,6 @@ const initialState: UserState = {
   loadFollowingsLoading: false,
   loadFollowingsDone: false,
   loadFollowingsError: null,
-  userData: null,
 };
 
 // 리듀서 슬라이스
@@ -233,6 +241,29 @@ const userSlice = createSlice({
       state.changeProfileLoading = false;
     },
 
+    // Upload User Image
+    uploadUserImageRequest(state: UserState, _action: PayloadAction<FormData>) {
+      state.uploadUserImageLoading = true;
+      state.uploadUserImageDone = false;
+      state.uploadUserImageError = null;
+    },
+
+    uploadUserImageSuccess(state: UserState, action: PayloadAction<any>) {
+      state.avatarURL = action.payload;
+      state.uploadUserImageLoading = false;
+      state.uploadUserImageDone = true;
+    },
+
+    uploadUserImageFailure(state: UserState, action: PayloadAction<any>) {
+      state.uploadUserImageLoading = false;
+      state.uploadUserImageError = action.payload;
+    },
+
+    // Rmove User Image
+    removeUploadedUserImage(state: UserState) {
+      state.avatarURL = null;
+    },
+
     // Follow
     followRequest(state: UserState, _action: PayloadAction<number>) {
       state.followLoading = true;
@@ -353,6 +384,10 @@ export const {
   changeProfileRequest,
   changeProfileSuccess,
   changeProfileFailure,
+  uploadUserImageRequest,
+  uploadUserImageSuccess,
+  uploadUserImageFailure,
+  removeUploadedUserImage,
   addUserPost,
   removeUserPost,
   followRequest,

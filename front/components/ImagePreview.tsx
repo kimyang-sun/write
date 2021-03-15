@@ -5,24 +5,40 @@ import { Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 // styled components
-const StyledImagePaths = styled.div`
+const StyledImagePreview = styled.div`
   padding: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const PreviewImage = styled.div`
+  position: relative;
+  padding: 5px;
   > img {
-    width: 100px;
+    width: 80px;
+    display: block;
+    border: 1px solid #ddd;
+  }
+  > button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+  }
+  :hover > button {
+    display: block;
   }
 `;
 
-function ImagePaths() {
+function ImagePreview({ imageInputRef }: any) {
   const { imagePaths, removePostImage } = usePost();
   const onRemoveImage = useCallback((index: number) => {
     removePostImage(index);
+    imageInputRef.current.value = '';
   }, []);
 
   return (
-    <StyledImagePaths>
+    <StyledImagePreview>
       {imagePaths.map((path: string, index: number) => (
         <PreviewImage key={path}>
           <img src={`http://localhost:3006/${path}`} alt="미리보기 사진" />
@@ -32,8 +48,8 @@ function ImagePaths() {
           />
         </PreviewImage>
       ))}
-    </StyledImagePaths>
+    </StyledImagePreview>
   );
 }
 
-export default ImagePaths;
+export default ImagePreview;

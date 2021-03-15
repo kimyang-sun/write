@@ -4,14 +4,9 @@ import styled from 'styled-components';
 import { Input, Button, Form, Avatar } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { readFile } from 'lib/convertFile';
+import useUser from 'store/modules/userHook';
 
 // Types
-type ProfileEditFormProps = {
-  user: UserDataPayload;
-  onChangeProfile: (data: ProfilePayload) => void;
-  profileLoading: boolean;
-};
-
 type ProfileEditFormType = {
   image: any;
   nickname: string;
@@ -35,30 +30,33 @@ const StyledProfileEditForm = styled(Form)`
 `;
 
 // export
-function ProfileEditForm({
-  user,
-  onChangeProfile,
-  profileLoading,
-}: ProfileEditFormProps) {
+function ProfileEditForm() {
+  const {
+    userData,
+    avatarURL,
+    changeProfile,
+    changeProfileLoading,
+    uploadUserImage,
+    removeUserImage,
+  } = useUser();
   const imageInputRef = useRef(null);
   const [avatarImage, setAvatarImage] = useState(
-    user.avatar ? user.avatar : null
+    userData.avatar ? `http://localhost:3006/${userData.avatar}` : null
   );
 
   // React Hook Form 연동
-  const { handleSubmit, control, errors } = useForm<ProfileEditFormType>();
+  const { handleSubmit, control } = useForm<ProfileEditFormType>();
   const onSubmit = handleSubmit((data: ProfileEditFormType) => {
-    onChangeProfile({
+    // 닉네임은 필수여서 비워두면 안됩니다.
+    if (!data.nickname || !data.nickname.trim()) {
+      return alert('닉네임을 입력해주세요. (공백 불가능)');
+    }
+    changeProfile({
       nickname: data.nickname,
       introduction: data.introduction,
-      avatar: null,
+      avatar: avatarURL,
     });
   });
-
-  // 닉네임을 비워두면 에러가 알려줍니다.
-  useEffect(() => {
-    if (errors.nickname) alert('닉네임을 입력해주세요.');
-  }, [errors.nickname]);
 
   // 사진 업로드 클릭
   const onClickImageUpload = useCallback(() => {
@@ -73,12 +71,14 @@ function ProfileEditForm({
       let imageDataUrl: any = await readFile(file);
       setAvatarImage(imageDataUrl);
       imageFormData.append('image', file);
+      uploadUserImage(imageFormData);
     }
   };
 
   // 사진 지우기 클릭
   const onClickImageErase = useCallback(() => {
     setAvatarImage(null);
+    removeUserImage();
   }, []);
 
   return (
@@ -94,9 +94,9 @@ function ProfileEditForm({
           onChange={onFileChange}
         />
         {avatarImage ? (
-          <Avatar src={avatarImage} />
+          <Avatar src={avatarImage} size={80} />
         ) : (
-          <Avatar>{user.nickname.charAt(0)}</Avatar>
+          <Avatar size={80}>{userData.nickname.charAt(0)}</Avatar>
         )}
 
         <Button onClick={onClickImageUpload} size="small">
@@ -115,8 +115,7 @@ function ProfileEditForm({
           maxLength={12}
           control={control}
           placeholder="닉네임을 입력해주세요."
-          defaultValue={user.nickname}
-          rules={{ required: true }}
+          defaultValue={userData.nickname}
         />
       </div>
       <div className="input-box">
@@ -127,10 +126,10 @@ function ProfileEditForm({
           maxLength={40}
           control={control}
           placeholder="간단한 소개를 해주세요."
-          defaultValue={user.introduction}
+          defaultValue={userData.introduction}
         />
       </div>
-      <Button htmlType="submit" type="primary" loading={profileLoading}>
+      <Button htmlType="submit" type="primary" loading={changeProfileLoading}>
         변경하기
       </Button>
     </StyledProfileEditForm>

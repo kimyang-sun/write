@@ -16,13 +16,7 @@ const FollowListContainer = styled.div`
 `;
 
 function Profile() {
-  const {
-    userData,
-    changeProfile,
-    changeProfileLoading,
-    loadFollowers,
-    loadFollwings,
-  } = useUser();
+  const { userData, loadFollowers, loadFollwings } = useUser();
   useEffect(() => {
     if (!(userData && userData.id)) {
       // push와 다른점은 push는 이동시키고 뒤로가기를 누르면 다시 그페이지로 감
@@ -45,11 +39,7 @@ function Profile() {
       <PageTitle title="프로필" />
       {userData ? (
         <>
-          <ProfileEditForm
-            user={userData}
-            onChangeProfile={changeProfile}
-            profileLoading={changeProfileLoading}
-          />
+          <ProfileEditForm />
           <FollowListContainer>
             <FollowList header="팔로워 목록" data={userData.Followers} />
             <FollowList header="팔로잉 목록" data={userData.Followings} />

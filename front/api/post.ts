@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { CommentActionType, Post } from 'store/modules/post';
+import { AddPostType, CommentActionType } from 'store/modules/post';
 
 // API 요청
 export function loadPostsAPI() {
   return axios.get('/posts');
 }
 
-export function addPostAPI(data: Post) {
+export function addPostAPI(data: AddPostType) {
   return axios.post('/post', data);
 }
 

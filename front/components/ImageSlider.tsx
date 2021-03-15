@@ -65,10 +65,10 @@ function ImageSlider({ images, onClose }: ImageSliderProps) {
     <ImageSliderContainer>
       <div>
         <CloseButton onClose={onClose} />
-        <Slider beforeChange={(prev, next) => setCurrentSlide(next)}>
+        <Slider beforeChange={(_prev, next) => setCurrentSlide(next)}>
           {images.map((img: { src: string }) => (
             <div key={img.src}>
-              <PostImage imageUrl={img.src} />
+              <PostImage imageUrl={`http://localhost:3006/${img.src}`} />
             </div>
           ))}
         </Slider>

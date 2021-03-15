@@ -25,6 +25,7 @@ import {
   unLikePostRequest,
   unLikePostSuccess,
   unLikePostFailure,
+  AddPostType,
 } from 'store/modules/post';
 import { addUserPost, removeUserPost } from 'store/modules/user';
 import {
@@ -47,7 +48,7 @@ function* loadPosts() {
   }
 }
 
-function* addPost(action: PayloadAction<Post>) {
+function* addPost(action: PayloadAction<AddPostType>) {
   try {
     const result = yield call(addPostAPI, action.payload);
     yield put(addPostSuccess(result.data));

@@ -3,7 +3,7 @@ import usePost from 'store/modules/postHook';
 import { Button, Form, Input } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import ImagePaths from './ImagePaths';
+import ImagePreview from './ImagePreview';
 import CloseButton from './CloseButton';
 import Dialog from './Dialog';
 import ImageCropper from './ImageCropper';
@@ -57,7 +57,7 @@ const PostFormTitle = styled.div`
 
 // export
 function PostForm({ setPostCreating }: PostFormProps) {
-  const { addPost, addPostDone, uploadPostImage } = usePost();
+  const { addPost, addPostDone, uploadPostImage, imagePaths } = usePost();
   const imageInputRef = useRef(null);
   const [inputImg, setInputImg] = useState(null);
   const [inputImgName, setInputImgName] = useState<string>(null);
@@ -65,8 +65,13 @@ function PostForm({ setPostCreating }: PostFormProps) {
   // React Hook Form 연동
   const { handleSubmit, control } = useForm<PostFormType>();
   const onSubmit = handleSubmit((data: PostFormType) => {
-    console.log(data);
+    // 닉네임은 필수여서 비워두면 안됩니다.
+    if (!data.text || !data.text.trim()) {
+      return alert('게시글의 내용을 입력해주세요. (공백 불가능)');
+    }
+    const image = imagePaths.length > 0 ? imagePaths : null;
     addPost({
+      image,
       content: data.text,
       tag: data.tagText,
     });
@@ -149,8 +154,8 @@ function PostForm({ setPostCreating }: PostFormProps) {
           />
         )}
         <Button onClick={onClickImageUpload}>사진 업로드</Button>
-        <p>사진을 첨부하지 않으면 랜덤이미지가 등록됩니다.</p>
-        <ImagePaths />
+        <p>사진을 첨부하지 않으면 랜덤이미지가 출력됩니다.</p>
+        <ImagePreview imageInputRef={imageInputRef} />
         <Controller
           as={<Input />}
           type="text"

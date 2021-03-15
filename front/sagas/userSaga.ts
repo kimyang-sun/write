@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, delay, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   loadMyInfoFailure,
   loadMyInfoSuccess,
@@ -28,6 +28,9 @@ import {
   changeProfileSuccess,
   changeProfileFailure,
   changeProfileRequest,
+  uploadUserImageRequest,
+  uploadUserImageSuccess,
+  uploadUserImageFailure,
   loadFollowersRequest,
   loadFollowersSuccess,
   loadFollowersFailure,
@@ -43,6 +46,7 @@ import {
   signUpAPI,
   unFollowAPI,
   changeProfileAPI,
+  uploadUserImageAPI,
   loadFollowersAPI,
   loadFollowingsAPI,
   removeFollowerAPI,
@@ -96,6 +100,15 @@ function* changeProfile(action: PayloadAction<ProfilePayload>) {
     yield put(changeProfileSuccess(result.data));
   } catch (e) {
     yield put(changeProfileFailure(e.response.data));
+  }
+}
+
+function* uploadUserImage(action: PayloadAction<FormData>) {
+  try {
+    const result = yield call(uploadUserImageAPI, action.payload);
+    yield put(uploadUserImageSuccess(result.data));
+  } catch (e) {
+    yield put(uploadUserImageFailure(e.response.data));
   }
 }
 
@@ -165,6 +178,10 @@ export function* watchSignUp() {
 
 export function* watchChangeProfile() {
   yield takeLatest(changeProfileRequest.type, changeProfile);
+}
+
+export function* watchUploadUserImage() {
+  yield takeLatest(uploadUserImageRequest.type, uploadUserImage);
 }
 
 export function* watchFollow() {

@@ -22,6 +22,10 @@ export function changeProfileAPI(data: ProfilePayload) {
   return axios.patch('/user/profile', data);
 }
 
+export function uploadUserImageAPI(data: FormData) {
+  return axios.post('/user/image', data);
+}
+
 export function signUpAPI(data: SignUpRequestPayload) {
   return axios.post('/user', data);
 }

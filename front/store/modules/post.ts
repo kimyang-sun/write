@@ -48,7 +48,8 @@ export type Post = {
   Likers: { id: number }[];
 };
 
-type PostPayloadType = {
+export type AddPostType = {
+  image: string[] | null;
   content: string;
   tag: string;
 };
@@ -125,7 +126,7 @@ const postSlice = createSlice({
     },
 
     // Add Post
-    addPostRequest(state: PostState, _action: PayloadAction<PostPayloadType>) {
+    addPostRequest(state: PostState, _action: PayloadAction<AddPostType>) {
       state.addPostLoading = true;
       state.addPostDone = false;
       state.addPostError = null;
@@ -133,6 +134,7 @@ const postSlice = createSlice({
 
     addPostSuccess(state: PostState, action: PayloadAction<Post>) {
       state.mainPosts.unshift(action.payload);
+      state.imagePaths = [];
       state.addPostLoading = false;
       state.addPostDone = true;
     },
@@ -146,17 +148,14 @@ const postSlice = createSlice({
       state.addPostError = action.payload;
     },
 
-    // Upload Image
-    uploadPostImageRequest(
-      state: PostState,
-      _action: PayloadAction<PostPayloadType>
-    ) {
+    // Upload Post Image
+    uploadPostImageRequest(state: PostState, _action: PayloadAction<FormData>) {
       state.uploadPostImageLoading = true;
       state.uploadPostImageDone = false;
       state.uploadPostImageError = null;
     },
 
-    uploadPostImageSuccess(state: PostState, action: PayloadAction<any>) {
+    uploadPostImageSuccess(state: PostState, action: PayloadAction<string>) {
       state.imagePaths = state.imagePaths.concat(action.payload);
       state.uploadPostImageLoading = false;
       state.uploadPostImageDone = true;
@@ -169,10 +168,9 @@ const postSlice = createSlice({
 
     // Rmove Post Image
     removeUploadedPostImage(state: PostState, action: PayloadAction<number>) {
-      console.log(action.payload);
-      state.imagePaths = state.imagePaths.filter((_image, index) => {
-        index !== action.payload;
-      });
+      state.imagePaths = state.imagePaths.filter(
+        (_image, index) => index !== action.payload
+      );
     },
 
     // Remove Post
