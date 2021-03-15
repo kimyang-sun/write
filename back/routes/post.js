@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { Post, Comment, Image, User } = require('../models');
+const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const fs = require('fs');
 
@@ -17,11 +17,26 @@ try {
 // 게시글 작성 - Post /post
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
+    const hashtags = req.body.tag.match(/#[^\s#,]+/g); // 해시태그 추출
     const post = await Post.create({
       content: req.body.content,
       tag: req.body.tag,
       UserId: req.user.id,
     });
+
+    // 만약 태그에 정규표현식에 해당하는 해시태그들이 있다면,
+    if (hashtags) {
+      // 해시태그 문장만 잘라서 Hashtag 모델을 저장합니다.
+      // findOrCreate로 db에 이미 같은 해시태그가 존재하는지 확인하고 없으면 저장합니다.
+      const result = await Promise.all(
+        hashtags.map(tag =>
+          Hashtag.findOrCreate({
+            where: { content: tag.slice(1).toLowerCase() },
+          })
+        )
+      ); // [태그1, true], [태그2, false] 이런식으로 저장됩니다.
+      await post.addHashtags(result.map(tag => tag[0])); // 그래서 배열의 첫번째만 저장
+    }
 
     // 이미지가 존재할 경우 Image 모델을 만들어줍니다.
     if (req.body.image) {
