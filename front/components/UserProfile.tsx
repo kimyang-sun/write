@@ -16,6 +16,17 @@ const ProfileCard = styled(Card)`
   .ant-btn {
     margin-top: 15px;
   }
+
+  .ant-card-body {
+    text-align: right;
+  }
+  .ant-card-body button {
+    margin-left: auto;
+  }
+
+  .ant-card-meta-detail {
+    text-align: left;
+  }
 `;
 
 // export

@@ -25,6 +25,9 @@ import {
   unLikePostRequest,
   unLikePostSuccess,
   unLikePostFailure,
+  scrapPostRequest,
+  scrapPostSuccess,
+  scrapPostFailure,
   AddPostType,
 } from 'store/modules/post';
 import { addUserPost, removeUserPost } from 'store/modules/user';
@@ -36,6 +39,7 @@ import {
   likePostAPI,
   unLikePostAPI,
   uploadPostImageAPI,
+  scrapPostAPI,
 } from 'api/post';
 
 // Saga 실행함수
@@ -105,6 +109,16 @@ function* unLikePost(action: PayloadAction<number>) {
   }
 }
 
+function* scrapPost(action: PayloadAction<number>) {
+  try {
+    const result = yield call(scrapPostAPI, action.payload);
+    yield put(scrapPostSuccess(result.data));
+    yield alert('스크랩 되었습니다.');
+  } catch (e) {
+    yield put(scrapPostFailure(e.response.data));
+  }
+}
+
 // Saga를 작동시키는 Watch 함수
 export function* watchLoadPosts() {
   yield takeLeading(loadPostsRequest.type, loadPosts);
@@ -132,4 +146,8 @@ export function* watchLikePost() {
 
 export function* watchUnLikePost() {
   yield takeLatest(unLikePostRequest.type, unLikePost);
+}
+
+export function* watchScrapPost() {
+  yield takeLatest(scrapPostRequest.type, scrapPost);
 }

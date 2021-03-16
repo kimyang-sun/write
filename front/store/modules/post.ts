@@ -26,6 +26,9 @@ export type PostState = {
   unLikePostLoading: boolean;
   unLikePostDone: boolean;
   unLikePostError: any;
+  scrapPostLoading: boolean;
+  scrapPostDone: boolean;
+  scrapPostError: any;
 };
 
 // Post 타입
@@ -46,6 +49,18 @@ export type Post = {
     avatar: string | null;
   };
   Likers: { id: number }[];
+  ScrapId?: number;
+  Scrap?: {
+    content: string;
+    tag: string;
+    User: {
+      id: number;
+      nickname: string;
+      avatar: string | null;
+    };
+    Images: { src: string }[];
+    createdAt: string;
+  };
 };
 
 export type AddPostType = {
@@ -98,6 +113,9 @@ const initialState: PostState = {
   unLikePostLoading: false,
   unLikePostDone: false,
   unLikePostError: null,
+  scrapPostLoading: false,
+  scrapPostDone: false,
+  scrapPostError: null,
 };
 
 // 리듀서 슬라이스
@@ -277,6 +295,25 @@ const postSlice = createSlice({
       state.unLikePostLoading = false;
       state.unLikePostError = action.payload;
     },
+
+    // scrapPost
+    scrapPostRequest(state: PostState, _action: PayloadAction<number>) {
+      state.scrapPostLoading = true;
+      state.scrapPostDone = false;
+      state.scrapPostError = null;
+    },
+
+    scrapPostSuccess(state: PostState, action: PayloadAction<any>) {
+      console.log(action.payload);
+      state.mainPosts.unshift(action.payload);
+      state.scrapPostLoading = false;
+      state.scrapPostDone = true;
+    },
+
+    scrapPostFailure(state: PostState, action: PayloadAction<any>) {
+      state.scrapPostLoading = false;
+      state.scrapPostError = action.payload;
+    },
   },
 });
 
@@ -306,5 +343,8 @@ export const {
   unLikePostRequest,
   unLikePostSuccess,
   unLikePostFailure,
+  scrapPostRequest,
+  scrapPostSuccess,
+  scrapPostFailure,
 } = actions;
 export default reducer;

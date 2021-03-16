@@ -12,6 +12,7 @@ import {
   uploadPostImageRequest,
   removeUploadedPostImage,
   AddPostType,
+  scrapPostRequest,
 } from './post';
 
 export default function usePost() {
@@ -24,6 +25,7 @@ export default function usePost() {
     addPostDone,
     removePostLoading,
     addCommentDone,
+    scrapPostError,
   } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch();
 
@@ -59,6 +61,10 @@ export default function usePost() {
     dispatch(unLikePostRequest(id));
   }, []);
 
+  const scrapPost = useCallback((id: number) => {
+    dispatch(scrapPostRequest(id));
+  }, []);
+
   return {
     mainPosts,
     imagePaths,
@@ -76,5 +82,7 @@ export default function usePost() {
     addCommentDone,
     likePost,
     unLikePost,
+    scrapPost,
+    scrapPostError,
   };
 }

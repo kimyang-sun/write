@@ -32,3 +32,7 @@ export function likePostAPI(data: number) {
 export function unLikePostAPI(data: number) {
   return axios.delete(`/post/${data}/like`);
 }
+
+export function scrapPostAPI(data: number) {
+  return axios.post(`/post/${data}/scrap`);
+}

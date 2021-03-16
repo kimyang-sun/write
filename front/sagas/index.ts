@@ -8,6 +8,7 @@ import {
   watchLikePost,
   watchUnLikePost,
   watchUploadPostImage,
+  watchScrapPost,
 } from './postSaga';
 import {
   watchLogin,
@@ -48,5 +49,6 @@ export default function* rootSaga() {
     fork(watchUnLikePost),
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
+    fork(watchScrapPost),
   ]);
 }

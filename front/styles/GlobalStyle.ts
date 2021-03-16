@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background: #ff3636;
+    background: #6136ff;
   }
 
   html,

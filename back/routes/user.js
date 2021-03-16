@@ -55,20 +55,9 @@ router.get('/', async (req, res, next) => {
         where: { id: req.user.id },
         attributes: { exclude: ['password'] }, // 비밀번호 제외
         include: [
-          {
-            model: Post,
-            attributes: ['id'],
-          },
-          {
-            model: User,
-            as: 'Followers',
-            attributes: ['id'],
-          },
-          {
-            model: User,
-            as: 'Followings',
-            attributes: ['id'],
-          },
+          { model: Post, attributes: ['id'] },
+          { model: User, as: 'Followers', attributes: ['id'] },
+          { model: User, as: 'Followings', attributes: ['id'] },
         ],
       });
       res.status(200).json(userWithoutPassword);
@@ -102,20 +91,9 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         where: { id: user.id },
         attributes: { exclude: ['password'] }, // 비밀번호 제외
         include: [
-          {
-            model: Post,
-            attributes: ['id'],
-          },
-          {
-            model: User,
-            as: 'Followers',
-            attributes: ['id'],
-          },
-          {
-            model: User,
-            as: 'Followings',
-            attributes: ['id'],
-          },
+          { model: Post, attributes: ['id'] },
+          { model: User, as: 'Followers', attributes: ['id'] },
+          { model: User, as: 'Followings', attributes: ['id'] },
         ],
       });
 

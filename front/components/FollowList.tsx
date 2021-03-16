@@ -103,7 +103,7 @@ function FollowList({ header, data }: FollowListProps) {
             <ListItem.Meta
               avatar={
                 item.avatar ? (
-                  <Avatar src={item.avatar} />
+                  <Avatar src={`http://localhost:3006/${item.avatar}`} />
                 ) : (
                   <Avatar>{item.nickname && item.nickname.charAt(0)}</Avatar>
                 )

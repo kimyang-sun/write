@@ -50,27 +50,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     const fullPost = await Post.findOne({
       where: { id: post.id }, // 작성하는 해당 post를 찾아서
       include: [
-        {
-          model: User, // 게시글 작성자
-          attributes: ['id', 'nickname', 'avatar'],
-        },
-        {
-          model: Image, // 해당 글의 이미지도 넣어주고
-        },
+        { model: User, attributes: ['id', 'nickname', 'avatar'] }, // 게시글 작성자
+        { model: Image }, // 해당 글의 이미지도 넣어주고
         {
           model: Comment, // 댓글
-          include: [
-            {
-              model: User, // 댓글 작성자
-              attributes: ['id', 'nickname', 'avatar'],
-            },
-          ],
+          include: [{ model: User, attributes: ['id', 'nickname', 'avatar'] }], // 댓글 작성자
         },
-        {
-          model: User, // 좋아요 누른 사람
-          as: 'Likers',
-          attributes: ['id'],
-        },
+        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 누른 사람
       ],
     });
     res.status(201).json(fullPost);
@@ -134,12 +120,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     });
     const fullComment = await Comment.findOne({
       where: { id: comment.id },
-      include: [
-        {
-          model: User,
-          attributes: { exclude: ['password'] },
-        },
-      ],
+      include: [{ model: User, attributes: { exclude: ['password'] } }],
     });
     res.status(201).json(fullComment);
   } catch (e) {
@@ -172,6 +153,64 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
     }
     await post.removeLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 게시글 스크랩 - POST /post/:postId/like
+router.post('/:postId/scrap', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+      include: [{ model: Post, as: 'Scrap' }],
+    });
+    if (!post) {
+      return res.status(403).send('존재하지 않는 글입니다.');
+    }
+
+    // 내 글을 스크랩하는것과 누군가가 스크랩하고 그 스크랩된걸 내가 다시 스크랩하는걸 막습니다.
+    if (
+      req.user.id === post.UserId ||
+      (post.Scrap && post.Scrap.UserId === req.user.id)
+    ) {
+      return res.status(403).send('자신의 글은 스크랩할 수 없습니다.');
+    }
+
+    // 이미 스크랩을 했는지 여부
+    const scrapTargetId = post.ScrapId || post.id;
+    const exPost = await Post.findOne({
+      where: { UserId: req.user.id, ScrapId: scrapTargetId },
+    });
+    if (exPost) return res.status(403).send('이미 스크랩한 글입니다.');
+
+    const scrap = await Post.create({
+      UserId: req.user.id,
+      ScrapId: scrapTargetId,
+      content: 'scrap',
+    });
+    const scrapWithPrevPost = await Post.findOne({
+      where: { id: scrap.id },
+      include: [
+        {
+          model: Post,
+          as: 'Scrap',
+          include: [
+            { model: User, attrubutes: ['id', 'nickname', 'avatar'] },
+            { model: Image },
+          ],
+        },
+        { model: User, attributes: ['id', 'nickname', 'avatar'] },
+        { model: Image },
+        {
+          model: Comment,
+          include: [{ model: User, attrubutes: ['id', 'nickname', 'avatar'] }],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] },
+      ],
+    });
+    res.status(201).json(scrapWithPrevPost);
   } catch (e) {
     console.error(e);
     next(e);

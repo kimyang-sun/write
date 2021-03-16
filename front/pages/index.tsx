@@ -19,7 +19,13 @@ const SubTitle = styled.div`
 
 function Home() {
   const { userData, loadMyInfo } = useUser();
-  const { mainPosts, loadPosts, loadPostsLoading, hasMorePosts } = usePost();
+  const {
+    mainPosts,
+    loadPosts,
+    loadPostsLoading,
+    hasMorePosts,
+    scrapPostError,
+  } = usePost();
   const [postCreating, setPostCreating] = useState(false);
 
   // 초기 렌더링시 게시물을 불러옵니다
@@ -46,6 +52,11 @@ function Home() {
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts]);
+
+  // 자신의 글을 스크랩하면 알림.
+  useEffect(() => {
+    if (scrapPostError) alert(scrapPostError);
+  }, [scrapPostError]);
 
   return (
     <>
