@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, takeLatest, throttle } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   CommentActionType,
   loadPostsRequest,
@@ -120,7 +120,7 @@ function* scrapPost(action: PayloadAction<number>) {
 
 // Saga를 작동시키는 Watch 함수
 export function* watchLoadPosts() {
-  yield throttle(5000, loadPostsRequest.type, loadPosts);
+  yield takeLatest(loadPostsRequest.type, loadPosts);
 }
 
 export function* watchAddPost() {

@@ -17,7 +17,6 @@ const rootReducer = (state: RootStateType, action: AnyAction) => {
     // 서버에서 생성한 스토어의 상태를 클라이언트에 합쳐주는 작업
     case HYDRATE:
       return action.payload;
-
     default: {
       const combineReducer = combineReducers({ user, post });
       return combineReducer(state, action);

@@ -6,8 +6,8 @@ import { Store } from 'redux';
 import rootSaga from 'sagas';
 
 // Next Redux Toolkit Saga를 사용하기 위해
-//confugureStore에서 강제로 sagaTask를 만들어주기 위함
-interface SagaStore extends Store {
+// TypeScript에서 강제로 sagaTask를 만들어주기 위함 (안하면 타입오류남)
+export interface SagaStore extends Store {
   sagaTask?: Task;
 }
 
@@ -19,7 +19,16 @@ const store = () => {
     middleware: [sagaMiddleware],
     devTools: devMode,
   });
-  // Next Redux Toolkit 에서 saga를 사용해야할 때
+  // cofigureStore가 아닌 createStore일 때
+  // const enhancer = process.env.NODE_ENV === 'production'
+  // ? compose(applyMiddleware(...middlewares))
+  // : composeWithDevTools(applyMiddleware(...middlewares));
+  // const store = createStore(reducer, enhancer);
+
+  // 그냥 Next에 Redux saga를 사용할 때
+  // store.sagaTask = sagaMiddleware.run(rootSaga);
+
+  // Next에 Redux Toolkit으로 saga를 사용해야할 때
   (store as SagaStore).sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };

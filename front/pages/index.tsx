@@ -5,8 +5,11 @@ import { Button } from 'antd';
 import PageTitle from 'components/PageTitle';
 import PostForm from 'components/PostForm';
 import PostCard from 'components/PostCard';
-import { Post } from 'store/modules/post';
+import { loadPostsRequest, Post } from 'store/modules/post';
 import styled from 'styled-components';
+import wrapper, { SagaStore } from 'store/configureStore';
+import { loadMyInfoRequest } from 'store/modules/user';
+import { END } from 'redux-saga';
 
 // styled components
 const SubTitle = styled.div`
@@ -18,7 +21,7 @@ const SubTitle = styled.div`
 `;
 
 function Home() {
-  const { userData, loadMyInfo } = useUser();
+  const { userData } = useUser();
   const {
     mainPosts,
     loadPosts,
@@ -27,12 +30,6 @@ function Home() {
     scrapPostError,
   } = usePost();
   const [postCreating, setPostCreating] = useState(false);
-
-  // 초기 렌더링시 게시물을 불러옵니다
-  useEffect(() => {
-    loadMyInfo();
-    loadPosts();
-  }, []);
 
   //스크롤시 게시물을 더 불러옵니다.
   useEffect(() => {
@@ -80,5 +77,17 @@ function Home() {
     </>
   );
 }
+
+// Home이 렌더링되기 전에 먼저 실행되는 코드
+export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  // 여기까지만 하면 요청 후에 성공까지 안가고 요청만 끝나고 Home이 실행됩니다.
+  context.store.dispatch(loadMyInfoRequest());
+  context.store.dispatch(loadPostsRequest());
+
+  // 그래서 이렇게 해줍니다.
+  context.store.dispatch(END);
+  await (context.store as SagaStore).sagaTask.toPromise();
+  // 타입스크립트가 아니면 await context.store.sagaTask.toPromise();
+});
 
 export default Home;
