@@ -4,7 +4,7 @@ import Head from 'next/head';
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from 'styles/DefaultTheme';
 import GlobalStyle from 'styles/GlobalStyle';
-import 'antd/dist/antd.css';
+import '../styles/my_custom.css';
 import wrapper from 'store/configureStore';
 import withReduxSaga from 'next-redux-saga';
 

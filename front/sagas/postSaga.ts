@@ -1,7 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, takeLatest, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLatest, throttle } from 'redux-saga/effects';
 import {
-  Post,
   CommentActionType,
   loadPostsRequest,
   loadPostsSuccess,
@@ -43,9 +42,9 @@ import {
 } from 'api/post';
 
 // Saga 실행함수
-function* loadPosts() {
+function* loadPosts(action: PayloadAction<number>) {
   try {
-    const result = yield call(loadPostsAPI);
+    const result = yield call(loadPostsAPI, action.payload);
     yield put(loadPostsSuccess(result.data));
   } catch (e) {
     yield put(loadPostsFailure(e.response.data));
@@ -121,7 +120,7 @@ function* scrapPost(action: PayloadAction<number>) {
 
 // Saga를 작동시키는 Watch 함수
 export function* watchLoadPosts() {
-  yield takeLeading(loadPostsRequest.type, loadPosts);
+  yield throttle(5000, loadPostsRequest.type, loadPosts);
 }
 
 export function* watchAddPost() {

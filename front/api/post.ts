@@ -2,8 +2,10 @@ import axios from 'axios';
 import { AddPostType, CommentActionType } from 'store/modules/post';
 
 // API 요청
-export function loadPostsAPI() {
-  return axios.get('/posts');
+export function loadPostsAPI(data: number) {
+  // GET은 이런식으로 데이터캐싱 가능 (백엔드에서 쿼리로 사용가능)
+  console.log(data);
+  return axios.get(`/posts?lastId=${data || 0}`); // data가 없으면 0을 넣어줌.
 }
 
 export function addPostAPI(data: AddPostType) {

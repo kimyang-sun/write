@@ -124,7 +124,7 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     // Load Post
-    loadPostsRequest(state: PostState) {
+    loadPostsRequest(state: PostState, _action: PayloadAction<number>) {
       state.loadPostsLoading = true;
       state.loadPostsDone = false;
       state.loadPostsError = null;
@@ -133,7 +133,8 @@ const postSlice = createSlice({
     loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
       console.log(action.payload);
       state.mainPosts = state.mainPosts.concat(action.payload);
-      state.hasMorePosts = state.mainPosts.length < 16;
+      // 게시글이 5개가 안되면 다음 게시글이 없다고 판단
+      state.hasMorePosts = action.payload.length === 5;
       state.loadPostsLoading = false;
       state.loadPostsDone = true;
     },

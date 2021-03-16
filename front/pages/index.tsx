@@ -37,12 +37,16 @@ function Home() {
   //스크롤시 게시물을 더 불러옵니다.
   useEffect(() => {
     function onScroll() {
-      // 스크롤이 가장 밑이면 게시글을 더 불러옵니다.
+      // 스크롤이 밑에서부터 300 이내이면 게시글을 더 불러옵니다.
       if (
         window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
-        if (hasMorePosts && !loadPostsLoading) loadPosts();
+        // 거기에 만약 더 가져올 글이 있고 로딩중이지 않을때,
+        if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]?.id; // last가 있을경우 id를 추출
+          loadPosts(lastId);
+        }
       }
     }
     window.addEventListener('scroll', onScroll);
@@ -51,7 +55,7 @@ function Home() {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [hasMorePosts]);
+  }, [hasMorePosts, mainPosts, loadPostsLoading]);
 
   // 자신의 글을 스크랩하면 알림.
   useEffect(() => {

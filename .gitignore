@@ -41,3 +41,6 @@ dist/
 # database
 config/
 /back/uploads/
+
+# Antd Custom CSS
+/front/styles/my_custom.css
