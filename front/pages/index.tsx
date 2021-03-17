@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import wrapper, { SagaStore } from 'store/configureStore';
 import { loadMyInfoRequest } from 'store/modules/user';
 import { END } from 'redux-saga';
+import axios from 'axios';
 
 // styled components
 const SubTitle = styled.div`
@@ -78,8 +79,17 @@ function Home() {
   );
 }
 
-// Home이 렌더링되기 전에 먼저 실행되는 코드
+// Home이 렌더링되기 전에 먼저 실행되는 코드 (프론트 서버에서 실행)
+// 여기서 받아온 결과물을 브라우저로 보내줌. (서버사이드 렌더링)
 export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  // 서버에서 실행되면 쿠키 정보를 추출하도록 넣어줌.
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    // 다른 사람이 나의 쿠키를 공유할 수 있기 때문에 넣어줌.
+    axios.defaults.headers.Cookie = cookie;
+  }
+
   // 여기까지만 하면 요청 후에 성공까지 안가고 요청만 끝나고 Home이 실행됩니다.
   context.store.dispatch(loadMyInfoRequest());
   context.store.dispatch(loadPostsRequest());
