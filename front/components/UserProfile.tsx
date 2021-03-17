@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { UserDataPayload } from 'store/modules/user';
 import { Avatar, Button, Card } from 'antd';
 import styled from 'styled-components';
+import UserAvatar from './UserAvatar';
 
 // Types
 type UserProfileProps = {
@@ -45,13 +46,7 @@ function UserProfile({ loading, user, logout, logoutError }: UserProfileProps) {
       ]}
     >
       <Card.Meta
-        avatar={
-          user.avatar ? (
-            <Avatar src={`http://localhost:3006/${user.avatar}`} />
-          ) : (
-            <Avatar>{user.nickname.charAt(0)}</Avatar>
-          )
-        }
+        avatar={<UserAvatar avatar={user.avatar} nickname={user.nickname} />}
         title={user.nickname}
         description={user.introduction}
       />

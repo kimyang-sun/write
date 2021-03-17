@@ -18,4 +18,4 @@ function FormErrorMessage({ errorMessage }: FormErrorMessage) {
   return <StyledFormErrorMessage>{errorMessage}</StyledFormErrorMessage>;
 }
 
-export default FormErrorMessage;
+export default React.memo(FormErrorMessage);

@@ -31,7 +31,7 @@ router.get('/', async (req, res, next) => {
           model: Post, // 스크랩 포스트
           as: 'Scrap',
           include: [
-            { model: User, attrubutes: ['id', 'nickname', 'avatar'] },
+            { model: User, attributes: ['id', 'nickname', 'avatar'] },
             { model: Image },
           ],
         },

@@ -217,4 +217,40 @@ router.post('/:postId/scrap', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 게시글 하나만 불러오기 - GET /post/:postId
+router.get('/:postId', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(404).send('글이 존재하지 않습니다.');
+    }
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        { model: User, attributes: ['id', 'nickname', 'avatar'] },
+        { model: Image },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['id', 'nickname', 'avatar'] }],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] },
+        {
+          model: Post,
+          as: 'Scrap',
+          include: [
+            { model: User, attributes: ['id', 'nickname', 'avatar'] },
+            { model: Image },
+          ],
+        },
+      ],
+    });
+    res.status(200).json(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;

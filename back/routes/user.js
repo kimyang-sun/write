@@ -47,7 +47,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// 새로고침 후 로그인 정보 다시 불러오기 - GET /user/
+// 새로고침하거나 할 때, 내 로그인 정보 불러오기 - GET /user/
 router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
@@ -199,11 +199,13 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
 // 팔로우 목록 가져오기 - GET /user/followers
 router.get('/followers', isLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.findOne({ where: { id: req.user.id } }); // 로그인된 본인을 찾습니다.
+    const user = await User.findOne({ where: { id: req.user.id } }); // 로그인 된 본인을 찾습니다.
     if (!user) {
-      res.status(403).send('나의 아이디가 존재하지 않습니다.');
+      res.status(403).send('존재하지 않는 사용자입니다.');
     }
-    const followers = await user.getFollowers();
+    const followers = await user.getFollowers({
+      attributes: ['id', 'nickname', 'avatar'],
+    });
     res.status(200).json(followers);
   } catch (e) {
     console.error(e);
@@ -214,12 +216,44 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
 // 팔로잉 목록 가져오기 - GET /user/followings
 router.get('/followings', isLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.findOne({ where: { id: req.user.id } }); // 로그인된 본인을 찾습니다.
+    const user = await User.findOne({ where: { id: req.user.id } }); // 로그인 된 본인을 찾습니다.
     if (!user) {
-      res.status(403).send('나의 아이디가 존재하지 않습니다.');
+      res.status(403).send('존재하지 않는 사용자입니다.');
     }
-    const followings = await user.getFollowings();
+    const followings = await user.getFollowings({
+      attributes: ['id', 'nickname', 'avatar'],
+    });
     res.status(200).json(followings);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 특정 사용자 정보 불러오기 - GET /user/:userId
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const userWithoutPassword = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: { exclude: ['password'] }, // 비밀번호 제외
+      include: [
+        { model: Post, attributes: ['id'] },
+        { model: User, as: 'Followers', attributes: ['id'] },
+        { model: User, as: 'Followings', attributes: ['id'] },
+      ],
+    });
+
+    // userId가 존재하지 않는 아아디일 경우.
+    if (userWithoutPassword) {
+      // 다른 사용자의 정보를 가져오기 때문에, toJSON으로 해서 각각의 데이터의 length만 챙겨와서 보내줍니다. (개인정보 보호)
+      const data = userWithoutPassword.toJSON();
+      data.Posts = data.Posts.length;
+      data.Followers = data.Followers.length;
+      data.Followings = data.Followings.length;
+      res.status(200).json(data);
+    } else {
+      res.status(404).json('사용자가 존재하지 않습니다.');
+    }
   } catch (e) {
     console.error(e);
     next(e);

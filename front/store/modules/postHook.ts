@@ -18,6 +18,7 @@ import {
 export default function usePost() {
   const {
     mainPosts,
+    singlePost,
     imagePaths,
     loadPostsLoading,
     hasMorePosts,
@@ -67,6 +68,7 @@ export default function usePost() {
 
   return {
     mainPosts,
+    singlePost,
     imagePaths,
     loadPosts,
     loadPostsLoading,

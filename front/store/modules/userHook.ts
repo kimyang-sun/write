@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '.';
 import {
-  loadMyInfoRequest,
   loginRequest,
   LoginRequestPayload,
   logoutRequest,
@@ -23,6 +22,7 @@ import {
 export default function useUser() {
   const {
     userData,
+    userInfo,
     avatarURL,
     loginLoading,
     loginError,
@@ -36,10 +36,6 @@ export default function useUser() {
     signUpError,
   } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-
-  const loadMyInfo = useCallback(() => {
-    dispatch(loadMyInfoRequest());
-  }, []);
 
   const login = useCallback((data: LoginRequestPayload) => {
     dispatch(loginRequest(data));
@@ -87,8 +83,8 @@ export default function useUser() {
 
   return {
     userData,
+    userInfo,
     avatarURL,
-    loadMyInfo,
     loginLoading,
     loginError,
     logoutLoading,

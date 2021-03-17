@@ -5,6 +5,7 @@ import { Input, Button, Form, Avatar } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { readFile } from 'lib/convertFile';
 import useUser from 'store/modules/userHook';
+import UserAvatar from './UserAvatar';
 
 // Types
 type ProfileEditFormType = {
@@ -41,7 +42,7 @@ function ProfileEditForm() {
   } = useUser();
   const imageInputRef = useRef(null);
   const [avatarImage, setAvatarImage] = useState(
-    userData.avatar ? `http://localhost:3006/${userData.avatar}` : null
+    userData.avatar ? userData.avatar : null
   );
 
   // React Hook Form 연동
@@ -93,11 +94,13 @@ function ProfileEditForm() {
           hidden
           onChange={onFileChange}
         />
-        {avatarImage ? (
-          <Avatar src={avatarImage} size={80} />
-        ) : (
-          <Avatar size={80}>{userData.nickname.charAt(0)}</Avatar>
-        )}
+        {
+          <UserAvatar
+            avatar={avatarImage}
+            nickname={userData.nickname}
+            sizeUp
+          />
+        }
 
         <Button onClick={onClickImageUpload} size="small">
           사진 업로드

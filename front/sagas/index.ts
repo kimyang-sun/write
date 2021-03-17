@@ -2,6 +2,7 @@ import axios from 'axios';
 import { all, fork } from 'redux-saga/effects';
 import {
   watchLoadPosts,
+  watchLoadPost,
   watchAddComment,
   watchAddPost,
   watchRemovePost,
@@ -19,6 +20,7 @@ import {
   watchUnFollow,
   watchSignUp,
   watchLoadMyInfo,
+  watchLoadUser,
   watchLoadFollowers,
   watchLoadFollowings,
   watchRemoveFollower,
@@ -32,6 +34,7 @@ axios.defaults.withCredentials = true; // 로그인을 하고도 게시글이 �
 export default function* rootSaga() {
   yield all([
     fork(watchLoadMyInfo),
+    fork(watchLoadUser),
     fork(watchLogin),
     fork(watchLogout),
     fork(watchChangeProfile),
@@ -41,6 +44,7 @@ export default function* rootSaga() {
     fork(watchUnFollow),
     fork(watchRemoveFollower),
     fork(watchLoadPosts),
+    fork(watchLoadPost),
     fork(watchAddPost),
     fork(watchUploadPostImage),
     fork(watchRemovePost),

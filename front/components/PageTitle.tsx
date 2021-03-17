@@ -19,4 +19,4 @@ function PageTitle({ title }: PageTitleProps) {
   return <StyledPageTitle>{title}</StyledPageTitle>;
 }
 
-export default PageTitle;
+export default React.memo(PageTitle);

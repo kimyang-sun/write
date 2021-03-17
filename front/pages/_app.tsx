@@ -38,9 +38,7 @@ function App({ Component }: AppProps) {
         />
       </Head>
       <Wrap>
-        <AppLayout>
-          <Component />
-        </AppLayout>
+        <Component />
       </Wrap>
     </ThemeProvider>
   );

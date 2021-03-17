@@ -110,4 +110,4 @@ function PostImages({ images, content }: PostImagesProps) {
   return;
 }
 
-export default PostImages;
+export default React.memo(PostImages);

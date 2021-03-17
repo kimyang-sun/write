@@ -24,4 +24,4 @@ function PostHashtag({ hashtag }: PostHashtagProps) {
   );
 }
 
-export default PostHashtag;
+export default React.memo(PostHashtag);

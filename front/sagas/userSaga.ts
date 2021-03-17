@@ -4,6 +4,9 @@ import {
   loadMyInfoFailure,
   loadMyInfoSuccess,
   loadMyInfoRequest,
+  loadUserFailure,
+  loadUserSuccess,
+  loadUserRequest,
   LoginRequestPayload,
   loginRequest,
   loginFailure,
@@ -40,6 +43,7 @@ import {
 } from 'store/modules/user';
 import {
   loadMyInfoAPI,
+  loadUserAPI,
   followAPI,
   loginAPI,
   logoutAPI,
@@ -53,25 +57,35 @@ import {
 } from 'api/user';
 
 // Saga 실행 함수
+// 여기서는 밑에 loginRequest의 액션이 인자로 들어옵니다.
 function* loadMyInfo() {
   try {
+    // fork는 비동기 call은 동기
+    // fork를 쓰면 불러온것들을 result에 넣어줘야 하는데 바로 다음코드가 실행됨
     const result = yield call(loadMyInfoAPI);
+    //요청 성공시
     yield put(loadMyInfoSuccess(result.data));
   } catch (e) {
+    // 요청 실패시
     yield put(loadMyInfoFailure(e.response.data));
   }
 }
 
-// 여기서는 밑에 loginRequest의 액션이 인자로 들어옵니다.
+function* loadUser(action: PayloadAction<number>) {
+  try {
+    const result = yield call(loadUserAPI, action.payload);
+    yield put(loadUserSuccess(result.data));
+  } catch (e) {
+    yield put(loadUserFailure(e.response.data));
+  }
+}
+
 function* login(action: PayloadAction<LoginRequestPayload>) {
   try {
-    // fork는 비동기 call은 동기
-    // fork를 쓰면 불러온것들을 result에 넣어줘야 하는데 바로 다음코드가 실행됨
     const result = yield call(loginAPI, action.payload);
-    //요청 성공시
+
     yield put(loginSuccess(result.data));
   } catch (e) {
-    // 요청 실패시
     yield put(loginFailure(e.response.data));
   }
 }
@@ -144,6 +158,7 @@ function* loadFollowers() {
     const result = yield call(loadFollowersAPI);
     yield put(loadFollowersSuccess(result.data));
   } catch (e) {
+    console.error(e.response);
     yield put(loadFollowersFailure(e.response.data));
   }
 }
@@ -160,12 +175,16 @@ function* loadFollowings() {
 // Watch 함수
 export function* watchLoadMyInfo() {
   yield takeLatest(loadMyInfoRequest.type, loadMyInfo);
+  // loginRequest에서의 type이 실행되면 login함수가 실행되는데
+  // loginRequest의 action이 있으면 그 액션이 login함수의 인자로 들어갑니다.
+}
+
+export function* watchLoadUser() {
+  yield takeLatest(loadUserRequest.type, loadUser);
 }
 
 export function* watchLogin() {
   yield takeLatest(loginRequest.type, login);
-  // loginRequest에서의 type이 실행되면 login함수가 실행되는데
-  // loginRequest의 action이 있으면 그 액션이 login함수의 인자로 들어갑니다.
 }
 
 export function* watchLogout() {

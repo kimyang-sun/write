@@ -16,4 +16,4 @@ function PostImage({ imageUrl }: PostImageProps) {
   return <StyledPostImage src={imageUrl} role="presentation" />;
 }
 
-export default PostImage;
+export default React.memo(PostImage);

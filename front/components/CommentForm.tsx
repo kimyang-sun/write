@@ -76,4 +76,4 @@ function CommentForm({ post }: CommentFormProps) {
   );
 }
 
-export default CommentForm;
+export default React.memo(CommentForm);

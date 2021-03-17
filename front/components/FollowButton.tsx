@@ -49,4 +49,4 @@ function FollowButton({ post }: FollowButtonProps) {
     </StyledFollowButton>
   );
 }
-export default FollowButton;
+export default React.memo(FollowButton);

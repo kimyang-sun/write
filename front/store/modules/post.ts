@@ -2,12 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 초기 상태 타입
 export type PostState = {
-  mainPosts: any[];
-  imagePaths: any[];
+  mainPosts: Post[];
+  singlePost: Post;
+  imagePaths: string[];
   hasMorePosts: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: any;
+  loadPostLoading: boolean;
+  loadPostDone: boolean;
+  loadPostError: any;
   addPostLoading: boolean;
   addPostDone: boolean;
   addPostError: any;
@@ -90,11 +94,15 @@ export type CommentActionType = {
 // 초기 상태
 const initialState: PostState = {
   mainPosts: [],
+  singlePost: null,
   imagePaths: [],
   hasMorePosts: true,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -123,7 +131,7 @@ const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    // Load Post
+    // Load Posts
     loadPostsRequest(state: PostState, _action: PayloadAction<number>) {
       state.loadPostsLoading = true;
       state.loadPostsDone = false;
@@ -131,7 +139,6 @@ const postSlice = createSlice({
     },
 
     loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
-      console.log(action.payload);
       state.mainPosts = state.mainPosts.concat(action.payload);
       // 게시글이 5개가 안되면 다음 게시글이 없다고 판단
       state.hasMorePosts = action.payload.length === 5;
@@ -142,6 +149,24 @@ const postSlice = createSlice({
     loadPostsFailure(state: PostState, action: PayloadAction<any>) {
       state.loadPostsLoading = false;
       state.loadPostsError = action.payload;
+    },
+
+    // Load Post
+    loadPostRequest(state: PostState, _action: PayloadAction<any>) {
+      state.loadPostLoading = true;
+      state.loadPostDone = false;
+      state.loadPostError = null;
+    },
+
+    loadPostSuccess(state: PostState, action: PayloadAction<Post>) {
+      state.singlePost = action.payload;
+      state.loadPostLoading = false;
+      state.loadPostDone = true;
+    },
+
+    loadPostFailure(state: PostState, action: PayloadAction<any>) {
+      state.loadPostLoading = false;
+      state.loadPostError = action.payload;
     },
 
     // Add Post
@@ -225,14 +250,7 @@ const postSlice = createSlice({
       state.addCommentError = null;
     },
 
-    addCommentSuccess(
-      state: PostState,
-      action: PayloadAction<{
-        content: string;
-        PostId: number | string;
-        UserId: number;
-      }>
-    ) {
+    addCommentSuccess(state: PostState, action: PayloadAction<PostComment>) {
       const post = state.mainPosts.find(
         post => post.id === action.payload.PostId
       );
@@ -242,7 +260,6 @@ const postSlice = createSlice({
     },
 
     addCommentFailure(state: PostState, action: PayloadAction<any>) {
-      console.error(action.payload);
       state.addCommentLoading = false;
       state.addCommentError = action.payload;
     },
@@ -305,7 +322,6 @@ const postSlice = createSlice({
     },
 
     scrapPostSuccess(state: PostState, action: PayloadAction<any>) {
-      console.log(action.payload);
       state.mainPosts.unshift(action.payload);
       state.scrapPostLoading = false;
       state.scrapPostDone = true;
@@ -324,6 +340,9 @@ export const {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  loadPostRequest,
+  loadPostSuccess,
+  loadPostFailure,
   addPostRequest,
   addPostSuccess,
   addPostComplete,

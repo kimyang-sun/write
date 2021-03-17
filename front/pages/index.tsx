@@ -11,6 +11,7 @@ import wrapper, { SagaStore } from 'store/configureStore';
 import { loadMyInfoRequest } from 'store/modules/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
+import AppLayout from 'components/AppLayout';
 
 // styled components
 const SubTitle = styled.div`
@@ -61,7 +62,7 @@ function Home() {
   }, [scrapPostError]);
 
   return (
-    <>
+    <AppLayout>
       <PageTitle title="최신 글" />
       {userData ? (
         <SubTitle>
@@ -75,7 +76,7 @@ function Home() {
         <PostCard key={post.id} post={post} />
       ))}
       {postCreating && <PostForm setPostCreating={setPostCreating} />}
-    </>
+    </AppLayout>
   );
 }
 
@@ -99,5 +100,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async context => {
   await (context.store as SagaStore).sagaTask.toPromise();
   // 타입스크립트가 아니면 await context.store.sagaTask.toPromise();
 });
+// getServerSideProps는 접속한 상황에 따라 화면이 바뀌던가 하는 경우에 사용. (거의다 이걸씀)
+// getStaticProps는 언제 접속해도 데이터가 바뀌지 않는 정적인 경우에 사용.
 
 export default Home;

@@ -51,4 +51,4 @@ function PostContent({ content }: PostContentProps) {
   );
 }
 
-export default PostContent;
+export default React.memo(PostContent);

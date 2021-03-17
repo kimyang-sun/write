@@ -6,8 +6,11 @@ import Head from 'next/head';
 import PageTitle from 'components/PageTitle';
 import styled from 'styled-components';
 import Router from 'next/router';
-
-// Types
+import { END } from 'redux-saga';
+import wrapper, { SagaStore } from 'store/configureStore';
+import { loadMyInfoRequest } from 'store/modules/user';
+import axios from 'axios';
+import AppLayout from 'components/AppLayout';
 
 // styled components
 const FollowListContainer = styled.div`
@@ -32,7 +35,7 @@ function Profile() {
   }, []);
 
   return (
-    <>
+    <AppLayout>
       <Head>
         <title>프로필 | &quot;쓰다&quot;</title>
       </Head>
@@ -48,8 +51,20 @@ function Profile() {
       ) : (
         <p>로그인이 필요합니다. 😥</p>
       )}
-    </>
+    </AppLayout>
   );
 }
+
+// 서버사이드 렌더링
+export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  context.store.dispatch(loadMyInfoRequest());
+  context.store.dispatch(END);
+  await (context.store as SagaStore).sagaTask.toPromise();
+});
 
 export default Profile;

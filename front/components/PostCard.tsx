@@ -1,20 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import { PostComment, Post } from 'store/modules/post';
 import styled from 'styled-components';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
 import PostHashtag from './PostHashtag';
 import PostImages from './PostImages';
-import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
+import { Button, Card, Popover, List, Comment } from 'antd';
 import {
   LikeOutlined,
   LikeTwoTone,
-  RetweetOutlined,
+  ShareAltOutlined,
   MessageOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons';
+import UserAvatar from './UserAvatar';
 
 // Types
 type PostCardProps = {
@@ -108,8 +110,20 @@ function PostCard({ post }: PostCardProps) {
           )
         }
         actions={[
-          <Popover content="스크랩">
-            <RetweetOutlined key="scrap" onClick={onScrap} />
+          <Popover
+            trigger="click"
+            content={
+              <Button.Group>
+                <CopyToClipboard text={`http://localhost:3005/post/${post.id}`}>
+                  <Button block>URL 복사</Button>
+                </CopyToClipboard>
+                <Button block onClick={onScrap}>
+                  스크랩
+                </Button>
+              </Button.Group>
+            }
+          >
+            <ShareAltOutlined key="share" />
           </Popover>,
           <div onClick={onLike}>
             <span className="count">{post.Likers.length}</span>
@@ -128,7 +142,6 @@ function PostCard({ post }: PostCardProps) {
             <MessageOutlined key="comments" />
           </div>,
           <Popover
-            key="more"
             trigger="click"
             content={
               <Button.Group>
@@ -168,13 +181,10 @@ function PostCard({ post }: PostCardProps) {
           >
             <Card.Meta
               avatar={
-                post.User.avatar ? (
-                  <Avatar
-                    src={`http://localhost:3006/${post.Scrap.User.avatar}`}
-                  />
-                ) : (
-                  <Avatar>{post.Scrap.User.nickname.charAt(0)}</Avatar>
-                )
+                <UserAvatar
+                  avatar={post.Scrap.User.avatar}
+                  nickname={post.Scrap.User.nickname}
+                />
               }
               title={post.Scrap.User.nickname}
               description={
@@ -190,11 +200,10 @@ function PostCard({ post }: PostCardProps) {
         ) : (
           <Card.Meta
             avatar={
-              post.User.avatar ? (
-                <Avatar src={`http://localhost:3006/${post.User.avatar}`} />
-              ) : (
-                <Avatar>{post.User.nickname.charAt(0)}</Avatar>
-              )
+              <UserAvatar
+                avatar={post.User.avatar}
+                nickname={post.User.nickname}
+              />
             }
             title={
               <>
@@ -224,13 +233,10 @@ function PostCard({ post }: PostCardProps) {
                 <Comment
                   author={item.User.nickname}
                   avatar={
-                    item.User.avatar ? (
-                      <Avatar
-                        src={`http://localhost:3006/${item.User.avatar}`}
-                      />
-                    ) : (
-                      <Avatar>{item.User.nickname.charAt(0)}</Avatar>
-                    )
+                    <UserAvatar
+                      avatar={item.User.avatar}
+                      nickname={item.User.nickname}
+                    />
                   }
                   content={item.content}
                   datetime={item.createdAt.slice(0, 10)}
@@ -245,4 +251,4 @@ function PostCard({ post }: PostCardProps) {
   );
 }
 
-export default PostCard;
+export default React.memo(PostCard);

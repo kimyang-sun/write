@@ -10,6 +10,10 @@ export function loadMyInfoAPI() {
   return axios.get('/user');
 }
 
+export function loadUserAPI(data: number) {
+  return axios.get(`/user/${data}`);
+}
+
 export function loginAPI(data: LoginRequestPayload) {
   return axios.post('/user/login', data);
 }

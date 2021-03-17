@@ -22,4 +22,4 @@ function CloseButton({ onClose }: CloseButtonProps) {
   return <StyledCloseButton onClick={onClose} />;
 }
 
-export default CloseButton;
+export default React.memo(CloseButton);

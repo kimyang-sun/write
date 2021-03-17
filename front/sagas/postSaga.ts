@@ -5,6 +5,9 @@ import {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  loadPostRequest,
+  loadPostSuccess,
+  loadPostFailure,
   addPostRequest,
   addPostSuccess,
   addPostComplete,
@@ -32,6 +35,7 @@ import {
 import { addUserPost, removeUserPost } from 'store/modules/user';
 import {
   loadPostsAPI,
+  loadPostAPI,
   addPostAPI,
   removePostAPI,
   addCommentAPI,
@@ -48,6 +52,15 @@ function* loadPosts(action: PayloadAction<number>) {
     yield put(loadPostsSuccess(result.data));
   } catch (e) {
     yield put(loadPostsFailure(e.response.data));
+  }
+}
+
+function* loadPost(action: PayloadAction<number>) {
+  try {
+    const result = yield call(loadPostAPI, action.payload);
+    yield put(loadPostSuccess(result.data));
+  } catch (e) {
+    yield put(loadPostFailure(e.response.data));
   }
 }
 
@@ -121,6 +134,10 @@ function* scrapPost(action: PayloadAction<number>) {
 // Saga를 작동시키는 Watch 함수
 export function* watchLoadPosts() {
   yield takeLatest(loadPostsRequest.type, loadPosts);
+}
+
+export function* watchLoadPost() {
+  yield takeLatest(loadPostRequest.type, loadPost);
 }
 
 export function* watchAddPost() {

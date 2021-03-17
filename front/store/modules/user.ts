@@ -3,7 +3,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 초기 상태 타입
 export type UserState = {
   userData: UserDataPayload;
+  userInfo: any;
   avatarURL: string;
+  loadMyInfoLoading: boolean;
+  loadMyInfoDone: boolean;
+  loadMyInfoError: any;
   loadUserLoading: boolean;
   loadUserDone: boolean;
   loadUserError: any;
@@ -78,7 +82,11 @@ export type ProfilePayload = {
 // 초기 상태
 const initialState: UserState = {
   userData: null,
+  userInfo: null,
   avatarURL: null,
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   loadUserLoading: false,
   loadUserDone: false,
   loadUserError: null,
@@ -121,22 +129,39 @@ const userSlice = createSlice({
   reducers: {
     // Load login info
     loadMyInfoRequest(state: UserState) {
-      state.loadUserLoading = true;
-      state.loadUserDone = false;
-      state.loadUserError = null;
+      state.loadMyInfoLoading = true;
+      state.loadMyInfoDone = false;
+      state.loadMyInfoError = null;
     },
 
     loadMyInfoSuccess(
       state: UserState,
       action: PayloadAction<UserDataPayload>
     ) {
-      console.log(action.payload);
       state.userData = action.payload;
+      state.loadMyInfoLoading = false;
+      state.loadMyInfoDone = true;
+    },
+
+    loadMyInfoFailure(state: UserState, action: PayloadAction<any>) {
+      state.loadMyInfoLoading = false;
+      state.loadMyInfoError = action.payload;
+    },
+
+    // Load User
+    loadUserRequest(state: UserState, _action: PayloadAction<number>) {
+      state.loadUserLoading = true;
+      state.loadUserDone = false;
+      state.loadUserError = null;
+    },
+
+    loadUserSuccess(state: UserState, action: PayloadAction<any>) {
+      state.userInfo = action.payload;
       state.loadUserLoading = false;
       state.loadUserDone = true;
     },
 
-    loadMyInfoFailure(state: UserState, action: PayloadAction<any>) {
+    loadUserFailure(state: UserState, action: PayloadAction<any>) {
       state.loadUserLoading = false;
       state.loadUserError = action.payload;
     },
@@ -372,6 +397,9 @@ export const {
   loadMyInfoRequest,
   loadMyInfoSuccess,
   loadMyInfoFailure,
+  loadUserRequest,
+  loadUserSuccess,
+  loadUserFailure,
   loginRequest,
   loginSuccess,
   loginFailure,

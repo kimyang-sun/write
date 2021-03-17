@@ -6,6 +6,7 @@ import { Follow } from 'store/modules/user';
 import Dialog from './Dialog';
 import CloseButton from './CloseButton';
 import useUser from 'store/modules/userHook';
+import UserAvatar from './UserAvatar';
 
 // Types
 type FollowListProps = {
@@ -102,11 +103,7 @@ function FollowList({ header, data }: FollowListProps) {
           >
             <ListItem.Meta
               avatar={
-                item.avatar ? (
-                  <Avatar src={`http://localhost:3006/${item.avatar}`} />
-                ) : (
-                  <Avatar>{item.nickname && item.nickname.charAt(0)}</Avatar>
-                )
+                <UserAvatar avatar={item.avatar} nickname={item.nickname} />
               }
               title={item.nickname}
             />
@@ -128,13 +125,10 @@ function FollowList({ header, data }: FollowListProps) {
                 <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
                   <ListItem.Meta
                     avatar={
-                      item.avatar ? (
-                        <Avatar src={item.avatar} />
-                      ) : (
-                        <Avatar>
-                          {item.nickname && item.nickname.charAt(0)}
-                        </Avatar>
-                      )
+                      <UserAvatar
+                        avatar={item.avatar}
+                        nickname={item.nickname}
+                      />
                     }
                     title={item.nickname}
                   />
