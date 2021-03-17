@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '.';
 import {
   loadPostsRequest,
+  loadUserPostsRequest,
   addCommentRequest,
   addPostRequest,
   CommentActionType,
@@ -13,6 +14,7 @@ import {
   removeUploadedPostImage,
   AddPostType,
   scrapPostRequest,
+  loadHashtagPostsRequest,
 } from './post';
 
 export default function usePost() {
@@ -32,6 +34,14 @@ export default function usePost() {
 
   const loadPosts = useCallback((id?: number) => {
     dispatch(loadPostsRequest(id));
+  }, []);
+
+  const loadUserPosts = useCallback((data: any) => {
+    dispatch(loadUserPostsRequest({ data: data.data, lastId: data.lastId }));
+  }, []);
+
+  const loadHashtagPosts = useCallback((data: any) => {
+    dispatch(loadHashtagPostsRequest({ data: data.data, lastId: data.lastId }));
   }, []);
 
   const addPost = useCallback((post: AddPostType) => {
@@ -72,6 +82,8 @@ export default function usePost() {
     imagePaths,
     loadPosts,
     loadPostsLoading,
+    loadUserPosts,
+    loadHashtagPosts,
     hasMorePosts,
     addPost,
     addPostLoading,

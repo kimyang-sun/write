@@ -8,6 +8,12 @@ import {
   loadPostRequest,
   loadPostSuccess,
   loadPostFailure,
+  loadUserPostsRequest,
+  loadUserPostsSuccess,
+  loadUserPostsFailure,
+  loadHashtagPostsRequest,
+  loadHashtagPostsSuccess,
+  loadHashtagPostsFailure,
   addPostRequest,
   addPostSuccess,
   addPostComplete,
@@ -35,6 +41,8 @@ import {
 import { addUserPost, removeUserPost } from 'store/modules/user';
 import {
   loadPostsAPI,
+  loadUserPostsAPI,
+  loadHashtagPostsAPI,
   loadPostAPI,
   addPostAPI,
   removePostAPI,
@@ -52,6 +60,33 @@ function* loadPosts(action: PayloadAction<number>) {
     yield put(loadPostsSuccess(result.data));
   } catch (e) {
     yield put(loadPostsFailure(e.response.data));
+  }
+}
+
+function* loadUserPosts(action: PayloadAction<any>) {
+  try {
+    const result = yield call(
+      loadUserPostsAPI,
+      action.payload.data,
+      action.payload.lastId
+    );
+
+    yield put(loadUserPostsSuccess(result.data));
+  } catch (e) {
+    yield put(loadUserPostsFailure(e.response.data));
+  }
+}
+
+function* loadHashtagPosts(action: PayloadAction<any>) {
+  try {
+    const result = yield call(
+      loadHashtagPostsAPI,
+      action.payload.data,
+      action.payload.lastId
+    );
+    yield put(loadHashtagPostsSuccess(result.data));
+  } catch (e) {
+    yield put(loadHashtagPostsFailure(e.response.data));
   }
 }
 
@@ -134,6 +169,14 @@ function* scrapPost(action: PayloadAction<number>) {
 // Saga를 작동시키는 Watch 함수
 export function* watchLoadPosts() {
   yield takeLatest(loadPostsRequest.type, loadPosts);
+}
+
+export function* watchLoadUserPosts() {
+  yield takeLatest(loadUserPostsRequest.type, loadUserPosts);
+}
+
+export function* watchLoadHashtagPosts() {
+  yield takeLatest(loadHashtagPostsRequest.type, loadHashtagPosts);
 }
 
 export function* watchLoadPost() {

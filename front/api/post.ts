@@ -2,9 +2,20 @@ import axios from 'axios';
 import { AddPostType, CommentActionType } from 'store/modules/post';
 
 // API 요청
-export function loadPostsAPI(data: number) {
+export function loadPostsAPI(lastId: number) {
   // GET은 이런식으로 데이터캐싱 가능 (백엔드에서 쿼리로 사용가능)
-  return axios.get(`/posts?lastId=${data || 0}`); // data가 없으면 0을 넣어줌.
+  return axios.get(`/posts?lastId=${lastId || 0}`); // data가 없으면 0을 넣어줌.
+}
+
+export function loadUserPostsAPI(data: any, lastId?: any) {
+  return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`);
+}
+
+export function loadHashtagPostsAPI(data: any, lastId?: any) {
+  // 한글이라 서버에서 오류가 남 (encodeURIComponent로 감싸줍니다.)
+  return axios.get(
+    `/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`
+  );
 }
 
 export function loadPostAPI(data: any) {

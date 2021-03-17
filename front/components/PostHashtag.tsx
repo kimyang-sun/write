@@ -10,10 +10,10 @@ type PostHashtagProps = {
 function PostHashtag({ hashtag }: PostHashtagProps) {
   return (
     <>
-      {hashtag.split(/(#[^\s#,]+)/g).map((value, i) => {
+      {hashtag.split(/(#[^\s#,]+)/g).map((value, index) => {
         if (value.match(/(#[^\s#,]+)/)) {
           return (
-            <Link href={`/hashtag/${value.slice(1)}`} key={i}>
+            <Link href={`/hashtag/${value.slice(1)}`} key={index}>
               <a>{value}</a>
             </Link>
           );

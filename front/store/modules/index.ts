@@ -1,8 +1,7 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers, AnyAction } from 'redux';
-import { PostState } from './post';
 import user, { UserState } from './user';
-import post from './post';
+import post, { PostState } from './post';
 
 // 루트 리듀서 리듀서 타입
 type RootStateType = {

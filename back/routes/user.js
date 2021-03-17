@@ -3,7 +3,8 @@ const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User, Post } = require('../models');
+const { Op } = require('sequelize');
+const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const fs = require('fs');
 
@@ -254,6 +255,42 @@ router.get('/:userId', async (req, res, next) => {
     } else {
       res.status(404).json('사용자가 존재하지 않습니다.');
     }
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 해당 사용자의 게시글 불러오기 - GET /user/:userId/posts
+router.get('/:userId/posts', async (req, res, next) => {
+  try {
+    const where = { UserId: req.params.userId };
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    }
+    const posts = await Post.findAll({
+      where,
+      limit: 5,
+      order: [['createdAt', 'DESC']],
+      include: [
+        { model: User, attributes: ['id', 'nickname', 'avatar'] },
+        { model: Image },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['id', 'nickname', 'avatar'] }],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] },
+        {
+          model: Post,
+          as: 'Scrap',
+          include: [
+            { model: User, attributes: ['id', 'nickname', 'avatar'] },
+            { model: Image },
+          ],
+        },
+      ],
+    });
+    res.status(200).json(posts);
   } catch (e) {
     console.error(e);
     next(e);

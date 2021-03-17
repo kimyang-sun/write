@@ -1,6 +1,6 @@
+import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
 import { END } from 'redux-saga';
 import wrapper, { SagaStore } from 'store/configureStore';
 import { loadMyInfoRequest } from 'store/modules/user';
@@ -12,8 +12,8 @@ import usePost from 'store/modules/postHook';
 
 function Post() {
   const router = useRouter();
-  const { singlePost } = usePost();
   const { id } = router.query;
+  const { singlePost } = usePost();
   return (
     <AppLayout>
       <Head>

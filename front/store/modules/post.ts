@@ -137,7 +137,6 @@ const postSlice = createSlice({
       state.loadPostsDone = false;
       state.loadPostsError = null;
     },
-
     loadPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
       state.mainPosts = state.mainPosts.concat(action.payload);
       // 게시글이 5개가 안되면 다음 게시글이 없다고 판단
@@ -145,8 +144,41 @@ const postSlice = createSlice({
       state.loadPostsLoading = false;
       state.loadPostsDone = true;
     },
-
     loadPostsFailure(state: PostState, action: PayloadAction<any>) {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.payload;
+    },
+
+    // Load User Posts
+    loadUserPostsRequest(state: PostState, _action: PayloadAction<any>) {
+      state.loadPostsLoading = true;
+      state.loadPostsDone = false;
+      state.loadPostsError = null;
+    },
+    loadUserPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+      state.mainPosts = state.mainPosts.concat(action.payload);
+      state.hasMorePosts = action.payload.length === 5;
+      state.loadPostsLoading = false;
+      state.loadPostsDone = true;
+    },
+    loadUserPostsFailure(state: PostState, action: PayloadAction<any>) {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.payload;
+    },
+
+    // Load Hashtag Posts
+    loadHashtagPostsRequest(state: PostState, _action: PayloadAction<any>) {
+      state.loadPostsLoading = true;
+      state.loadPostsDone = false;
+      state.loadPostsError = null;
+    },
+    loadHashtagPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+      state.mainPosts = state.mainPosts.concat(action.payload);
+      state.hasMorePosts = action.payload.length === 5;
+      state.loadPostsLoading = false;
+      state.loadPostsDone = true;
+    },
+    loadHashtagPostsFailure(state: PostState, action: PayloadAction<any>) {
       state.loadPostsLoading = false;
       state.loadPostsError = action.payload;
     },
@@ -157,13 +189,11 @@ const postSlice = createSlice({
       state.loadPostDone = false;
       state.loadPostError = null;
     },
-
     loadPostSuccess(state: PostState, action: PayloadAction<Post>) {
       state.singlePost = action.payload;
       state.loadPostLoading = false;
       state.loadPostDone = true;
     },
-
     loadPostFailure(state: PostState, action: PayloadAction<any>) {
       state.loadPostLoading = false;
       state.loadPostError = action.payload;
@@ -175,18 +205,15 @@ const postSlice = createSlice({
       state.addPostDone = false;
       state.addPostError = null;
     },
-
     addPostSuccess(state: PostState, action: PayloadAction<Post>) {
       state.mainPosts.unshift(action.payload);
       state.imagePaths = [];
       state.addPostLoading = false;
       state.addPostDone = true;
     },
-
     addPostComplete(state: PostState) {
       state.addPostDone = false;
     },
-
     addPostFailure(state: PostState, action: PayloadAction<any>) {
       state.addPostLoading = false;
       state.addPostError = action.payload;
@@ -198,13 +225,11 @@ const postSlice = createSlice({
       state.uploadPostImageDone = false;
       state.uploadPostImageError = null;
     },
-
     uploadPostImageSuccess(state: PostState, action: PayloadAction<string>) {
       state.imagePaths = state.imagePaths.concat(action.payload);
       state.uploadPostImageLoading = false;
       state.uploadPostImageDone = true;
     },
-
     uploadPostImageFailure(state: PostState, action: PayloadAction<any>) {
       state.uploadPostImageLoading = false;
       state.uploadPostImageError = action.payload;
@@ -223,7 +248,6 @@ const postSlice = createSlice({
       state.removePostDone = false;
       state.removePostError = null;
     },
-
     removePostSuccess(
       state: PostState,
       action: PayloadAction<{ PostId: number }>
@@ -234,7 +258,6 @@ const postSlice = createSlice({
       state.removePostLoading = false;
       state.removePostDone = true;
     },
-
     removePostFailure(state: PostState, action: PayloadAction<any>) {
       state.addPostLoading = false;
       state.removePostError = action.payload;
@@ -249,7 +272,6 @@ const postSlice = createSlice({
       state.addCommentDone = false;
       state.addCommentError = null;
     },
-
     addCommentSuccess(state: PostState, action: PayloadAction<PostComment>) {
       const post = state.mainPosts.find(
         post => post.id === action.payload.PostId
@@ -258,7 +280,6 @@ const postSlice = createSlice({
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },
-
     addCommentFailure(state: PostState, action: PayloadAction<any>) {
       state.addCommentLoading = false;
       state.addCommentError = action.payload;
@@ -270,7 +291,6 @@ const postSlice = createSlice({
       state.likePostDone = false;
       state.likePostError = null;
     },
-
     likePostSuccess(
       state: PostState,
       action: PayloadAction<{ PostId: number; UserId: number }>
@@ -282,7 +302,6 @@ const postSlice = createSlice({
       state.likePostLoading = false;
       state.likePostDone = true;
     },
-
     likePostFailure(state: PostState, action: PayloadAction<any>) {
       state.likePostLoading = false;
       state.likePostError = action.payload;
@@ -294,7 +313,6 @@ const postSlice = createSlice({
       state.unLikePostDone = false;
       state.unLikePostError = null;
     },
-
     unLikePostSuccess(
       state: PostState,
       action: PayloadAction<{ PostId: number; UserId: number }>
@@ -308,7 +326,6 @@ const postSlice = createSlice({
       state.unLikePostLoading = false;
       state.unLikePostDone = true;
     },
-
     unLikePostFailure(state: PostState, action: PayloadAction<any>) {
       state.unLikePostLoading = false;
       state.unLikePostError = action.payload;
@@ -320,13 +337,11 @@ const postSlice = createSlice({
       state.scrapPostDone = false;
       state.scrapPostError = null;
     },
-
     scrapPostSuccess(state: PostState, action: PayloadAction<any>) {
       state.mainPosts.unshift(action.payload);
       state.scrapPostLoading = false;
       state.scrapPostDone = true;
     },
-
     scrapPostFailure(state: PostState, action: PayloadAction<any>) {
       state.scrapPostLoading = false;
       state.scrapPostError = action.payload;
@@ -343,6 +358,12 @@ export const {
   loadPostRequest,
   loadPostSuccess,
   loadPostFailure,
+  loadUserPostsRequest,
+  loadUserPostsSuccess,
+  loadUserPostsFailure,
+  loadHashtagPostsRequest,
+  loadHashtagPostsSuccess,
+  loadHashtagPostsFailure,
   addPostRequest,
   addPostSuccess,
   addPostComplete,

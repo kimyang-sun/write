@@ -133,7 +133,6 @@ const userSlice = createSlice({
       state.loadMyInfoDone = false;
       state.loadMyInfoError = null;
     },
-
     loadMyInfoSuccess(
       state: UserState,
       action: PayloadAction<UserDataPayload>
@@ -142,25 +141,22 @@ const userSlice = createSlice({
       state.loadMyInfoLoading = false;
       state.loadMyInfoDone = true;
     },
-
     loadMyInfoFailure(state: UserState, action: PayloadAction<any>) {
       state.loadMyInfoLoading = false;
       state.loadMyInfoError = action.payload;
     },
 
     // Load User
-    loadUserRequest(state: UserState, _action: PayloadAction<number>) {
+    loadUserRequest(state: UserState, _action: PayloadAction<any>) {
       state.loadUserLoading = true;
       state.loadUserDone = false;
       state.loadUserError = null;
     },
-
     loadUserSuccess(state: UserState, action: PayloadAction<any>) {
       state.userInfo = action.payload;
       state.loadUserLoading = false;
       state.loadUserDone = true;
     },
-
     loadUserFailure(state: UserState, action: PayloadAction<any>) {
       state.loadUserLoading = false;
       state.loadUserError = action.payload;
@@ -175,13 +171,11 @@ const userSlice = createSlice({
       state.loginDone = false;
       state.loginError = null;
     },
-
     loginSuccess(state: UserState, action: PayloadAction<UserDataPayload>) {
       state.userData = action.payload;
       state.loginLoading = false;
       state.loginDone = true;
     },
-
     loginFailure(state: UserState, action: PayloadAction<any>) {
       state.loginLoading = false;
       state.loginError = action.payload;
@@ -193,14 +187,12 @@ const userSlice = createSlice({
       state.logoutDone = false;
       state.logoutError = null;
     },
-
     logoutSuccess(state: UserState) {
       state.userData = null;
       state.signUpDone = false;
       state.logoutLoading = false;
       state.logoutDone = true;
     },
-
     logoutFailure(state: UserState, action: PayloadAction<any>) {
       state.logoutLoading = false;
       state.logoutError = action.payload;
@@ -215,12 +207,10 @@ const userSlice = createSlice({
       state.signUpDone = false;
       state.signUpError = null;
     },
-
     signUpSuccess(state: UserState) {
       state.signUpLoading = false;
       state.signUpDone = true;
     },
-
     signUpFailure(state: UserState, action: PayloadAction<any>) {
       state.signUpError = action.payload;
       state.signUpLoading = false;
@@ -230,7 +220,6 @@ const userSlice = createSlice({
     addUserPost(state: UserState, action: PayloadAction<{ id: number }>) {
       state.userData.Posts.unshift(action.payload);
     },
-
     removeUserPost(
       state: UserState,
       action: PayloadAction<{ PostId: number }>
@@ -249,7 +238,6 @@ const userSlice = createSlice({
       state.changeProfileDone = false;
       state.changeProfileError = null;
     },
-
     changeProfileSuccess(
       state: UserState,
       action: PayloadAction<ProfilePayload>
@@ -260,7 +248,6 @@ const userSlice = createSlice({
       state.changeProfileLoading = false;
       state.changeProfileDone = true;
     },
-
     changeProfileFailure(state: UserState, action: PayloadAction<any>) {
       state.changeProfileError = action.payload;
       state.changeProfileLoading = false;
@@ -272,13 +259,11 @@ const userSlice = createSlice({
       state.uploadUserImageDone = false;
       state.uploadUserImageError = null;
     },
-
     uploadUserImageSuccess(state: UserState, action: PayloadAction<any>) {
       state.avatarURL = action.payload;
       state.uploadUserImageLoading = false;
       state.uploadUserImageDone = true;
     },
-
     uploadUserImageFailure(state: UserState, action: PayloadAction<any>) {
       state.uploadUserImageLoading = false;
       state.uploadUserImageError = action.payload;
@@ -295,13 +280,11 @@ const userSlice = createSlice({
       state.followDone = false;
       state.followError = null;
     },
-
     followSuccess(state: UserState, action: PayloadAction<{ UserId: number }>) {
       state.userData.Followings.push({ id: action.payload.UserId });
       state.followLoading = false;
       state.followDone = true;
     },
-
     followFailure(state: UserState, action: PayloadAction<any>) {
       state.followLoading = false;
       state.followError = action.payload;
@@ -313,7 +296,6 @@ const userSlice = createSlice({
       state.unFollowDone = false;
       state.unFollowError = null;
     },
-
     unFollowSuccess(
       state: UserState,
       action: PayloadAction<{ UserId: number }>
@@ -324,7 +306,6 @@ const userSlice = createSlice({
       state.unFollowLoading = false;
       state.unFollowDone = true;
     },
-
     unFollowFailure(state: UserState, action: PayloadAction<any>) {
       state.unFollowLoading = false;
       state.unFollowError = action.payload;
@@ -336,7 +317,6 @@ const userSlice = createSlice({
       state.removeFollowerDone = false;
       state.removeFollowerError = null;
     },
-
     removeFollowerSuccess(
       state: UserState,
       action: PayloadAction<{ UserId: number }>
@@ -347,7 +327,6 @@ const userSlice = createSlice({
       state.removeFollowerLoading = false;
       state.removeFollowerDone = true;
     },
-
     removeFollowerFailure(state: UserState, action: PayloadAction<any>) {
       state.removeFollowerLoading = false;
       state.removeFollowerError = action.payload;
@@ -359,13 +338,11 @@ const userSlice = createSlice({
       state.loadFollowersDone = false;
       state.loadFollowersError = null;
     },
-
     loadFollowersSuccess(state: UserState, action: PayloadAction<any>) {
       state.userData.Followers = action.payload;
       state.loadFollowersLoading = false;
       state.loadFollowersDone = true;
     },
-
     loadFollowersFailure(state: UserState, action: PayloadAction<any>) {
       state.loadFollowersLoading = null;
       state.loadFollowersError = action.payload;
@@ -377,13 +354,11 @@ const userSlice = createSlice({
       state.loadFollowingsDone = false;
       state.loadFollowingsError = null;
     },
-
     loadFollowingsSuccess(state: UserState, action: PayloadAction<any>) {
       state.userData.Followings = action.payload;
       state.loadFollowingsLoading = false;
       state.loadFollowingsDone = true;
     },
-
     loadFollowingsFailure(state: UserState, action: PayloadAction<any>) {
       state.loadFollowingsLoading = null;
       state.loadFollowingsError = action.payload;

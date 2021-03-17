@@ -2,6 +2,8 @@ import axios from 'axios';
 import { all, fork } from 'redux-saga/effects';
 import {
   watchLoadPosts,
+  watchLoadUserPosts,
+  watchLoadHashtagPosts,
   watchLoadPost,
   watchAddComment,
   watchAddPost,
@@ -44,6 +46,8 @@ export default function* rootSaga() {
     fork(watchUnFollow),
     fork(watchRemoveFollower),
     fork(watchLoadPosts),
+    fork(watchLoadUserPosts),
+    fork(watchLoadHashtagPosts),
     fork(watchLoadPost),
     fork(watchAddPost),
     fork(watchUploadPostImage),
