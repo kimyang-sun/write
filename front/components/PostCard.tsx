@@ -188,6 +188,7 @@ function PostCard({ post }: PostCardProps) {
                 <UserAvatar
                   avatar={post.Scrap.User.avatar}
                   nickname={post.Scrap.User.nickname}
+                  id={post.Scrap.User.id}
                 />
               }
               title={post.Scrap.User.nickname}
@@ -207,6 +208,7 @@ function PostCard({ post }: PostCardProps) {
               <UserAvatar
                 avatar={post.User.avatar}
                 nickname={post.User.nickname}
+                id={post.User.id}
               />
             }
             title={
@@ -240,6 +242,7 @@ function PostCard({ post }: PostCardProps) {
                     <UserAvatar
                       avatar={item.User.avatar}
                       nickname={item.User.nickname}
+                      id={item.User.id}
                     />
                   }
                   content={item.content}

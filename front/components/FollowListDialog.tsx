@@ -78,7 +78,11 @@ function FollowListDialog({
             >
               <ListItem.Meta
                 avatar={
-                  <UserAvatar avatar={item.avatar} nickname={item.nickname} />
+                  <UserAvatar
+                    avatar={item.avatar}
+                    nickname={item.nickname}
+                    id={item.id}
+                  />
                 }
                 title={item.nickname}
               />

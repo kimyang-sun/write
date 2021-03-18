@@ -3,6 +3,7 @@ import { UserDataPayload } from 'store/modules/user';
 import { Avatar, Button, Card } from 'antd';
 import styled from 'styled-components';
 import UserAvatar from './UserAvatar';
+import Link from 'next/link';
 
 // Types
 type UserProfileProps = {
@@ -28,6 +29,9 @@ const ProfileCard = styled(Card)`
   .ant-card-meta-detail {
     text-align: left;
   }
+  @media (max-width: ${props => props.theme.mediaSize.xlarge}) {
+    margin-bottom: 30px;
+  }
 `;
 
 // export
@@ -40,13 +44,25 @@ function UserProfile({ loading, user, logout, logoutError }: UserProfileProps) {
   return (
     <ProfileCard
       actions={[
-        <div key="write">글 {user.Posts.length}</div>,
-        <div key="followers">팔로워 {user.Followers.length}</div>,
-        <div key="followings">팔로잉 {user.Followings.length}</div>,
+        <Link href={`/user/${user.id}`}>
+          <a key="writes">글 {user.Posts.length}</a>
+        </Link>,
+        <Link href="/profile">
+          <a key="followers">팔로워 {user.Followers.length}</a>
+        </Link>,
+        <Link href="/profile">
+          <a key="followings">팔로잉 {user.Followings.length}</a>
+        </Link>,
       ]}
     >
       <Card.Meta
-        avatar={<UserAvatar avatar={user.avatar} nickname={user.nickname} />}
+        avatar={
+          <UserAvatar
+            avatar={user.avatar}
+            nickname={user.nickname}
+            id={user.id}
+          />
+        }
         title={user.nickname}
         description={user.introduction}
       />

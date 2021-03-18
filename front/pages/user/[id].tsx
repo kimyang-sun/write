@@ -13,6 +13,12 @@ import { loadUserPostsRequest, Post } from 'store/modules/post';
 import { loadMyInfoRequest, loadUserRequest } from 'store/modules/user';
 import PostCard from 'components/PostCard';
 import PageTitle from 'components/PageTitle';
+import styled from 'styled-components';
+
+const StyledDiv = styled.div`
+  cursor: default;
+  color: #aaa;
+`;
 
 function User() {
   const router = useRouter();
@@ -49,25 +55,34 @@ function User() {
 
   return (
     <AppLayout>
-      <Head>
-        <title>"쓰다" - {userInfo.nickname}</title>
-        <meta name="description" content={`${userInfo.nickname}님의 정보`} />
-        <meta property="og:title" content={`${userInfo.nickname}님의 정보`} />
-        <meta
-          property="og:description"
-          content={`${userInfo.nickname}님의 게시글`}
-        />
-        <meta property="og:image" content="https://write.com/images/logo.png" />
-        <meta property="og:url" content={`https://write.com/user/${id}`} />
-      </Head>
+      {userInfo && (
+        <Head>
+          <title>"쓰다" - {userInfo.nickname}님의 글</title>
+          <meta name="description" content={`${userInfo.nickname}님의 글`} />
+          <meta property="og:title" content={`${userInfo.nickname}님의 글`} />
+          <meta
+            property="og:description"
+            content={`${userInfo.nickname}님의 게시글`}
+          />
+          <meta
+            property="og:image"
+            content="https://write.com/images/logo.png"
+          />
+          <meta property="og:url" content={`https://write.com/user/${id}`} />
+        </Head>
+      )}
       {userInfo ? (
         <>
-          <PageTitle title={`${userInfo.nickname}님의 정보`} />
+          <PageTitle title={`${userInfo.nickname}님의 글`} />
           <Card
             actions={[
-              <div key="write">글 {userInfo.Posts}</div>,
-              <div key="followers">팔로워 {userInfo.Followers}</div>,
-              <div key="followings">팔로잉 {userInfo.Followings}</div>,
+              <StyledDiv key="write">글 {userInfo.Posts}</StyledDiv>,
+              <StyledDiv key="followers">
+                팔로워 {userInfo.Followers}
+              </StyledDiv>,
+              <StyledDiv key="followings">
+                팔로잉 {userInfo.Followings}
+              </StyledDiv>,
             ]}
           >
             <Card.Meta
@@ -75,6 +90,7 @@ function User() {
                 <UserAvatar
                   avatar={userInfo.avatar}
                   nickname={userInfo.nickname}
+                  id={userInfo.id}
                   sizeUp
                 />
               }
@@ -93,6 +109,7 @@ function User() {
   );
 }
 
+// 서버 사이드 렌더링
 export const getServerSideProps = wrapper.getServerSideProps(async context => {
   const cookie = context.req ? context.req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';

@@ -54,6 +54,7 @@ function User() {
   );
 }
 
+// 서버 사이드 렌더링
 export const getServerSideProps = wrapper.getServerSideProps(async context => {
   const cookie = context.req ? context.req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';

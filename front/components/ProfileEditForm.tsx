@@ -98,6 +98,7 @@ function ProfileEditForm() {
           <UserAvatar
             avatar={avatarImage}
             nickname={userData.nickname}
+            id={userData.id}
             sizeUp
           />
         }

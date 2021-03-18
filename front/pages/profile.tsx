@@ -12,11 +12,14 @@ import { loadMyInfoRequest } from 'store/modules/user';
 import axios from 'axios';
 import AppLayout from 'components/AppLayout';
 import useSWR from 'swr';
+import { Button } from 'antd';
+import Link from 'next/link';
 
 // styled components
 const FollowListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 40px;
 `;
 
 // SWR Fetcher
@@ -76,6 +79,11 @@ function Profile() {
               mutate={mutateFollowing}
             />
           </FollowListContainer>
+          <Button size="large" block>
+            <Link href={`/user/${userData.id}`}>
+              <a>내 글 보러가기</a>
+            </Link>
+          </Button>
         </>
       ) : (
         <p>로그인이 필요합니다. 😥</p>

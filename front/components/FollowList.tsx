@@ -6,7 +6,6 @@ import UserAvatar from './UserAvatar';
 import FollowListDialog from './FollowListDialog';
 import { Button, List } from 'antd';
 import { DisconnectOutlined } from '@ant-design/icons';
-import { trigger } from 'swr';
 
 // Types
 type FollowListProps = {
@@ -91,7 +90,11 @@ function FollowList({ header, data, mutate }: FollowListProps) {
           >
             <ListItem.Meta
               avatar={
-                <UserAvatar avatar={item.avatar} nickname={item.nickname} />
+                <UserAvatar
+                  avatar={item.avatar}
+                  nickname={item.nickname}
+                  id={item.id}
+                />
               }
               title={item.nickname}
             />

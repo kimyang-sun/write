@@ -1,7 +1,8 @@
-import { Input } from 'antd';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
-import React from 'react';
+import Router from 'next/router';
 import styled, { DefaultTheme } from 'styled-components';
+import { Input } from 'antd';
 
 const { Search } = Input;
 
@@ -16,6 +17,10 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   align-items: center;
   color: ${props => props.theme.color.black};
   padding: 25px 0 15px;
+
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Logo = styled.h1`
@@ -32,8 +37,7 @@ const Logo = styled.h1`
 `;
 
 const Nav = styled.nav<StyledHeaderProps>`
-  margin-left: auto;
-  padding-right: 30px;
+  padding-left: 30px;
 
   a {
     padding: 5px;
@@ -49,7 +53,7 @@ const Nav = styled.nav<StyledHeaderProps>`
 // Search Input
 const StyledSearch = styled(Search)`
   width: auto;
-  margin-left: 30px;
+  margin-left: auto;
   .ant-input,
   .ant-btn {
     height: 38px;
@@ -65,10 +69,23 @@ const StyledSearch = styled(Search)`
     width: 20px;
     height: 20px;
   }
+
+  @media (max-width: ${props => props.theme.mediaSize.small}) {
+    width: 100%;
+    margin-top: 15px;
+  }
 `;
 
 // export
 function Header() {
+  const [searchInput, setSearchInput] = useState('');
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
+
   return (
     <StyledHeader>
       <Logo>
@@ -78,12 +95,17 @@ function Header() {
           </a>
         </Link>
       </Logo>
-      <StyledSearch placeholder='"쓰다" 검색'></StyledSearch>
       <Nav>
         <Link href="/profile">
           <a>프로필</a>
         </Link>
       </Nav>
+      <StyledSearch
+        placeholder="해시태그 검색"
+        value={searchInput}
+        onChange={onChange}
+        onSearch={onSearch}
+      ></StyledSearch>
     </StyledHeader>
   );
 }

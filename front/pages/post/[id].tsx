@@ -16,24 +16,26 @@ function Post() {
   const { singlePost } = usePost();
   return (
     <AppLayout>
-      <Head>
-        <title>{singlePost.User.nickname}님의 글</title>
-        <meta name="description" content={singlePost.content} />
-        <meta
-          property="og:title"
-          content={`${singlePost.User.nickname}님의 게시글`}
-        />
-        <meta property="og:description" content={singlePost.content} />
-        <meta
-          property="og:image"
-          content={
-            singlePost.Images[0]
-              ? singlePost.Images[0].src
-              : 'https://write.com/images/logo.png'
-          }
-        />
-        <meta property="og:url" content={`https://write.com/post/${id}`} />
-      </Head>
+      {singlePost && (
+        <Head>
+          <title>"쓰다" -{singlePost.User.nickname}님의 글</title>
+          <meta name="description" content={singlePost.content} />
+          <meta
+            property="og:title"
+            content={`${singlePost.User.nickname}님의 게시글`}
+          />
+          <meta property="og:description" content={singlePost.content} />
+          <meta
+            property="og:image"
+            content={
+              singlePost.Images[0]
+                ? singlePost.Images[0].src
+                : 'https://write.com/images/logo.png'
+            }
+          />
+          <meta property="og:url" content={`https://write.com/post/${id}`} />
+        </Head>
+      )}
       <PostCard post={singlePost} />
     </AppLayout>
   );
