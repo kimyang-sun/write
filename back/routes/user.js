@@ -205,6 +205,9 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
       res.status(403).send('존재하지 않는 사용자입니다.');
     }
     const followers = await user.getFollowers({
+      limit: parseInt(req.query.limit, 10)
+        ? parseInt(req.query.limit, 10)
+        : null,
       attributes: ['id', 'nickname', 'avatar'],
     });
     res.status(200).json(followers);
@@ -222,6 +225,9 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
       res.status(403).send('존재하지 않는 사용자입니다.');
     }
     const followings = await user.getFollowings({
+      limit: parseInt(req.query.limit, 10)
+        ? parseInt(req.query.limit, 10)
+        : null,
       attributes: ['id', 'nickname', 'avatar'],
     });
     res.status(200).json(followings);

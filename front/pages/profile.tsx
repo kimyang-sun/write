@@ -11,6 +11,7 @@ import wrapper, { SagaStore } from 'store/configureStore';
 import { loadMyInfoRequest } from 'store/modules/user';
 import axios from 'axios';
 import AppLayout from 'components/AppLayout';
+import useSWR from 'swr';
 
 // styled components
 const FollowListContainer = styled.div`
@@ -18,8 +19,14 @@ const FollowListContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+// SWR Fetcher
+const fetcher = (url: string) =>
+  axios.get(url, { withCredentials: true }).then(result => result.data);
+
+const FOLLOWER_LIMIT = 4;
+
 function Profile() {
-  const { userData, loadFollowers, loadFollwings } = useUser();
+  const { userData } = useUser();
   useEffect(() => {
     if (!(userData && userData.id)) {
       // push와 다른점은 push는 이동시키고 뒤로가기를 누르면 다시 그페이지로 감
@@ -27,13 +34,27 @@ function Profile() {
       Router.replace('/');
     }
   }, [userData && userData.id]);
-
-  // 팔로워 팔로잉 목록 불러오기
-  useEffect(() => {
-    loadFollowers();
-    loadFollwings();
-  }, []);
-
+  // 팔로워, 팔로잉 목록 불러오기 (SWR)
+  const {
+    data: followerData,
+    error: followerError,
+    mutate: mutateFollower,
+  } = useSWR(
+    `http://localhost:3006/user/followers?limit=${FOLLOWER_LIMIT}`,
+    fetcher
+  );
+  const {
+    data: followingData,
+    error: followingError,
+    mutate: mutateFollowing,
+  } = useSWR(
+    `http://localhost:3006/user/followings?limit=${FOLLOWER_LIMIT}`,
+    fetcher
+  );
+  if (followerError || followingError) {
+    console.error(followerError || followingError);
+    return null; // 리턴은 Hooks보다 위에 있으면 안됩니다.
+  }
   return (
     <AppLayout>
       <Head>
@@ -44,8 +65,16 @@ function Profile() {
         <>
           <ProfileEditForm />
           <FollowListContainer>
-            <FollowList header="팔로워 목록" data={userData.Followers} />
-            <FollowList header="팔로잉 목록" data={userData.Followings} />
+            <FollowList
+              header="팔로워"
+              data={followerData}
+              mutate={mutateFollower}
+            />
+            <FollowList
+              header="팔로잉"
+              data={followingData}
+              mutate={mutateFollowing}
+            />
           </FollowListContainer>
         </>
       ) : (

@@ -115,7 +115,9 @@ function PostCard({ post }: PostCardProps) {
             content={
               <Button.Group>
                 <CopyToClipboard text={`http://localhost:3005/post/${post.id}`}>
-                  <Button block>URL 복사</Button>
+                  <Button block onClick={() => alert('URL이 복사되었습니다.')}>
+                    URL 복사
+                  </Button>
                 </CopyToClipboard>
                 <Button block onClick={onScrap}>
                   스크랩
@@ -158,7 +160,9 @@ function PostCard({ post }: PostCardProps) {
                     </Button>
                   </>
                 ) : (
-                  <Button danger>신고</Button>
+                  <Button danger onClick={() => alert('신고되었습니다.')}>
+                    신고
+                  </Button>
                 )}
               </Button.Group>
             }

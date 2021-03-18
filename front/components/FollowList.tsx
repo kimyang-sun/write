@@ -1,17 +1,18 @@
-import { Button, List, Avatar } from 'antd';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { DisconnectOutlined } from '@ant-design/icons';
 import { Follow } from 'store/modules/user';
-import Dialog from './Dialog';
-import CloseButton from './CloseButton';
 import useUser from 'store/modules/userHook';
 import UserAvatar from './UserAvatar';
+import FollowListDialog from './FollowListDialog';
+import { Button, List } from 'antd';
+import { DisconnectOutlined } from '@ant-design/icons';
+import { trigger } from 'swr';
 
 // Types
 type FollowListProps = {
   header: string;
   data: Follow[];
+  mutate: any;
 };
 
 // styled components
@@ -46,25 +47,21 @@ const ListItem = styled(List.Item)`
   }
 `;
 
-const LoadMoreList = styled(List)`
-  position: relative;
-  .anticon-close-circle {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-  ul {
-    max-height: 400px;
-    overflow-y: auto;
-  }
-`;
-
 // export
-function FollowList({ header, data }: FollowListProps) {
+function FollowList({ header, data, mutate }: FollowListProps) {
   const [loadMore, setLoadMore] = useState(false);
   const { unFollow, removeFollower } = useUser();
+  // 팔로워, 팔로잉 제거 버튼
+  const onRemove = useCallback((id: number) => {
+    if (header === '팔로워') {
+      removeFollower(id);
+    } else {
+      unFollow(id);
+    }
+    mutate((prev: any[]) => prev.filter(data => data.id !== id), false);
+  }, []);
 
-  // 더보기 버튼 팝업
+  // 전체보기 버튼 팝업
   const onOpen = useCallback(() => {
     setLoadMore(true);
   }, [setLoadMore]);
@@ -72,22 +69,13 @@ function FollowList({ header, data }: FollowListProps) {
     setLoadMore(false);
   }, [setLoadMore]);
 
-  // 팔로워, 팔로잉 제거 버튼
-  const onRemove = useCallback((id: number) => {
-    if (header === '팔로워 목록') {
-      removeFollower(id);
-    } else {
-      unFollow(id);
-    }
-  }, []);
-
   return (
     <>
       <StyledList
         header={<h3>{header}</h3>}
         loadMore={
           <LoadMore>
-            <Button onClick={onOpen}>더 보기</Button>
+            <Button onClick={onOpen}>전체보기</Button>
           </LoadMore>
         }
         itemLayout="horizontal"
@@ -111,32 +99,12 @@ function FollowList({ header, data }: FollowListProps) {
         )}
       />
       {loadMore && (
-        <Dialog onClose={onClose}>
-          <div onClick={e => e.stopPropagation()}>
-            <LoadMoreList
-              header={
-                <>
-                  <h3>{header}</h3>
-                  <CloseButton onClose={onClose} />
-                </>
-              }
-              dataSource={data}
-              renderItem={(item: Follow) => (
-                <ListItem actions={[<DisconnectOutlined key="unfollow" />]}>
-                  <ListItem.Meta
-                    avatar={
-                      <UserAvatar
-                        avatar={item.avatar}
-                        nickname={item.nickname}
-                      />
-                    }
-                    title={item.nickname}
-                  />
-                </ListItem>
-              )}
-            />
-          </div>
-        </Dialog>
+        <FollowListDialog
+          header={header}
+          onClose={onClose}
+          onRemove={onRemove}
+          ListItem={ListItem}
+        />
       )}
     </>
   );

@@ -102,5 +102,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async context => {
 });
 // getServerSideProps는 접속한 상황에 따라 화면이 바뀌던가 하는 경우에 사용. (거의다 이걸씀)
 // getStaticProps는 언제 접속해도 데이터가 바뀌지 않는 정적인 경우에 사용.
+// 다이나믹 라우터에서는 getStaticProps를 사용하려면 getStaticPaths를 같이 사용해야 함.
 
 export default Home;
