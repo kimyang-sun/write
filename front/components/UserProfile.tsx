@@ -18,16 +18,18 @@ const ProfileCard = styled(Card)`
   .ant-btn {
     margin-top: 15px;
   }
-
   .ant-card-body {
     text-align: right;
   }
   .ant-card-body button {
     margin-left: auto;
   }
-
   .ant-card-meta-detail {
     text-align: left;
+  }
+  @media (min-width: ${props => props.theme.mediaSize.xlarge}) {
+    position: sticky;
+    top: 10px;
   }
   @media (max-width: ${props => props.theme.mediaSize.xlarge}) {
     margin-bottom: 30px;

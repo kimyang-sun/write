@@ -27,18 +27,22 @@ const StyledLoginForm = styled(Form)`
     margin-top: 30px;
     position: relative;
   }
-
   > div > label {
     display: inline-block;
     padding-bottom: 8px;
   }
-
   .ant-btn-primary {
     margin-bottom: 8px;
   }
-
   .login__btnBox {
     margin-top: 40px;
+  }
+  @media (min-width: ${props => props.theme.mediaSize.xlarge}) {
+    position: sticky;
+    top: 10px;
+  }
+  @media (max-width: ${props => props.theme.mediaSize.xlarge}) {
+    margin-bottom: 30px;
   }
 `;
 
