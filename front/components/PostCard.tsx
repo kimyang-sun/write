@@ -127,7 +127,7 @@ function PostCard({ post }: PostCardProps) {
           >
             <ShareAltOutlined key="share" />
           </Popover>,
-          <div onClick={onLike}>
+          <div onClick={liked ? onUnLike : onLike}>
             <span className="count">{post.Likers.length}</span>
             {liked ? (
               <LikeTwoTone
