@@ -5,7 +5,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { Post } from 'store/modules/post';
 import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
-import shortId from 'shortid';
 
 // Types
 type CommentFormProps = {
