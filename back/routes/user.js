@@ -1,6 +1,4 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { Op } = require('sequelize');
@@ -132,25 +130,26 @@ router.patch('/profile', isLoggedIn, async (req, res, next) => {
   }
 });
 
-// 프로필 이미지 첨부 - POST /user/image
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(_req, _file, done) {
-      done(null, 'uploads');
-    },
-    filename(_req, file, done) {
-      // ex) kim.png
-      const ext = path.extname(file.originalname); // 확장자 추출 - png
-      const basename = path.basename(file.originalname, ext); // 이름 추출 - kim
-      done(null, basename + '_' + new Date().getTime() + ext); // kim 뒤에 시간초가 붙음 (중복방지)
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20mb
-});
-// upload. array는 여러개의 사진 single은 하나의 사진 이미지가 없으면 none()
-router.post('/image', isLoggedIn, upload.single('image'), (req, res) => {
-  res.json(req.file.filename);
-});
+// Cloudinary로 대체했습니다.
+// // 프로필 이미지 첨부 - POST /user/image
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination(_req, _file, done) {
+//       done(null, 'uploads');
+//     },
+//     filename(_req, file, done) {
+//       // ex) kim.png
+//       const ext = path.extname(file.originalname); // 확장자 추출 - png
+//       const basename = path.basename(file.originalname, ext); // 이름 추출 - kim
+//       done(null, basename + '_' + new Date().getTime() + ext); // kim 뒤에 시간초가 붙음 (중복방지)
+//     },
+//   }),
+//   limits: { fileSize: 20 * 1024 * 1024 }, // 20mb
+// });
+// // upload. array는 여러개의 사진 single은 하나의 사진 이미지가 없으면 none()
+// router.post('/image', isLoggedIn, upload.single('file'), (req, res) => {
+//   res.json(req.file.filename);
+// });
 
 // 팔로우 - PATCH /user/:userId/follow
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {

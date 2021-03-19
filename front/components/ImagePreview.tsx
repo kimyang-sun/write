@@ -41,7 +41,7 @@ function ImagePreview({ imageInputRef }: any) {
     <StyledImagePreview>
       {imagePaths.map((path: string, index: number) => (
         <PreviewImage key={path}>
-          <img src={`http://localhost:3006/${path}`} alt="미리보기 사진" />
+          <img src={path} alt="미리보기 사진" />
           <Button
             icon={<DeleteOutlined />}
             onClick={() => onRemoveImage(index)}

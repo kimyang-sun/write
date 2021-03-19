@@ -70,9 +70,7 @@ function PostImages({ images, content }: PostImagesProps) {
         {contentOpened && <PostContent content={content} />}
         <PostImage
           imageUrl={
-            images.length === 1
-              ? `http://localhost:3006/${images[0].src}`
-              : 'https://picsum.photos/650'
+            images.length === 1 ? images[0].src : 'https://picsum.photos/650'
           }
         />
       </StyledPostImages>
@@ -89,7 +87,7 @@ function PostImages({ images, content }: PostImagesProps) {
             onClick={onContentToggle}
           />
           {contentOpened && <PostContent content={content} />}
-          <PostImage imageUrl={`http://localhost:3006/${images[0].src}`} />
+          <PostImage imageUrl={images[0].src} />
           <ViewMoreArea onClick={onMore}>
             {images.length - 1} 개의 사진 더보기
           </ViewMoreArea>

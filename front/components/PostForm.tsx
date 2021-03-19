@@ -80,11 +80,8 @@ function PostForm({ setPostCreating }: PostFormProps) {
   // 이미지를 Crop한 후 생기는 CroppedFile
   useEffect(() => {
     if (CroppedFile) {
-      const imageFormData = new FormData();
-      imageFormData.append('image', CroppedFile);
-
       // 이미지 업로드
-      uploadPostImage(imageFormData);
+      uploadPostImage(CroppedFile);
     }
   }, [CroppedFile]);
 

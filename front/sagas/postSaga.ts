@@ -70,7 +70,6 @@ function* loadUserPosts(action: PayloadAction<any>) {
       action.payload.data,
       action.payload.lastId
     );
-
     yield put(loadUserPostsSuccess(result.data));
   } catch (e) {
     yield put(loadUserPostsFailure(e.response.data));
@@ -113,8 +112,9 @@ function* addPost(action: PayloadAction<AddPostType>) {
 function* uploadPostImage(action: PayloadAction<FormData>) {
   try {
     const result = yield call(uploadPostImageAPI, action.payload);
-    yield put(uploadPostImageSuccess(result.data));
+    yield put(uploadPostImageSuccess(result));
   } catch (e) {
+    console.error(e.response.data);
     yield put(uploadPostImageFailure(e.response.data));
   }
 }

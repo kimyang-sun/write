@@ -48,7 +48,7 @@ export default function usePost() {
     dispatch(addPostRequest(post));
   }, []);
 
-  const uploadPostImage = useCallback((data: FormData) => {
+  const uploadPostImage = useCallback((data: any) => {
     dispatch(uploadPostImageRequest(data));
   }, []);
 

@@ -120,7 +120,7 @@ function* changeProfile(action: PayloadAction<ProfilePayload>) {
 function* uploadUserImage(action: PayloadAction<FormData>) {
   try {
     const result = yield call(uploadUserImageAPI, action.payload);
-    yield put(uploadUserImageSuccess(result.data));
+    yield put(uploadUserImageSuccess(result));
   } catch (e) {
     yield put(uploadUserImageFailure(e.response.data));
   }

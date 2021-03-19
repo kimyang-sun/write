@@ -1,6 +1,4 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const fs = require('fs');
@@ -66,25 +64,26 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   }
 });
 
-// 게시글 이미지 첨부 - POST /post/images
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(_req, _file, done) {
-      done(null, 'uploads');
-    },
-    filename(_req, file, done) {
-      // ex) kim.png
-      const ext = path.extname(file.originalname); // 확장자 추출 - png
-      const basename = path.basename(file.originalname, ext); // 이름 추출 - kim
-      done(null, basename + '_' + new Date().getTime() + ext); // kim 뒤에 시간초가 붙음 (중복방지)
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20mb
-});
-// upload. array는 여러개의 사진 single은 하나의 사진 이미지가 없으면 none()
-router.post('/images', isLoggedIn, upload.single('image'), (req, res) => {
-  res.json(req.file.filename);
-});
+// Cloudinary로 대체했습니다.
+// // 게시글 이미지 첨부 - POST /post/images
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination(_req, _file, done) {
+//       done(null, 'uploads');
+//     },
+//     filename(_req, file, done) {
+//       // ex) kim.png
+//       const ext = path.extname(file.originalname); // 확장자 추출 - png
+//       const basename = path.basename(file.originalname, ext); // 이름 추출 - kim
+//       done(null, basename + '_' + new Date().getTime() + ext); // kim 뒤에 시간초가 붙음 (중복방지)
+//     },
+//   }),
+//   limits: { fileSize: 20 * 1024 * 1024 }, // 20mb
+// });
+// // upload. array는 여러개의 사진 single은 하나의 사진 이미지가 없으면 none()
+// router.post('/images', isLoggedIn, upload.single('image'), (req, res) => {
+//   res.json(req.file.filename);
+// });
 
 // 게시글 삭제 - DELETE /post/:postId
 router.delete('/:postId', isLoggedIn, async (req, res, next) => {

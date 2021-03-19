@@ -75,11 +75,8 @@ function ProfileEditForm() {
 
   // 사진 업로드
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const imageFormData = new FormData();
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      imageFormData.append('image', file);
-      uploadUserImage(imageFormData);
+      uploadUserImage(e.target.files[0]);
     }
   };
 

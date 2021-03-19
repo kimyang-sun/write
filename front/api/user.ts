@@ -1,9 +1,12 @@
 import axios from 'axios';
+import { UserImageUploader } from 'lib/cloudinary';
 import {
   LoginRequestPayload,
   SignUpRequestPayload,
   ProfilePayload,
 } from 'store/modules/user';
+
+const imageUploader = new UserImageUploader();
 
 // API 요청
 export function loadMyInfoAPI() {
@@ -26,8 +29,9 @@ export function changeProfileAPI(data: ProfilePayload) {
   return axios.patch('/user/profile', data);
 }
 
-export function uploadUserImageAPI(data: FormData) {
-  return axios.post('/user/image', data);
+export async function uploadUserImageAPI(data: FormData) {
+  const uploaded = await imageUploader.upload(data);
+  return uploaded.secure_url;
 }
 
 export function signUpAPI(data: SignUpRequestPayload) {

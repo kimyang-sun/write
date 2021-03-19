@@ -34,7 +34,7 @@ const ImageSliderContainer = styled.div`
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 1.875rem;
+    font-size: 1.875rem !important;
     background-color: #fff;
     border-radius: 50%;
     z-index: 100;
@@ -68,7 +68,7 @@ function ImageSlider({ images, onClose }: ImageSliderProps) {
         <Slider beforeChange={(_prev, next) => setCurrentSlide(next)}>
           {images.map((img: { src: string }) => (
             <div key={img.src}>
-              <PostImage imageUrl={`http://localhost:3006/${img.src}`} />
+              <PostImage imageUrl={img.src} />
             </div>
           ))}
         </Slider>

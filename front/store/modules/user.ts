@@ -255,7 +255,7 @@ const userSlice = createSlice({
     },
 
     // Upload User Image
-    uploadUserImageRequest(state: UserState, _action: PayloadAction<FormData>) {
+    uploadUserImageRequest(state: UserState, _action: PayloadAction<any>) {
       state.uploadUserImageLoading = true;
       state.uploadUserImageDone = false;
       state.uploadUserImageError = null;

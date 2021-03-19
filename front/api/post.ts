@@ -1,5 +1,8 @@
 import axios from 'axios';
+import { PostImageUploader } from 'lib/cloudinary';
 import { AddPostType, CommentActionType } from 'store/modules/post';
+
+const imageUploader = new PostImageUploader();
 
 // API 요청
 export function loadPostsAPI(lastId: number) {
@@ -26,8 +29,9 @@ export function addPostAPI(data: AddPostType) {
   return axios.post('/post', data);
 }
 
-export function uploadPostImageAPI(data: FormData) {
-  return axios.post('/post/images', data);
+export async function uploadPostImageAPI(data: any) {
+  const uploaded = await imageUploader.upload(data);
+  return uploaded.secure_url;
 }
 
 export function removePostAPI(data: number) {

@@ -23,10 +23,7 @@ function UserAvatar({ avatar, nickname, sizeUp, id }: UserAvatarProps) {
     <Link href={`/user/${id}`}>
       <a>
         {avatar ? (
-          <StyledAvatar
-            src={`http://localhost:3006/${avatar}`}
-            size={sizeUp ? 80 : 40}
-          />
+          <StyledAvatar src={avatar} size={sizeUp ? 80 : 40} />
         ) : (
           <StyledAvatar size={sizeUp ? 80 : 40}>
             {nickname && nickname.charAt(0)}

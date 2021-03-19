@@ -30,6 +30,9 @@ const DescriptionCol = styled.div`
   > * {
     padding: 5px 0;
   }
+  .description-logo {
+    width: 24px;
+  }
   .description-title {
     font-size: 1rem;
     color: ${props => props.theme.color.main};
@@ -52,9 +55,9 @@ const DescriptionCol = styled.div`
     .description-tool {
       width: 100%;
     }
-    .description-name,
-    .description-name + * {
-      padding-right: 15px;
+    a {
+      padding-left: 5px;
+      padding-right: 5px;
     }
   }
 `;
@@ -95,11 +98,15 @@ function AppLayout({ children }: AppLayoutProps) {
         </Col>
         <Col xs={24} xl={6}>
           <DescriptionCol>
+            <img
+              className="description-logo"
+              src="/images/logo.png"
+              alt="로고"
+            />
             <div className="description-title">마음을 적는 공간 "쓰다"</div>
             <div className="description-tool">
-              Next.js, Redux-Toolkit, TypeScript...
+              Next.js, Redux-Toolkit, TypeScript···
             </div>
-            <div className="description-name">kimyang-sun</div>
             <a
               href="https://kimyang-sun.tistory.com/"
               target="_blank"

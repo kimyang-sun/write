@@ -50,7 +50,7 @@ export default function useUser() {
     dispatch(changeProfileRequest(data));
   }, []);
 
-  const uploadUserImage = useCallback((data: FormData) => {
+  const uploadUserImage = useCallback((data: any) => {
     dispatch(uploadUserImageRequest(data));
   }, []);
 

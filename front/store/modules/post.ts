@@ -221,7 +221,7 @@ const postSlice = createSlice({
     },
 
     // Upload Post Image
-    uploadPostImageRequest(state: PostState, _action: PayloadAction<FormData>) {
+    uploadPostImageRequest(state: PostState, _action: PayloadAction<any>) {
       state.uploadPostImageLoading = true;
       state.uploadPostImageDone = false;
       state.uploadPostImageError = null;
