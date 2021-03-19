@@ -12,6 +12,7 @@ type UserAvatarProps = {
 };
 
 const StyledAvatar = styled(Avatar)`
+  transition: opacity 0.3s;
   :hover {
     opacity: 0.8;
   }
@@ -24,10 +25,10 @@ function UserAvatar({ avatar, nickname, sizeUp, id }: UserAvatarProps) {
         {avatar ? (
           <StyledAvatar
             src={`http://localhost:3006/${avatar}`}
-            size={sizeUp && 80}
+            size={sizeUp ? 80 : 40}
           />
         ) : (
-          <StyledAvatar size={sizeUp && 80}>
+          <StyledAvatar size={sizeUp ? 80 : 40}>
             {nickname && nickname.charAt(0)}
           </StyledAvatar>
         )}

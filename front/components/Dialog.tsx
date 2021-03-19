@@ -24,7 +24,6 @@ const DialogContainer = styled.div`
     font-size: 1rem;
     width: 460px;
     background-color: #fff;
-    background: #ffffff;
     box-shadow: 0 10px 30px #ddd;
     padding: 20px;
 

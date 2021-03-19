@@ -49,6 +49,10 @@ const StyledPostCard = styled.div`
     font-size: 1rem;
   }
 
+  .ant-card-meta-title {
+    padding-top: 3px;
+  }
+
   @media (max-width: ${props => props.theme.mediaSize.small}) {
     .ant-card-body {
       font-size: 0.813rem;

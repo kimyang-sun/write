@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { UserDataPayload, ProfilePayload } from 'store/modules/user';
 import styled from 'styled-components';
-import { Input, Button, Form, Avatar } from 'antd';
+import { Input, Button, Form } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
-import { readFile } from 'lib/convertFile';
 import useUser from 'store/modules/userHook';
 import UserAvatar from './UserAvatar';
 
@@ -37,6 +35,7 @@ function ProfileEditForm() {
     avatarURL,
     changeProfile,
     changeProfileLoading,
+    changeProfileDone,
     uploadUserImage,
     removeUserImage,
   } = useUser();
@@ -59,6 +58,16 @@ function ProfileEditForm() {
     });
   });
 
+  useEffect(() => {
+    if (changeProfileDone) {
+      alert('변경이 완료되었습니다');
+    }
+  }, [changeProfileDone]);
+
+  useEffect(() => {
+    if (avatarURL) setAvatarImage(avatarURL);
+  }, [avatarURL]);
+
   // 사진 업로드 클릭
   const onClickImageUpload = useCallback(() => {
     imageInputRef.current && imageInputRef.current.click();
@@ -69,8 +78,6 @@ function ProfileEditForm() {
     const imageFormData = new FormData();
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      let imageDataUrl: any = await readFile(file);
-      setAvatarImage(imageDataUrl);
       imageFormData.append('image', file);
       uploadUserImage(imageFormData);
     }
@@ -102,7 +109,6 @@ function ProfileEditForm() {
             sizeUp
           />
         }
-
         <Button onClick={onClickImageUpload} size="small">
           사진 업로드
         </Button>

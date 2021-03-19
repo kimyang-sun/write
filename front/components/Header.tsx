@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import styled, { DefaultTheme } from 'styled-components';
 import { Input } from 'antd';
-
+// import { UserOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
 // Types
@@ -17,10 +17,6 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   align-items: center;
   color: ${props => props.theme.color.black};
   padding: 25px 0 15px;
-
-  @media (max-width: ${props => props.theme.mediaSize.small}) {
-    flex-wrap: wrap;
-  }
 `;
 
 const Logo = styled.h1`
@@ -33,20 +29,6 @@ const Logo = styled.h1`
     display: block;
     width: 32px;
     height: 32px;
-  }
-`;
-
-const Nav = styled.nav<StyledHeaderProps>`
-  padding-left: 30px;
-
-  a {
-    padding: 5px;
-    margin: 0 6px;
-    transition: color 0.3s;
-  }
-
-  a:hover {
-    color: ${props => props.theme.color.main};
   }
 `;
 
@@ -71,8 +53,7 @@ const StyledSearch = styled(Search)`
   }
 
   @media (max-width: ${props => props.theme.mediaSize.small}) {
-    width: 100%;
-    margin-top: 15px;
+    width: 80%;
   }
 `;
 
@@ -95,11 +76,6 @@ function Header() {
           </a>
         </Link>
       </Logo>
-      <Nav>
-        <Link href="/profile">
-          <a>프로필</a>
-        </Link>
-      </Nav>
       <StyledSearch
         placeholder="해시태그 검색"
         value={searchInput}

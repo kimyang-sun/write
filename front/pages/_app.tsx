@@ -1,11 +1,11 @@
 import React from 'react';
-import AppLayout from 'components/AppLayout';
 import Head from 'next/head';
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from 'styles/DefaultTheme';
 import GlobalStyle from 'styles/GlobalStyle';
-import '../styles/my_custom.css';
 import wrapper from 'store/configureStore';
+import 'react-app-polyfill/ie11';
+import '../styles/my_custom.css';
 
 // Types
 type AppProps = {
