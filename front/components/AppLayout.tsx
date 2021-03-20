@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Header from './Header';
 import LoginForm from './LoginForm';
 import UserNav from './UserNav';
-import { Col, Row } from 'antd';
+import { Col } from 'antd';
 import { LinkOutlined } from '@ant-design/icons';
 
 // Types
@@ -13,9 +13,10 @@ type AppLayoutProps = {
 };
 
 // styled compoents
-const StyledRow = styled(Row)`
+const StyledRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
   padding: 30px 0;
-
   @media (max-width: ${props => props.theme.mediaSize.xlarge}) {
     padding: 15px 0;
   }
@@ -76,7 +77,7 @@ function AppLayout({ children }: AppLayoutProps) {
   return (
     <div>
       <Header />
-      <StyledRow gutter={{ xs: 0, sm: 20, lg: 30, xl: 40 }}>
+      <StyledRow>
         <Col xs={24} xl={6}>
           {userData ? (
             <UserNav
