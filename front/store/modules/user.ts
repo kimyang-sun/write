@@ -228,6 +228,7 @@ const userSlice = createSlice({
       state.userData.Posts = state.userData.Posts.filter(
         post => post.id !== action.payload.PostId
       );
+      state.userInfo.Posts--;
     },
 
     // Change Profile
@@ -283,6 +284,7 @@ const userSlice = createSlice({
     },
     followSuccess(state: UserState, action: PayloadAction<{ UserId: number }>) {
       state.userData.Followings.push({ id: action.payload.UserId });
+      state.userInfo.Followers++;
       state.followLoading = false;
       state.followDone = true;
     },
@@ -304,6 +306,7 @@ const userSlice = createSlice({
       state.userData.Followings = state.userData.Followings.filter(
         following => following.id !== action.payload.UserId
       );
+      state.userInfo.Followers--;
       state.unFollowLoading = false;
       state.unFollowDone = true;
     },

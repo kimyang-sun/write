@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Input, Button, Form } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
 import useUser from 'store/modules/userHook';
 import UserAvatar from './UserAvatar';
+import { Input, Button, Form } from 'antd';
+import { Controller, useForm } from 'react-hook-form';
 
 // Types
 type ProfileEditFormType = {
@@ -36,6 +36,7 @@ function ProfileEditForm() {
     changeProfile,
     changeProfileLoading,
     changeProfileDone,
+    uploadUserImageLoading,
     uploadUserImage,
     removeUserImage,
   } = useUser();
@@ -106,7 +107,11 @@ function ProfileEditForm() {
             sizeUp
           />
         }
-        <Button onClick={onClickImageUpload} size="small">
+        <Button
+          onClick={onClickImageUpload}
+          size="small"
+          loading={uploadUserImageLoading}
+        >
           사진 업로드
         </Button>
         <Button onClick={onClickImageErase} size="small">

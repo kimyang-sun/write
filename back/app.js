@@ -33,7 +33,7 @@ app.use(
 
 // 현재 back 폴더 안에 uploads로 합쳐줌, 프론트에서는 백엔드의 폴더 구조를 모름
 // 그래서 http://localhost:3006/ 이 백엔드 서버로 접근 가능하도록 '/'으로 해줌
-app.use('/', express.static(path.join(__dirname, 'uploads')));
+// app.use('/', express.static(path.join(__dirname, 'uploads')));
 
 // 이 코드는 위에쪽에 있어야함.
 app.use(express.json());

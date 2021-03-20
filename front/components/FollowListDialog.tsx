@@ -5,7 +5,11 @@ import styled from 'styled-components';
 import UserAvatar from './UserAvatar';
 import { Follow } from 'store/modules/user';
 import { List } from 'antd';
-import { DisconnectOutlined } from '@ant-design/icons';
+import {
+  LoadingOutlined,
+  DisconnectOutlined,
+  Loading3QuartersOutlined,
+} from '@ant-design/icons';
 import axios from 'axios';
 import useSWR from 'swr';
 
@@ -24,6 +28,10 @@ const LoadMoreList = styled(List)`
     position: absolute;
     top: 0;
     right: 0;
+  }
+  h3 {
+    display: inline-block;
+    padding-right: 10px;
   }
   ul {
     max-height: 400px;
@@ -53,42 +61,48 @@ function FollowListDialog({
   return (
     <Dialog onClose={onClose}>
       <div onClick={e => e.stopPropagation()}>
-        <LoadMoreList
-          header={
-            <>
-              <h3>{header}</h3>
-              <CloseButton onClose={onClose} />
-            </>
-          }
-          dataSource={followData}
-          renderItem={(item: Follow) => (
-            <ListItem
-              actions={[
-                <DisconnectOutlined
-                  key="unfollow"
-                  onClick={() => {
-                    onRemove(item.id);
-                    mutateFollow(
-                      (prev: any[]) => prev.filter(data => data.id !== item.id),
-                      false
-                    );
-                  }}
-                />,
-              ]}
-            >
-              <ListItem.Meta
-                avatar={
-                  <UserAvatar
-                    avatar={item.avatar}
-                    nickname={item.nickname}
-                    id={item.id}
-                  />
-                }
-                title={item.nickname}
-              />
-            </ListItem>
-          )}
-        />
+        {followData ? (
+          <LoadMoreList
+            header={
+              <>
+                <h3>{header}</h3>
+                <span>{followData.length}명</span>
+                <CloseButton onClose={onClose} />
+              </>
+            }
+            dataSource={followData}
+            renderItem={(item: Follow) => (
+              <ListItem
+                actions={[
+                  <DisconnectOutlined
+                    key="unfollow"
+                    onClick={() => {
+                      onRemove(item.id);
+                      mutateFollow(
+                        (prev: any[]) =>
+                          prev.filter(data => data.id !== item.id),
+                        false
+                      );
+                    }}
+                  />,
+                ]}
+              >
+                <ListItem.Meta
+                  avatar={
+                    <UserAvatar
+                      avatar={item.avatar}
+                      nickname={item.nickname}
+                      id={item.id}
+                    />
+                  }
+                  title={item.nickname}
+                />
+              </ListItem>
+            )}
+          />
+        ) : (
+          <LoadingOutlined style={{ display: 'block' }} />
+        )}
       </div>
     </Dialog>
   );

@@ -29,6 +29,7 @@ export default function usePost() {
     removePostLoading,
     addCommentDone,
     scrapPostError,
+    uploadPostImageLoading,
   } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch();
 
@@ -98,5 +99,6 @@ export default function usePost() {
     unLikePost,
     scrapPost,
     scrapPostError,
+    uploadPostImageLoading,
   };
 }

@@ -158,7 +158,6 @@ function* loadFollowers() {
     const result = yield call(loadFollowersAPI);
     yield put(loadFollowersSuccess(result.data));
   } catch (e) {
-    console.error(e.response);
     yield put(loadFollowersFailure(e.response.data));
   }
 }

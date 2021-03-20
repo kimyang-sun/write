@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import usePost from 'store/modules/postHook';
-import { Button, Form, Input } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import ImagePreview from './ImagePreview';
 import CloseButton from './CloseButton';
 import Dialog from './Dialog';
 import ImageCropper from './ImageCropper';
 import { readFile } from 'lib/convertFile';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, Form, Input } from 'antd';
 
 // Types
 type PostFormProps = {
@@ -57,7 +57,13 @@ const PostFormTitle = styled.div`
 
 // export
 function PostForm({ setPostCreating }: PostFormProps) {
-  const { addPost, addPostDone, uploadPostImage, imagePaths } = usePost();
+  const {
+    addPost,
+    addPostDone,
+    uploadPostImage,
+    imagePaths,
+    uploadPostImageLoading,
+  } = usePost();
   const imageInputRef = useRef(null);
   const [inputImg, setInputImg] = useState(null);
   const [inputImgName, setInputImgName] = useState<string>(null);
@@ -150,7 +156,9 @@ function PostForm({ setPostCreating }: PostFormProps) {
             setCroppedFile={setCroppedFile}
           />
         )}
-        <Button onClick={onClickImageUpload}>사진 업로드</Button>
+        <Button onClick={onClickImageUpload} loading={uploadPostImageLoading}>
+          사진 업로드
+        </Button>
         <p>사진을 첨부하지 않으면 랜덤이미지가 출력됩니다.</p>
         <ImagePreview imageInputRef={imageInputRef} />
         <Controller
