@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useUser from 'store/modules/userHook';
 import UserAvatar from './UserAvatar';
-import { Input, Button, Form } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
+import Input from 'antd/lib/input';
+import Button from 'antd/lib/button';
+import Form from 'antd/lib/form';
 
 // Types
 type ProfileEditFormType = {

@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import useUser from 'store/modules/userHook';
 import styled from 'styled-components';
-import { Button, Checkbox, Form, Input } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpValidation } from 'lib/yup';
 import FormErrorMessage from 'components/FormErrorMessage';
 import Router from 'next/router';
+import Button from 'antd/lib/button';
+import Checkbox from 'antd/lib/checkbox';
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
 
 // Types
 type SignUpFormType = {

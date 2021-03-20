@@ -1,10 +1,10 @@
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import ImageSlider from './ImageSlider';
 import PostContent from './PostContent';
 import PostImage from './PostImage';
+import Button from 'antd/lib/button';
 
 // Types
 type PostImagesProps = {

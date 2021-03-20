@@ -4,7 +4,8 @@ import { Follow } from 'store/modules/user';
 import useUser from 'store/modules/userHook';
 import UserAvatar from './UserAvatar';
 import FollowListDialog from './FollowListDialog';
-import { Button, List } from 'antd';
+import Button from 'antd/lib/button';
+import List from 'antd/lib/list';
 import { DisconnectOutlined } from '@ant-design/icons';
 
 // Types

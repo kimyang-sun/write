@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import useUser from 'store/modules/userHook';
-import { Button } from 'antd';
 import { Post } from 'store/modules/post';
+import Button from 'antd/lib/button';
 import styled from 'styled-components';
 
 // Types

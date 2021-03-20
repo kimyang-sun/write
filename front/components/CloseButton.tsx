@@ -1,5 +1,5 @@
 import React from 'react';
-import { CloseCircleFilled, CloseCircleOutlined } from '@ant-design/icons';
+import { CloseCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
 
 // Types

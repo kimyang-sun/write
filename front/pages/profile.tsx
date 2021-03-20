@@ -3,15 +3,14 @@ import useUser from 'store/modules/userHook';
 import ProfileEditForm from 'components/ProfileEditForm';
 import Head from 'next/head';
 import PageTitle from 'components/PageTitle';
-import styled from 'styled-components';
 import Router from 'next/router';
 import { END } from 'redux-saga';
 import wrapper, { SagaStore } from 'store/configureStore';
 import { loadMyInfoRequest } from 'store/modules/user';
 import axios from 'axios';
 import AppLayout from 'components/AppLayout';
-import { Button } from 'antd';
 import Link from 'next/link';
+import Button from 'antd/lib/button';
 
 function Profile() {
   const { userData } = useUser();
@@ -32,7 +31,7 @@ function Profile() {
         <>
           <ProfileEditForm />
           <Button size="large" block>
-            <Link href={`/user/${userData.id}`}>
+            <Link href={`/user/${userData.id}`} prefetch={false}>
               <a>내 글 보러가기</a>
             </Link>
           </Button>

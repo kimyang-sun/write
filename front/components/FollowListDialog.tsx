@@ -3,15 +3,11 @@ import Dialog from './Dialog';
 import CloseButton from './CloseButton';
 import styled from 'styled-components';
 import UserAvatar from './UserAvatar';
-import { Follow } from 'store/modules/user';
-import { List } from 'antd';
-import {
-  LoadingOutlined,
-  DisconnectOutlined,
-  Loading3QuartersOutlined,
-} from '@ant-design/icons';
 import axios from 'axios';
 import useSWR from 'swr';
+import { Follow } from 'store/modules/user';
+import List from 'antd/lib/list';
+import { LoadingOutlined, DisconnectOutlined } from '@ant-design/icons';
 
 // Types
 type FollowListDialogProps = {

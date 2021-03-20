@@ -7,7 +7,9 @@ import Dialog from './Dialog';
 import ImageCropper from './ImageCropper';
 import { readFile } from 'lib/convertFile';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Form, Input } from 'antd';
+import Button from 'antd/lib/button';
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
 
 // Types
 type PostFormProps = {

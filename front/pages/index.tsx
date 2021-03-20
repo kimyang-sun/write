@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
-import { Button } from 'antd';
 import PageTitle from 'components/PageTitle';
 import PostForm from 'components/PostForm';
 import PostCard from 'components/PostCard';
@@ -12,6 +11,7 @@ import { loadMyInfoRequest } from 'store/modules/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
 import AppLayout from 'components/AppLayout';
+import Button from 'antd/lib/button';
 
 // styled components
 const SubTitle = styled.div`

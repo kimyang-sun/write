@@ -8,7 +8,11 @@ import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
 import PostHashtag from './PostHashtag';
 import PostImages from './PostImages';
-import { Button, Card, Popover, List, Comment } from 'antd';
+import Button from 'antd/lib/button';
+import Card from 'antd/lib/card';
+import Popover from 'antd/lib/popover';
+import List from 'antd/lib/list';
+import Comment from 'antd/lib/comment';
 import {
   LikeOutlined,
   LikeTwoTone,

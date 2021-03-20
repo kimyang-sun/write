@@ -1,4 +1,3 @@
-import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -7,6 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginValidation } from 'lib/yup';
 import FormErrorMessage from './FormErrorMessage';
 import { LoginRequestPayload } from 'store/modules/user';
+import Button from 'antd/lib/button';
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
 
 // Types
 type LoginFormProps = {

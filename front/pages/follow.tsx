@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import useUser from 'store/modules/userHook';
-import ProfileEditForm from 'components/ProfileEditForm';
 import FollowList from 'components/FollowList';
 import Head from 'next/head';
 import PageTitle from 'components/PageTitle';
@@ -12,8 +11,6 @@ import { loadMyInfoRequest } from 'store/modules/user';
 import axios from 'axios';
 import AppLayout from 'components/AppLayout';
 import useSWR from 'swr';
-import { Button } from 'antd';
-import Link from 'next/link';
 
 // styled components
 const FollowListContainer = styled.div`

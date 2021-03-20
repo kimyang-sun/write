@@ -4,7 +4,6 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
-const path = require('path');
 
 const db = require('./models');
 const userRouter = require('./routes/user');

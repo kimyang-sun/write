@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import usePost from 'store/modules/postHook';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import Button from 'antd/lib/button';
 import { DeleteOutlined } from '@ant-design/icons';
 
 // styled components

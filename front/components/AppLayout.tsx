@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Header from './Header';
 import LoginForm from './LoginForm';
 import UserNav from './UserNav';
-import { Col } from 'antd';
+import Col from 'antd/lib/col';
 import { LinkOutlined } from '@ant-design/icons';
 
 // Types
@@ -17,6 +17,10 @@ const StyledRow = styled.div`
   display: flex;
   flex-flow: row wrap;
   padding: 30px 0;
+  margin: 0 -15px;
+  > div {
+    padding: 0 15px;
+  }
   @media (max-width: ${props => props.theme.mediaSize.xlarge}) {
     padding: 15px 0;
   }

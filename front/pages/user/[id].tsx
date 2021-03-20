@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { END } from 'redux-saga';
-import { Card } from 'antd';
 import AppLayout from 'components/AppLayout';
 import UserAvatar from 'components/UserAvatar';
 import Head from 'next/head';
@@ -14,6 +13,7 @@ import { loadMyInfoRequest, loadUserRequest } from 'store/modules/user';
 import PostCard from 'components/PostCard';
 import PageTitle from 'components/PageTitle';
 import styled from 'styled-components';
+import Card from 'antd/lib/card';
 
 const StyledDiv = styled.div`
   cursor: default;

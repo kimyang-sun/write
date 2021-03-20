@@ -2,8 +2,7 @@ import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import styled, { DefaultTheme } from 'styled-components';
-import { Input } from 'antd';
-// import { UserOutlined } from '@ant-design/icons';
+import Input from 'antd/lib/input';
 const { Search } = Input;
 
 // Types

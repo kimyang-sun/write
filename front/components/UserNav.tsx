@@ -3,7 +3,6 @@ import UserAvatar from './UserAvatar';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { UserDataPayload } from 'store/modules/user';
-import { Button, Card } from 'antd';
 import {
   LikeOutlined,
   EditOutlined,
@@ -89,7 +88,7 @@ function UserNav({ user, logout, logoutError }: UserNavProps) {
             />
           </li>
           <li>
-            <Link href={'/profile'}>
+            <Link href="/profile">
               <a key="edit">
                 <EditOutlined />
               </a>

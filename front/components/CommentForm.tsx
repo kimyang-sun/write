@@ -3,7 +3,9 @@ import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import { Controller, useForm } from 'react-hook-form';
 import { Post } from 'store/modules/post';
-import { Button, Form, Input } from 'antd';
+import Button from 'antd/lib/button';
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
 import styled from 'styled-components';
 
 // Types

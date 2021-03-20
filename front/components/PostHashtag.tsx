@@ -13,7 +13,11 @@ function PostHashtag({ hashtag }: PostHashtagProps) {
       {hashtag.split(/(#[^\s#,]+)/g).map((value, index) => {
         if (value.match(/(#[^\s#,]+)/)) {
           return (
-            <Link href={`/hashtag/${value.slice(1)}`} key={index}>
+            <Link
+              href={`/hashtag/${value.slice(1)}`}
+              key={index}
+              prefetch={false}
+            >
               <a>{value}</a>
             </Link>
           );

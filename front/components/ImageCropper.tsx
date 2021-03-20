@@ -1,9 +1,9 @@
-import { Button } from 'antd';
 import { dataURLtoFile } from 'lib/convertFile';
 import { getCroppedImg } from 'lib/easyCrop';
 import React, { useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import styled from 'styled-components';
+import Button from 'antd/lib/button';
 
 // Types
 type ImageCropperProps = {
