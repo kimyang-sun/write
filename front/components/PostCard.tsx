@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import usePost from 'store/modules/postHook';
 import useUser from 'store/modules/userHook';
 import { PostComment, Post } from 'store/modules/post';
@@ -8,6 +8,8 @@ import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
 import PostHashtag from './PostHashtag';
 import PostImages from './PostImages';
+import UserAvatar from './UserAvatar';
+import PostEdit from './PostEdit';
 import Button from 'antd/lib/button';
 import Card from 'antd/lib/card';
 import Popover from 'antd/lib/popover';
@@ -20,7 +22,6 @@ import {
   MessageOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons';
-import UserAvatar from './UserAvatar';
 
 // Types
 type PostCardProps = {
@@ -52,11 +53,9 @@ const StyledPostCard = styled.div`
   .anticon {
     font-size: 1rem;
   }
-
   .ant-card-meta-title {
     padding-top: 3px;
   }
-
   @media (max-width: ${props => props.theme.mediaSize.small}) {
     .ant-card-body {
       font-size: 0.813rem;
@@ -83,6 +82,7 @@ function PostCard({ post }: PostCardProps) {
     scrapPost,
   } = usePost();
   const [commentOpened, setCommentOpened] = useState(false);
+  const [postEdit, setPostEdit] = useState(false);
 
   const onRemovePost = useCallback(() => {
     if (!userId) return alert('로그인이 되어있지 않습니다.');
@@ -109,160 +109,182 @@ function PostCard({ post }: PostCardProps) {
   }, [userId]);
 
   return (
-    <StyledPostCard>
-      <Card
-        cover={
-          post.Images &&
-          !post.ScrapId && (
-            <PostImages images={post.Images} content={post.content} />
-          )
-        }
-        actions={[
-          <Popover
-            trigger="click"
-            content={
-              <Button.Group>
-                <CopyToClipboard text={`http://localhost:3005/post/${post.id}`}>
-                  <Button block onClick={() => alert('URL이 복사되었습니다.')}>
-                    URL 복사
-                  </Button>
-                </CopyToClipboard>
-                <Button block onClick={onScrap}>
-                  스크랩
-                </Button>
-              </Button.Group>
-            }
-          >
-            <ShareAltOutlined key="share" />
-          </Popover>,
-          <div onClick={liked ? onUnLike : onLike}>
-            <span className="count">{post.Likers.length}</span>
-            {liked ? (
-              <LikeTwoTone
-                key="like"
-                twoToneColor="#6136ff"
-                onClick={onUnLike}
-              />
-            ) : (
-              <LikeOutlined key="like" />
-            )}
-          </div>,
-          <div onClick={onToggleComment}>
-            <span className="count">{post.Comments.length}</span>
-            <MessageOutlined key="comments" />
-          </div>,
-          <Popover
-            trigger="click"
-            content={
-              <Button.Group>
-                {userId && userId === post.User.id ? (
-                  <>
-                    <Button block>수정</Button>
+    <>
+      <StyledPostCard>
+        <Card
+          cover={
+            post.Images &&
+            !post.ScrapId && (
+              <PostImages images={post.Images} content={post.content} />
+            )
+          }
+          actions={[
+            <Popover
+              trigger="click"
+              content={
+                <Button.Group>
+                  <CopyToClipboard
+                    text={`http://localhost:3005/post/${post.id}`}
+                  >
                     <Button
-                      onClick={onRemovePost}
-                      loading={removePostLoading}
-                      danger
                       block
+                      onClick={() => alert('URL이 복사되었습니다.')}
                     >
-                      삭제
+                      URL 복사
                     </Button>
-                  </>
-                ) : (
-                  <Button danger onClick={() => alert('신고되었습니다.')}>
-                    신고
-                  </Button>
-                )}
-              </Button.Group>
-            }
-          >
-            <EllipsisOutlined key="more" />
-          </Popover>,
-        ]}
-        extra={post.ScrapId ? `${post.User.nickname}님이 스크랩한 글` : null}
-      >
-        {post.ScrapId && post.Scrap ? (
-          <Card
-            cover={
-              post.Images && (
-                <PostImages
-                  images={post.Scrap.Images}
-                  content={post.Scrap.content}
+                  </CopyToClipboard>
+                  {!post.ScrapId && (
+                    <Button block onClick={onScrap}>
+                      스크랩
+                    </Button>
+                  )}
+                </Button.Group>
+              }
+            >
+              <ShareAltOutlined key="share" />
+            </Popover>,
+            <div onClick={liked ? onUnLike : onLike}>
+              <span className="count">{post.Likers.length}</span>
+              {liked ? (
+                <LikeTwoTone
+                  key="like"
+                  twoToneColor="#6136ff"
+                  onClick={onUnLike}
                 />
-              )
-            }
-          >
+              ) : (
+                <LikeOutlined key="like" />
+              )}
+            </div>,
+            <div onClick={onToggleComment}>
+              <span className="count">{post.Comments.length}</span>
+              <MessageOutlined key="comments" />
+            </div>,
+            <Popover
+              trigger="click"
+              content={
+                <Button.Group>
+                  {userId && userId === post.User.id ? (
+                    <>
+                      {!post.ScrapId && (
+                        <Button block onClick={() => setPostEdit(true)}>
+                          글 수정
+                        </Button>
+                      )}
+                      <Button
+                        onClick={onRemovePost}
+                        loading={removePostLoading}
+                        danger
+                        block
+                      >
+                        삭제
+                      </Button>
+                    </>
+                  ) : (
+                    <Button danger onClick={() => alert('신고되었습니다.')}>
+                      신고
+                    </Button>
+                  )}
+                </Button.Group>
+              }
+            >
+              <EllipsisOutlined key="more" />
+            </Popover>,
+          ]}
+          extra={post.ScrapId ? `${post.User.nickname}님이 스크랩한 글` : null}
+        >
+          {post.ScrapId && post.Scrap ? (
+            <Card
+              cover={
+                post.Images && (
+                  <PostImages
+                    images={post.Scrap.Images}
+                    content={post.Scrap.content}
+                  />
+                )
+              }
+            >
+              <Card.Meta
+                avatar={
+                  <UserAvatar
+                    avatar={post.Scrap.User.avatar}
+                    nickname={post.Scrap.User.nickname}
+                    id={post.Scrap.User.id}
+                  />
+                }
+                title={post.Scrap.User.nickname}
+                description={
+                  <>
+                    {post.Scrap.tag && <PostHashtag hashtag={post.Scrap.tag} />}
+                    <span className="post-date">
+                      {post.Scrap.createdAt.slice(0, 10)}
+                    </span>
+                  </>
+                }
+              />
+            </Card>
+          ) : (
             <Card.Meta
               avatar={
                 <UserAvatar
-                  avatar={post.Scrap.User.avatar}
-                  nickname={post.Scrap.User.nickname}
-                  id={post.Scrap.User.id}
+                  avatar={post.User.avatar}
+                  nickname={post.User.nickname}
+                  id={post.User.id}
                 />
               }
-              title={post.Scrap.User.nickname}
+              title={
+                <>
+                  {post.User.nickname}
+                  {userId && userId !== post.User.id && (
+                    <FollowButton post={post} />
+                  )}
+                </>
+              }
               description={
                 <>
-                  {post.Scrap.tag && <PostHashtag hashtag={post.Scrap.tag} />}
+                  {post.tag && <PostHashtag hashtag={post.tag} />}
                   <span className="post-date">
-                    {post.Scrap.createdAt.slice(0, 10)}
+                    {post.createdAt.slice(0, 10)}
                   </span>
                 </>
               }
             />
-          </Card>
-        ) : (
-          <Card.Meta
-            avatar={
-              <UserAvatar
-                avatar={post.User.avatar}
-                nickname={post.User.nickname}
-                id={post.User.id}
-              />
-            }
-            title={
-              <>
-                {post.User.nickname}
-                {userId && userId !== post.User.id && (
-                  <FollowButton post={post} />
-                )}
-              </>
-            }
-            description={
-              <>
-                {post.tag && <PostHashtag hashtag={post.tag} />}
-                <span className="post-date">{post.createdAt.slice(0, 10)}</span>
-              </>
-            }
-          />
+          )}
+        </Card>
+        {commentOpened && (
+          <div>
+            <List
+              header={`${post.Comments.length}개의 댓글`}
+              itemLayout="horizontal"
+              dataSource={post.Comments}
+              renderItem={(item: PostComment) => (
+                <List.Item>
+                  <Comment
+                    author={item.User.nickname}
+                    avatar={
+                      <UserAvatar
+                        avatar={item.User.avatar}
+                        nickname={item.User.nickname}
+                        id={item.User.id}
+                      />
+                    }
+                    content={item.content}
+                    datetime={item.createdAt.slice(0, 10)}
+                  />
+                </List.Item>
+              )}
+            />
+            <CommentForm post={post} />
+          </div>
         )}
-      </Card>
-      {commentOpened && (
-        <div>
-          <List
-            header={`${post.Comments.length}개의 댓글`}
-            itemLayout="horizontal"
-            dataSource={post.Comments}
-            renderItem={(item: PostComment) => (
-              <List.Item>
-                <Comment
-                  author={item.User.nickname}
-                  avatar={
-                    <UserAvatar
-                      avatar={item.User.avatar}
-                      nickname={item.User.nickname}
-                      id={item.User.id}
-                    />
-                  }
-                  content={item.content}
-                  datetime={item.createdAt.slice(0, 10)}
-                />
-              </List.Item>
-            )}
-          />
-          <CommentForm post={post} />
-        </div>
+      </StyledPostCard>
+      {postEdit && (
+        <PostEdit
+          id={post.id}
+          content={post.content}
+          setPostEdit={setPostEdit}
+        />
       )}
-    </StyledPostCard>
+    </>
   );
 }
 

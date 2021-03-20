@@ -41,6 +41,10 @@ export function removePostAPI(data: number) {
   return axios.delete(`/post/${data}`);
 }
 
+export function updatePostAPI(data: any) {
+  return axios.patch(`/post/${data.postId}`, data);
+}
+
 export function addCommentAPI(data: CommentActionType) {
   return axios.post(`/post/${data.postId}/comment`, data);
 }

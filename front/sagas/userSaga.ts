@@ -34,12 +34,6 @@ import {
   uploadUserImageRequest,
   uploadUserImageSuccess,
   uploadUserImageFailure,
-  loadFollowersRequest,
-  loadFollowersSuccess,
-  loadFollowersFailure,
-  loadFollowingsRequest,
-  loadFollowingsSuccess,
-  loadFollowingsFailure,
 } from 'store/modules/user';
 import {
   loadMyInfoAPI,
@@ -51,8 +45,6 @@ import {
   unFollowAPI,
   changeProfileAPI,
   uploadUserImageAPI,
-  loadFollowersAPI,
-  loadFollowingsAPI,
   removeFollowerAPI,
 } from 'api/user';
 
@@ -153,23 +145,23 @@ function* removeFollower(action: PayloadAction<number>) {
   }
 }
 
-function* loadFollowers() {
-  try {
-    const result = yield call(loadFollowersAPI);
-    yield put(loadFollowersSuccess(result.data));
-  } catch (e) {
-    yield put(loadFollowersFailure(e.response.data));
-  }
-}
-
-function* loadFollowings() {
-  try {
-    const result = yield call(loadFollowingsAPI);
-    yield put(loadFollowingsSuccess(result.data));
-  } catch (e) {
-    yield put(loadFollowingsFailure(e.response.data));
-  }
-}
+// SWR로 대체
+// function* loadFollowers() {
+//   try {
+//     const result = yield call(loadFollowersAPI);
+//     yield put(loadFollowersSuccess(result.data));
+//   } catch (e) {
+//     yield put(loadFollowersFailure(e.response.data));
+//   }
+// }
+// function* loadFollowings() {
+//   try {
+//     const result = yield call(loadFollowingsAPI);
+//     yield put(loadFollowingsSuccess(result.data));
+//   } catch (e) {
+//     yield put(loadFollowingsFailure(e.response.data));
+//   }
+// }
 
 // Watch 함수
 export function* watchLoadMyInfo() {
@@ -214,13 +206,13 @@ export function* watchRemoveFollower() {
   yield takeLatest(removeFollowerRequest.type, removeFollower);
 }
 
-export function* watchLoadFollowers() {
-  yield takeLatest(loadFollowersRequest.type, loadFollowers);
-}
-
-export function* watchLoadFollowings() {
-  yield takeLatest(loadFollowingsRequest.type, loadFollowings);
-}
+// SWR로 대체
+// export function* watchLoadFollowers() {
+//   yield takeLatest(loadFollowersRequest.type, loadFollowers);
+// }
+// export function* watchLoadFollowings() {
+//   yield takeLatest(loadFollowingsRequest.type, loadFollowings);
+// }
 
 /*
 take = 이벤트 리스너같은 역할, 치명적인 단점, 일회용

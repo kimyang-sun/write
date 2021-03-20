@@ -56,12 +56,12 @@ const PostFormTitle = styled.div`
     right: 0;
   }
 `;
-
 // export
 function PostForm({ setPostCreating }: PostFormProps) {
   const {
     addPost,
     addPostDone,
+    addPostLoading,
     uploadPostImage,
     imagePaths,
     uploadPostImageLoading,
@@ -75,7 +75,7 @@ function PostForm({ setPostCreating }: PostFormProps) {
   const onSubmit = handleSubmit((data: PostFormType) => {
     // 닉네임은 필수여서 비워두면 안됩니다.
     if (!data.text || !data.text.trim()) {
-      return alert('게시글의 내용을 입력해주세요. (공백 불가능)');
+      return alert('글의 내용을 입력해주세요. (공백 불가능)');
     }
     const image = imagePaths.length > 0 ? imagePaths : null;
     addPost({
@@ -171,7 +171,7 @@ function PostForm({ setPostCreating }: PostFormProps) {
           placeholder="해시태그 추가 ex) #쓰다 #마음"
           defaultValue=""
         />
-        <Button htmlType="submit" size="large" block>
+        <Button htmlType="submit" size="large" loading={addPostLoading} block>
           게시하기
         </Button>
       </StyledPostForm>

@@ -100,11 +100,17 @@ function User() {
           </Card>
         </>
       ) : (
-        '사용자 정보가 없습니다 😑'
+        <p style={{ textAlign: 'center', padding: '40px 0' }}>
+          사용자 정보가 없습니다. 😑
+        </p>
       )}
-      {mainPosts.map((post: Post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      {mainPosts.length === 0 ? (
+        <p style={{ textAlign: 'center', padding: '40px 0' }}>
+          글이 존재하지 않습니다. 😑
+        </p>
+      ) : (
+        mainPosts.map((post: Post) => <PostCard key={post.id} post={post} />)
+      )}
     </AppLayout>
   );
 }

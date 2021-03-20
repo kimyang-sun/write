@@ -102,6 +102,29 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 게시글 수정 - PATCH /post/:postId
+router.patch('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    // 수정은 update
+    await Post.update(
+      { content: req.body.content },
+      {
+        where: {
+          id: req.params.postId,
+          UserId: req.user.id,
+        },
+      }
+    );
+    res.json({
+      PostId: parseInt(req.params.postId, 10),
+      content: req.body.content,
+    }); // 해당 포스트의 id를 다시 보내줌
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 // 댓글 작성 - Post /post/:postId/comment
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {

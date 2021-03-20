@@ -8,6 +8,7 @@ import {
   addPostRequest,
   CommentActionType,
   removePostRequest,
+  updatePostRequest,
   likePostRequest,
   unLikePostRequest,
   uploadPostImageRequest,
@@ -27,6 +28,8 @@ export default function usePost() {
     addPostLoading,
     addPostDone,
     removePostLoading,
+    updatePostLoading,
+    updatePostDone,
     addCommentDone,
     scrapPostError,
     uploadPostImageLoading,
@@ -61,6 +64,10 @@ export default function usePost() {
     dispatch(removePostRequest(id));
   }, []);
 
+  const updatePost = useCallback((data: any) => {
+    dispatch(updatePostRequest({ postId: data.postId, content: data.content }));
+  }, []);
+
   const addComment = useCallback((comment: CommentActionType) => {
     dispatch(addCommentRequest(comment));
   }, []);
@@ -93,6 +100,9 @@ export default function usePost() {
     removePostImage,
     removePost,
     removePostLoading,
+    updatePost,
+    updatePostLoading,
+    updatePostDone,
     addComment,
     addCommentDone,
     likePost,

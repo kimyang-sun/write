@@ -23,7 +23,7 @@ const SubTitle = styled.div`
 `;
 
 function Home() {
-  const { userData } = useUser();
+  const { userData, userInfo } = useUser();
   const {
     mainPosts,
     loadPosts,

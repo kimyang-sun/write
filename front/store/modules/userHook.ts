@@ -13,8 +13,6 @@ import {
   unFollowRequest,
   SignUpRequestPayload,
   ProfilePayload,
-  loadFollowingsRequest,
-  loadFollowersRequest,
   removeFollowerRequest,
 } from './user';
 
@@ -75,13 +73,13 @@ export default function useUser() {
     dispatch(removeFollowerRequest(id));
   }, []);
 
-  const loadFollowers = useCallback(() => {
-    dispatch(loadFollowersRequest());
-  }, []);
-
-  const loadFollwings = useCallback(() => {
-    dispatch(loadFollowingsRequest());
-  }, []);
+  // SWR로 대체
+  // const loadFollowers = useCallback(() => {
+  //   dispatch(loadFollowersRequest());
+  // }, []);
+  // const loadFollwings = useCallback(() => {
+  //   dispatch(loadFollowingsRequest());
+  // }, []);
 
   return {
     userData,
@@ -108,7 +106,5 @@ export default function useUser() {
     follow,
     unFollow,
     removeFollower,
-    loadFollowers,
-    loadFollwings,
   };
 }

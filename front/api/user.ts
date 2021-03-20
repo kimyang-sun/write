@@ -50,10 +50,10 @@ export function removeFollowerAPI(data: number) {
   return axios.delete(`/user/follower/${data}`);
 }
 
-export function loadFollowersAPI() {
-  return axios.get('/user/followers');
-}
-
-export function loadFollowingsAPI() {
-  return axios.get('/user/followings');
-}
+// SWR로 대체
+// export function loadFollowersAPI() {
+//   return axios.get('/user/followers');
+// }
+// export function loadFollowingsAPI() {
+//   return axios.get('/user/followings');
+// }

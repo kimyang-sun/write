@@ -20,7 +20,7 @@ const ImageSliderContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 4000;
   background-color: #000;
   display: flex;
   justify-content: center;

@@ -19,7 +19,7 @@ const DialogContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 5000;
   > * {
     font-size: 1rem;
     width: 460px;

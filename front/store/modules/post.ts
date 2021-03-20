@@ -22,6 +22,9 @@ export type PostState = {
   removePostLoading: boolean;
   removePostDone: boolean;
   removePostError: any;
+  updatePostLoading: boolean;
+  updatePostDone: boolean;
+  updatePostError: any;
   addCommentLoading: boolean;
   addCommentDone: boolean;
   addCommentError: any;
@@ -113,6 +116,9 @@ const initialState: PostState = {
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+  updatePostLoading: false,
+  updatePostDone: false,
+  updatePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -212,12 +218,12 @@ const postSlice = createSlice({
       state.addPostLoading = false;
       state.addPostDone = true;
     },
-    addPostComplete(state: PostState) {
-      state.addPostDone = false;
-    },
     addPostFailure(state: PostState, action: PayloadAction<any>) {
       state.addPostLoading = false;
       state.addPostError = action.payload;
+    },
+    addPostComplete(state: PostState) {
+      state.addPostDone = false;
     },
 
     // Upload Post Image
@@ -262,6 +268,26 @@ const postSlice = createSlice({
     removePostFailure(state: PostState, action: PayloadAction<any>) {
       state.addPostLoading = false;
       state.removePostError = action.payload;
+    },
+
+    // Update Post
+    updatePostRequest(state: PostState, _action: PayloadAction<any>) {
+      state.updatePostLoading = true;
+      state.updatePostDone = false;
+      state.updatePostError = null;
+    },
+    updatePostSuccess(state: PostState, action: PayloadAction<any>) {
+      state.mainPosts.find(post => post.id === action.payload.PostId).content =
+        action.payload.content;
+      state.updatePostLoading = false;
+      state.updatePostDone = true;
+    },
+    updatePostFailure(state: PostState, action: PayloadAction<any>) {
+      state.addPostLoading = false;
+      state.updatePostError = action.payload;
+    },
+    updatePostComplete(state: PostState) {
+      state.updatePostDone = false;
     },
 
     // Add Comment
@@ -367,8 +393,8 @@ export const {
   loadHashtagPostsFailure,
   addPostRequest,
   addPostSuccess,
-  addPostComplete,
   addPostFailure,
+  addPostComplete,
   uploadPostImageRequest,
   uploadPostImageSuccess,
   uploadPostImageFailure,
@@ -376,6 +402,10 @@ export const {
   removePostRequest,
   removePostSuccess,
   removePostFailure,
+  updatePostRequest,
+  updatePostSuccess,
+  updatePostFailure,
+  updatePostComplete,
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,

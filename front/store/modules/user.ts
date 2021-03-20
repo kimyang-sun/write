@@ -36,12 +36,6 @@ export type UserState = {
   removeFollowerLoading: boolean;
   removeFollowerDone: boolean;
   removeFollowerError: any;
-  loadFollowersLoading: boolean;
-  loadFollowersDone: boolean;
-  loadFollowersError: any;
-  loadFollowingsLoading: boolean;
-  loadFollowingsDone: boolean;
-  loadFollowingsError: any;
 };
 
 // Follow 타입
@@ -115,12 +109,6 @@ const initialState: UserState = {
   removeFollowerLoading: false,
   removeFollowerDone: false,
   removeFollowerError: null,
-  loadFollowersLoading: false,
-  loadFollowersDone: false,
-  loadFollowersError: null,
-  loadFollowingsLoading: false,
-  loadFollowingsDone: false,
-  loadFollowingsError: null,
 };
 
 // 리듀서 슬라이스
@@ -228,7 +216,7 @@ const userSlice = createSlice({
       state.userData.Posts = state.userData.Posts.filter(
         post => post.id !== action.payload.PostId
       );
-      state.userInfo.Posts--;
+      state.userInfo && state.userInfo.Posts--;
     },
 
     // Change Profile
@@ -284,7 +272,7 @@ const userSlice = createSlice({
     },
     followSuccess(state: UserState, action: PayloadAction<{ UserId: number }>) {
       state.userData.Followings.push({ id: action.payload.UserId });
-      state.userInfo.Followers++;
+      state.userInfo && state.userInfo.Followers++;
       state.followLoading = false;
       state.followDone = true;
     },
@@ -306,7 +294,7 @@ const userSlice = createSlice({
       state.userData.Followings = state.userData.Followings.filter(
         following => following.id !== action.payload.UserId
       );
-      state.userInfo.Followers--;
+      state.userInfo && state.userInfo.Followers--;
       state.unFollowLoading = false;
       state.unFollowDone = true;
     },
@@ -336,37 +324,37 @@ const userSlice = createSlice({
       state.removeFollowerError = action.payload;
     },
 
-    // Load Followers
-    loadFollowersRequest(state: UserState) {
-      state.loadFollowersLoading = true;
-      state.loadFollowersDone = false;
-      state.loadFollowersError = null;
-    },
-    loadFollowersSuccess(state: UserState, action: PayloadAction<any>) {
-      state.userData.Followers = action.payload;
-      state.loadFollowersLoading = false;
-      state.loadFollowersDone = true;
-    },
-    loadFollowersFailure(state: UserState, action: PayloadAction<any>) {
-      state.loadFollowersLoading = null;
-      state.loadFollowersError = action.payload;
-    },
-
-    // Load Followings
-    loadFollowingsRequest(state: UserState) {
-      state.loadFollowingsLoading = true;
-      state.loadFollowingsDone = false;
-      state.loadFollowingsError = null;
-    },
-    loadFollowingsSuccess(state: UserState, action: PayloadAction<any>) {
-      state.userData.Followings = action.payload;
-      state.loadFollowingsLoading = false;
-      state.loadFollowingsDone = true;
-    },
-    loadFollowingsFailure(state: UserState, action: PayloadAction<any>) {
-      state.loadFollowingsLoading = null;
-      state.loadFollowingsError = action.payload;
-    },
+    // SWR로 대체
+    // // Load Followers
+    // loadFollowersRequest(state: UserState) {
+    //   state.loadFollowersLoading = true;
+    //   state.loadFollowersDone = false;
+    //   state.loadFollowersError = null;
+    // },
+    // loadFollowersSuccess(state: UserState, action: PayloadAction<any>) {
+    //   state.userData.Followers = action.payload;
+    //   state.loadFollowersLoading = false;
+    //   state.loadFollowersDone = true;
+    // },
+    // loadFollowersFailure(state: UserState, action: PayloadAction<any>) {
+    //   state.loadFollowersLoading = null;
+    //   state.loadFollowersError = action.payload;
+    // },
+    // // Load Followings
+    // loadFollowingsRequest(state: UserState) {
+    //   state.loadFollowingsLoading = true;
+    //   state.loadFollowingsDone = false;
+    //   state.loadFollowingsError = null;
+    // },
+    // loadFollowingsSuccess(state: UserState, action: PayloadAction<any>) {
+    //   state.userData.Followings = action.payload;
+    //   state.loadFollowingsLoading = false;
+    //   state.loadFollowingsDone = true;
+    // },
+    // loadFollowingsFailure(state: UserState, action: PayloadAction<any>) {
+    //   state.loadFollowingsLoading = null;
+    //   state.loadFollowingsError = action.payload;
+    // },
   },
 });
 
@@ -406,11 +394,5 @@ export const {
   removeFollowerRequest,
   removeFollowerSuccess,
   removeFollowerFailure,
-  loadFollowersRequest,
-  loadFollowersSuccess,
-  loadFollowersFailure,
-  loadFollowingsRequest,
-  loadFollowingsSuccess,
-  loadFollowingsFailure,
 } = actions;
 export default reducer;

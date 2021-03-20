@@ -24,6 +24,10 @@ import {
   removePostRequest,
   removePostSuccess,
   removePostFailure,
+  updatePostRequest,
+  updatePostSuccess,
+  updatePostFailure,
+  updatePostComplete,
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,
@@ -46,6 +50,7 @@ import {
   loadPostAPI,
   addPostAPI,
   removePostAPI,
+  updatePostAPI,
   addCommentAPI,
   likePostAPI,
   unLikePostAPI,
@@ -114,7 +119,6 @@ function* uploadPostImage(action: PayloadAction<FormData>) {
     const result = yield call(uploadPostImageAPI, action.payload);
     yield put(uploadPostImageSuccess(result));
   } catch (e) {
-    console.error(e.response.data);
     yield put(uploadPostImageFailure(e.response.data));
   }
 }
@@ -126,6 +130,16 @@ function* removePost(action: PayloadAction<number>) {
     yield put(removeUserPost(result.data));
   } catch (e) {
     yield put(removePostFailure(e.response.data));
+  }
+}
+
+function* updatePost(action: PayloadAction<any>) {
+  try {
+    const result = yield call(updatePostAPI, action.payload);
+    yield put(updatePostSuccess(result.data));
+    yield put(updatePostComplete());
+  } catch (e) {
+    yield put(updatePostFailure(e.response.data));
   }
 }
 
@@ -193,6 +207,10 @@ export function* watchUploadPostImage() {
 
 export function* watchRemovePost() {
   yield takeLatest(removePostRequest.type, removePost);
+}
+
+export function* watchUpdatePost() {
+  yield takeLatest(updatePostRequest.type, updatePost);
 }
 
 export function* watchAddComment() {
