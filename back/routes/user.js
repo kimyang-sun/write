@@ -4,16 +4,8 @@ const passport = require('passport');
 const { Op } = require('sequelize');
 const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const fs = require('fs');
 
 const router = express.Router();
-
-try {
-  fs.accessSync('uploads');
-} catch (e) {
-  console.log('uploads 폴더가 없어서 생성합니다.');
-  fs.mkdirSync('uploads');
-}
 
 // 회원가입 - POST /user/
 router.post('/', async (req, res, next) => {
