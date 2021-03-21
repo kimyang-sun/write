@@ -23,14 +23,8 @@ const SubTitle = styled.div`
 `;
 
 function Home() {
-  const { userData, userInfo } = useUser();
-  const {
-    mainPosts,
-    loadPosts,
-    loadPostsLoading,
-    hasMorePosts,
-    scrapPostError,
-  } = usePost();
+  const { userData } = useUser();
+  const { mainPosts, loadPosts, loadPostsLoading, hasMorePosts } = usePost();
   const [postCreating, setPostCreating] = useState(false);
 
   //스크롤시 게시물을 더 불러옵니다.
@@ -56,10 +50,10 @@ function Home() {
     };
   }, [hasMorePosts, mainPosts, loadPostsLoading]);
 
-  // 자신의 글을 스크랩하면 알림.
-  useEffect(() => {
-    if (scrapPostError) alert(scrapPostError);
-  }, [scrapPostError]);
+  // // 자신의 글을 스크랩하면 알림. (그냥 보이지 않게 해줌으로써 지금은 없어도 됨)
+  // useEffect(() => {
+  //   if (scrapPostError) alert(scrapPostError);
+  // }, [scrapPostError]);
 
   return (
     <AppLayout>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { UserDataPayload } from 'store/modules/user';
 import {
-  LikeOutlined,
+  HeartOutlined,
   EditOutlined,
   TeamOutlined,
   ApiOutlined,
@@ -24,7 +24,7 @@ const StyledUserNav = styled.nav`
     margin-bottom: 15px;
   }
   ul > li > a {
-    font-size: 2rem;
+    font-size: 1.75rem;
     border: 2px solid ${props => props.theme.color.gray};
     display: inline-block;
     width: 46px;
@@ -102,9 +102,9 @@ function UserNav({ user, logout, logoutError }: UserNavProps) {
             </Link>
           </li>
           <li>
-            <Link href="/profile">
+            <Link href="/like">
               <a key="likes">
-                <LikeOutlined />
+                <HeartOutlined />
               </a>
             </Link>
           </li>

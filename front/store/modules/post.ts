@@ -173,6 +173,40 @@ const postSlice = createSlice({
       state.loadPostsError = action.payload;
     },
 
+    // Load Related Posts
+    loadRelatedPostsRequest(state: PostState, _action: PayloadAction<number>) {
+      state.loadPostsLoading = true;
+      state.loadPostsDone = false;
+      state.loadPostsError = null;
+    },
+    loadRelatedPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+      state.mainPosts = state.mainPosts.concat(action.payload);
+      state.hasMorePosts = action.payload.length === 5;
+      state.loadPostsLoading = false;
+      state.loadPostsDone = true;
+    },
+    loadRelatedPostsFailure(state: PostState, action: PayloadAction<any>) {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.payload;
+    },
+
+    // Load Liked Posts
+    loadLikedPostsRequest(state: PostState, _action: PayloadAction<number>) {
+      state.loadPostsLoading = true;
+      state.loadPostsDone = false;
+      state.loadPostsError = null;
+    },
+    loadLikedPostsSuccess(state: PostState, action: PayloadAction<Post[]>) {
+      state.mainPosts = state.mainPosts.concat(action.payload);
+      state.hasMorePosts = action.payload.length === 5;
+      state.loadPostsLoading = false;
+      state.loadPostsDone = true;
+    },
+    loadLikedPostsFailure(state: PostState, action: PayloadAction<any>) {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.payload;
+    },
+
     // Load Hashtag Posts
     loadHashtagPostsRequest(state: PostState, _action: PayloadAction<any>) {
       state.loadPostsLoading = true;
@@ -385,6 +419,12 @@ export const {
   loadPostRequest,
   loadPostSuccess,
   loadPostFailure,
+  loadRelatedPostsRequest,
+  loadRelatedPostsSuccess,
+  loadRelatedPostsFailure,
+  loadLikedPostsRequest,
+  loadLikedPostsSuccess,
+  loadLikedPostsFailure,
   loadUserPostsRequest,
   loadUserPostsSuccess,
   loadUserPostsFailure,

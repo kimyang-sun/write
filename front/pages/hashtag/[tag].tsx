@@ -18,7 +18,6 @@ function User() {
     loadHashtagPosts,
     loadPostsLoading,
     hasMorePosts,
-    scrapPostError,
   } = usePost();
   useEffect(() => {
     function onScroll() {
@@ -37,10 +36,6 @@ function User() {
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts, mainPosts, loadPostsLoading]);
-
-  useEffect(() => {
-    if (scrapPostError) alert(scrapPostError);
-  }, [scrapPostError]);
 
   return (
     <AppLayout>

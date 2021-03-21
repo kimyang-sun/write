@@ -4,6 +4,7 @@ const { Post, User, Image, Comment } = require('../models');
 
 const router = express.Router();
 
+// 전체 글 불러오기 - GET /posts/
 router.get('/', async (req, res, next) => {
   try {
     const where = {};
@@ -29,6 +30,88 @@ router.get('/', async (req, res, next) => {
         { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 누른 사람
         {
           model: Post, // 스크랩 포스트
+          as: 'Scrap',
+          include: [
+            { model: User, attributes: ['id', 'nickname', 'avatar'] },
+            { model: Image },
+          ],
+        },
+      ],
+    });
+    res.status(200).json(posts);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 팔로우한 유저의 글 불러오기 - GET /posts/related
+router.get('/related', async (req, res, next) => {
+  try {
+    const followings = await User.findAll({
+      attributes: ['id'],
+      include: [{ model: User, as: 'Followers', where: { id: req.user.id } }],
+    });
+    const where = { UserId: { [Op.in]: followings.map(value => value.id) } };
+
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    }
+    const posts = await Post.findAll({
+      where,
+      limit: 5,
+      order: [['createdAt', 'DESC']],
+      include: [
+        { model: User, attributes: ['id', 'nickname', 'avatar'] },
+        { model: Image },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['id', 'nickname', 'avatar'] }],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] },
+        {
+          model: Post,
+          as: 'Scrap',
+          include: [
+            { model: User, attributes: ['id', 'nickname', 'avatar'] },
+            { model: Image },
+          ],
+        },
+      ],
+    });
+    res.status(200).json(posts);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 좋아요 누른 글 불러오기 - GET /posts/liked
+router.get('/liked', async (req, res, next) => {
+  try {
+    const likes = await Post.findAll({
+      attributes: ['id'],
+      include: [{ model: User, as: 'Likers', where: { id: req.user.id } }],
+    });
+    const where = { id: { [Op.in]: likes.map(value => value.id) } };
+
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    }
+    const posts = await Post.findAll({
+      where,
+      limit: 5,
+      order: [['createdAt', 'DESC']],
+      include: [
+        { model: User, attributes: ['id', 'nickname', 'avatar'] },
+        { model: Image },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['id', 'nickname', 'avatar'] }],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] },
+        {
+          model: Post,
           as: 'Scrap',
           include: [
             { model: User, attributes: ['id', 'nickname', 'avatar'] },

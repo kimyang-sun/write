@@ -14,6 +14,14 @@ export function loadUserPostsAPI(data: any, lastId?: any) {
   return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`);
 }
 
+export function loadRelatedPostsAPI(lastId: number) {
+  return axios.get(`/posts/related?lastId=${lastId || 0}`);
+}
+
+export function loadLikedPostsAPI(lastId: number) {
+  return axios.get(`/posts/liked?lastId=${lastId || 0}`);
+}
+
 export function loadHashtagPostsAPI(data: any, lastId?: any) {
   // 한글이라 서버에서 오류가 남 (encodeURIComponent로 감싸줍니다.)
   return axios.get(

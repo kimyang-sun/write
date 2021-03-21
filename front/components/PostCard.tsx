@@ -16,8 +16,8 @@ import Popover from 'antd/lib/popover';
 import List from 'antd/lib/list';
 import Comment from 'antd/lib/comment';
 import {
-  LikeOutlined,
-  LikeTwoTone,
+  HeartOutlined,
+  HeartFilled,
   ShareAltOutlined,
   MessageOutlined,
   EllipsisOutlined,
@@ -146,13 +146,13 @@ function PostCard({ post }: PostCardProps) {
             <div onClick={liked ? onUnLike : onLike}>
               <span className="count">{post.Likers.length}</span>
               {liked ? (
-                <LikeTwoTone
+                <HeartFilled
                   key="like"
-                  twoToneColor="#6136ff"
                   onClick={onUnLike}
+                  style={{ color: '#eb2f5e' }}
                 />
               ) : (
-                <LikeOutlined key="like" />
+                <HeartOutlined key="like" />
               )}
             </div>,
             <div onClick={onToggleComment}>

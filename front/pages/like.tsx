@@ -10,23 +10,9 @@ import wrapper, { SagaStore } from 'store/configureStore';
 import { loadMyInfoRequest } from 'store/modules/user';
 import axios from 'axios';
 import AppLayout from 'components/AppLayout';
-import useSWR from 'swr';
 import usePost from 'store/modules/postHook';
 import PostCard from 'components/PostCard';
-import { loadRelatedPostsRequest, Post } from 'store/modules/post';
-
-// styled components
-const FollowListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
-`;
-
-// SWR Fetcher
-const fetcher = (url: string) =>
-  axios.get(url, { withCredentials: true }).then(result => result.data);
-
-const FOLLOWER_LIMIT = 4;
+import { loadLikedPostsRequest, Post } from 'store/modules/post';
 
 function Follow() {
   const { userData } = useUser();
@@ -34,7 +20,7 @@ function Follow() {
     mainPosts,
     hasMorePosts,
     loadPostsLoading,
-    loadRelatedPosts,
+    loadLikedPosts,
   } = usePost();
   useEffect(() => {
     if (!(userData && userData.id)) {
@@ -50,7 +36,7 @@ function Follow() {
       ) {
         if (hasMorePosts && !loadPostsLoading) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
-          loadRelatedPosts(lastId);
+          loadLikedPosts(lastId);
         }
       }
     }
@@ -60,48 +46,15 @@ function Follow() {
     };
   }, [hasMorePosts, mainPosts, loadPostsLoading]);
 
-  // 팔로워, 팔로잉 목록 불러오기 (SWR)
-  const {
-    data: followerData,
-    error: followerError,
-    mutate: mutateFollower,
-  } = useSWR(
-    `http://localhost:3006/user/followers?limit=${FOLLOWER_LIMIT}`,
-    fetcher
-  );
-  const {
-    data: followingData,
-    error: followingError,
-    mutate: mutateFollowing,
-  } = useSWR(
-    `http://localhost:3006/user/followings?limit=${FOLLOWER_LIMIT}`,
-    fetcher
-  );
-  if (followerError || followingError) {
-    console.error(followerError || followingError);
-    return null; // 리턴은 Hooks보다 위에 있으면 안됩니다.
-  }
   return (
     <AppLayout>
       <Head>
-        <title>팔로워 & 팔로잉 | &quot;쓰다&quot;</title>
+        <title>내가 좋아하는 글 | &quot;쓰다&quot;</title>
       </Head>
-      <PageTitle title="팔로워 & 팔로잉" />
+      <PageTitle title="내가 좋아하는 글" />
       {userData ? (
         <>
-          <FollowListContainer>
-            <FollowList
-              header="팔로워"
-              data={followerData}
-              mutate={mutateFollower}
-            />
-            <FollowList
-              header="팔로잉"
-              data={followingData}
-              mutate={mutateFollowing}
-            />
-          </FollowListContainer>
-          <h3>😊 팔로우한 사람의 글</h3>
+          <h3>♥ 내가 좋아하는 글</h3>
           {mainPosts.length === 0 ? (
             <p style={{ textAlign: 'center', padding: '40px 0' }}>
               글이 존재하지 않습니다. 😑
@@ -127,7 +80,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async context => {
     axios.defaults.headers.Cookie = cookie;
   }
   context.store.dispatch(loadMyInfoRequest());
-  context.store.dispatch(loadRelatedPostsRequest());
+  context.store.dispatch(loadLikedPostsRequest());
   context.store.dispatch(END);
   await (context.store as SagaStore).sagaTask.toPromise();
 });

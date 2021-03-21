@@ -8,6 +8,12 @@ import {
   loadPostRequest,
   loadPostSuccess,
   loadPostFailure,
+  loadRelatedPostsRequest,
+  loadRelatedPostsSuccess,
+  loadRelatedPostsFailure,
+  loadLikedPostsRequest,
+  loadLikedPostsSuccess,
+  loadLikedPostsFailure,
   loadUserPostsRequest,
   loadUserPostsSuccess,
   loadUserPostsFailure,
@@ -46,6 +52,8 @@ import { addUserPost, removeUserPost } from 'store/modules/user';
 import {
   loadPostsAPI,
   loadUserPostsAPI,
+  loadRelatedPostsAPI,
+  loadLikedPostsAPI,
   loadHashtagPostsAPI,
   loadPostAPI,
   addPostAPI,
@@ -78,6 +86,24 @@ function* loadUserPosts(action: PayloadAction<any>) {
     yield put(loadUserPostsSuccess(result.data));
   } catch (e) {
     yield put(loadUserPostsFailure(e.response.data));
+  }
+}
+
+function* loadRelatedPosts(action: PayloadAction<number>) {
+  try {
+    const result = yield call(loadRelatedPostsAPI, action.payload);
+    yield put(loadRelatedPostsSuccess(result.data));
+  } catch (e) {
+    yield put(loadRelatedPostsFailure(e.response.data));
+  }
+}
+
+function* loadLikedPosts(action: PayloadAction<number>) {
+  try {
+    const result = yield call(loadLikedPostsAPI, action.payload);
+    yield put(loadLikedPostsSuccess(result.data));
+  } catch (e) {
+    yield put(loadLikedPostsFailure(e.response.data));
   }
 }
 
@@ -187,6 +213,14 @@ export function* watchLoadPosts() {
 
 export function* watchLoadUserPosts() {
   yield takeLatest(loadUserPostsRequest.type, loadUserPosts);
+}
+
+export function* watchLoadRelatedPosts() {
+  yield takeLatest(loadRelatedPostsRequest.type, loadRelatedPosts);
+}
+
+export function* watchLoadLikedPosts() {
+  yield takeLatest(loadLikedPostsRequest.type, loadLikedPosts);
 }
 
 export function* watchLoadHashtagPosts() {

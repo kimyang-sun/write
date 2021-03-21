@@ -3,6 +3,8 @@ import { all, fork } from 'redux-saga/effects';
 import {
   watchLoadPosts,
   watchLoadUserPosts,
+  watchLoadRelatedPosts,
+  watchLoadLikedPosts,
   watchLoadHashtagPosts,
   watchLoadPost,
   watchAddComment,
@@ -46,6 +48,8 @@ export default function* rootSaga() {
     fork(watchRemoveFollower),
     fork(watchLoadPosts),
     fork(watchLoadUserPosts),
+    fork(watchLoadRelatedPosts),
+    fork(watchLoadLikedPosts),
     fork(watchLoadHashtagPosts),
     fork(watchLoadPost),
     fork(watchAddPost),

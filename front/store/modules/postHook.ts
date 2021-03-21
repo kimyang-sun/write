@@ -4,6 +4,8 @@ import { RootState } from '.';
 import {
   loadPostsRequest,
   loadUserPostsRequest,
+  loadRelatedPostsRequest,
+  loadLikedPostsRequest,
   addCommentRequest,
   addPostRequest,
   CommentActionType,
@@ -31,7 +33,6 @@ export default function usePost() {
     updatePostLoading,
     updatePostDone,
     addCommentDone,
-    scrapPostError,
     uploadPostImageLoading,
   } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch();
@@ -42,6 +43,14 @@ export default function usePost() {
 
   const loadUserPosts = useCallback((data: any) => {
     dispatch(loadUserPostsRequest({ data: data.data, lastId: data.lastId }));
+  }, []);
+
+  const loadRelatedPosts = useCallback((id?: number) => {
+    dispatch(loadRelatedPostsRequest(id));
+  }, []);
+
+  const loadLikedPosts = useCallback((id?: number) => {
+    dispatch(loadLikedPostsRequest(id));
   }, []);
 
   const loadHashtagPosts = useCallback((data: any) => {
@@ -92,6 +101,8 @@ export default function usePost() {
     loadPostsLoading,
     loadUserPosts,
     loadHashtagPosts,
+    loadRelatedPosts,
+    loadLikedPosts,
     hasMorePosts,
     addPost,
     addPostLoading,
@@ -108,7 +119,6 @@ export default function usePost() {
     likePost,
     unLikePost,
     scrapPost,
-    scrapPostError,
     uploadPostImageLoading,
   };
 }
