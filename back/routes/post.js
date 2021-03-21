@@ -5,13 +5,6 @@ const fs = require('fs');
 
 const router = express.Router();
 
-try {
-  fs.accessSync('uploads');
-} catch (e) {
-  console.log('uploads 폴더가 없어서 생성합니다.');
-  fs.mkdirSync('uploads');
-}
-
 // 게시글 작성 - Post /post
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
